@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom styles for a polished website */
+html {
+  font-size: 120% !important;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #ffffff;
+  color: #171717;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ensure all Tailwind arbitrary pixel text sizes scale up by exactly 20% */
+.text-\[6px\] {
+  font-size: 7.2px !important;
+}
+.text-\[8px\] {
+  font-size: 9.6px !important;
+}
+.text-\[9px\] {
+  font-size: 10.8px !important;
+}
+.text-\[10px\] {
+  font-size: 12px !important;
+}
+.text-\[11px\] {
+  font-size: 13.2px !important;
+}
+.text-\[12px\] {
+  font-size: 14.4px !important;
+}
+.text-\[15px\] {
+  font-size: 18px !important;
+}
+
+/* Elegant scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a3a3a3;
+}
+
+/* Custom Cursor styling */
+#cursor-dot {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html, body {
+    cursor: none;
+  }
+  *, a, button, input, textarea, select, [role="button"], .service-card, .case-card, .news-card, .pagination-arrow, [class*="card"] {
+    cursor: none !important;
+  }
+
+  #cursor-dot {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #0D5EFF;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10000;
+    box-shadow: none; /* 默认无描边 */
+  }
+  #cursor-dot.has-outline {
+    box-shadow: inset 0 0 0 2px #000000; /* 内部黑色描边，无transition，瞬间生效 */
+  }
+}
+
+/* Accessibility focus-visible outline for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #0D5EFF !important;
+  outline-offset: 2px !important;
+}
+
+/* Section Title Scroll Reveal (Bidirectional and slow) */
+.section-title.scroll-reveal-heading .char {
+  color: #D9D9D9 !important;
+  transition: color 0.7s ease !important; /* Slow down transition */
+  display: inline-block;
+}
+
+.section-title.scroll-reveal-heading .char.is-revealed {
+  color: #1A1A1A !important;
+}
+
+/* Slogan Page Load Cascading Fade In */
+.hero-title {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap; /* Prevent line wrapping */
+}
+
+.hero-title .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroCharFadeIn 0.6s ease forwards;
+}
+
+.hero-title .char.char-blue  { color: #0D5EFF !important; }
+.hero-title .char.char-black { color: #1A1A1A !important; }
+
+@keyframes heroCharFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive typography for Hero Title to ensure it stays in single-line without overflow */
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 1.1rem !important;
+    letter-spacing: 0.04em !important;
+  }
+}
+@media (min-width: 381px) and (max-width: 480px) {
+  .hero-title {
+    font-size: 1.35rem !important;
+    letter-spacing: 0.05em !important;
+  }
+}
+@media (min-width: 481px) and (max-width: 640px) {
+  .hero-title {
+    font-size: 1.8rem !important;
+  }
+}
+@media (min-width: 641px) and (max-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem !important;
+  }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero-title {
+    font-size: 3rem !important;
+  }
+}
+@media (min-width: 1025px) {
+  .hero-title {
+    font-size: 4.5rem !important;
+  }
+}
+
+/* Fixed Header scroll effects and glassmorphism */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #FFFFFF;
+  transition: transform 0.35s ease, background-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+}
+
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+
+.site-header.is-glass {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Ensure child elements don't block glass transparent effects when glass is active */
+.site-header.is-glass .bg-neutral-50\/50,
+.site-header.is-glass .bg-white\/95,
+.site-header.is-glass header {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body {
+  padding-top: var(--header-height, 120px) !important;
+}
+
+
+
+.hero-inner,
+.services-inner,
+.cases-inner,
+.news-inner,
+.cta-inner,
+.footer-inner {
+  position: relative;
+  z-index: 2;
+}
+
+/* --- CASE STUDIES PRESENTATION STYLE 2 --- */
+.case-card-v2 {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+.case-card-v2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(0%) brightness(1);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+/* 网格容器：6个卡片，3列×2行 */
+.case-grid-v2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .case-grid-v2 {
+    grid-template-columns: repeat(2, 1fr); /* 平板：2列×3行 */
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .case-grid-v2 {
+    grid-template-columns: 1fr; /* 手机：单列 */
+    gap: 16px;
+  }
+}
+.case-card-v2:hover img,
+.case-card-v2.is-active img {
+  filter: grayscale(100%) brightness(0.55);
+  transform: scale(1.05);
+}
+.case-summary-v2 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 顶部标签和底部文字块分别贴近上下两端 */
+  padding: 24px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none; /* 浮层本身不拦截点击，点击行为落在卡片/链接上 */
+  background: rgba(0, 0, 0, 0.45); /* Subtle overlay for contrast */
+}
+.case-card-v2:hover .case-summary-v2,
+.case-card-v2.is-active .case-summary-v2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+.case-brand-label {
+  font-size: 19.2px;
+  font-weight: 600;
+  color: #FFFFFF;
+  text-align: left;
+}
+.case-divider {
+  font-size: 21.6px;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+  line-height: 1;
+  text-align: left;
+}
+.case-title {
+  font-size: 26.4px;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  text-align: left;
+}
+.case-desc {
+  font-size: 15.6px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  text-align: left;
+}
+
+.case-detail-arrow {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  font-size: 16px;
+  text-decoration: none;
+  pointer-events: auto; /* 确保箭头本身可以正常点击，不受浮层pointer-events:none影响 */
+  transition: background 0.3s ease;
+  z-index: 30;
+}
+.case-detail-arrow:hover {
+  background: #0D5EFF;
+}
+
+
