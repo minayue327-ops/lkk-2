@@ -121,48 +121,58 @@ export default function App() {
     }
   };
 
-  const getCaseImage = (logoType: string | undefined): string => {
+  const getCaseLocalImage = (logoType?: string): string | null => {
     switch (logoType) {
+      case 'haidilao':
+        return '/src/assets/images/case_haidilao.jpg';
+      case 'sizherui':
+        return '/src/assets/images/case_sizherui.jpg';
+      case 'hit':
+        return '/src/assets/images/case_hit.jpg';
+      case 'yuexianhuo':
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.38.png';
       case 'pophie':
         return '/src/assets/images/case_pophie.jpg';
       case 'jingkelong':
         return '/src/assets/images/case_jingkelong.jpg';
       case 'cotti':
         return '/src/assets/images/lkk_coffee_mockup_1783302972120.jpg';
-      case 'xiaoxiandun':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png';
-      case 'haidilao':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.35.png';
-      case 'sizherui':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.36.png';
-      case 'estun':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.8.png';
-      case 'hit':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png';
-      case 'yuexianhuo':
-        return 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.9/windowsdesktop-runtime-10.0.9-win-x64.exe';
       default:
-        return '/src/assets/images/case_pophie.jpg';
+        return null;
     }
   };
 
-  const getCaseV2Image = (id: string): string => {
+  const getCaseV2LocalImage = (id: string): string | null => {
     switch (id) {
       case 'case-v2-1':
-        return 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.9/windowsdesktop-runtime-10.0.9-win-x64.exe';
-      case 'case-v2-2':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/liangpinpuzi4.png';
-      case 'case-v2-3':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/gugongmao9.png';
-      case 'case-v2-4':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/xiaozhi6.png';
+        return '/src/assets/images/case_yuexianhuo.jpg';
       case 'case-v2-5':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui5.png';
-      case 'case-v2-6':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/aisidun7.jpg';
+        return '/src/assets/images/case_sizherui.jpg';
       default:
-        return 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.9/windowsdesktop-runtime-10.0.9-win-x64.exe';
+        return null;
     }
+  };
+
+  const getCasePlaceholderColor = (logoType?: string): string => {
+    if (['jingkelong', 'cotti', 'haidilao', 'pophie'].includes(logoType || '')) {
+      return '#E8F0FF';
+    }
+    return '#F5F5F5';
+  };
+
+  const getCaseV2PlaceholderColor = (id: string): string => {
+    if (['case-v2-2', 'case-v2-3'].includes(id)) {
+      return '#E8F0FF';
+    }
+    return '#F5F5F5';
+  };
+
+  const getCaseImage = (logoType: string | undefined): string => {
+    return getCaseLocalImage(logoType) || '';
+  };
+
+  const getCaseV2Image = (id: string): string => {
+    return getCaseV2LocalImage(id) || '';
   };
 
   const getCaseShortTitle = (id: string, fullTitle: string): string => {
@@ -821,7 +831,7 @@ export default function App() {
 
       {/* 3. HERO / BIG TITLE SECTION */}
       <section id="hero-section" className="hero-section px-[0.8px] md:px-[1.6px] py-12 md:py-20 text-center bg-radial from-neutral-50 to-white relative">
-        <div className="max-w-4xl mx-auto hero-inner">
+        <div className="hero-slogan-block max-w-4xl mx-auto hero-inner">
           <div className="flex items-center justify-center gap-3 mb-6">
             <span className="h-[1px] w-8 bg-[#0D5EFF]"></span>
             <span className="text-[12px] tracking-[0.3em] font-bold text-[#0D5EFF] font-mono">22 YEARS OF DESIGN EXCELLENCE</span>
@@ -1001,7 +1011,7 @@ export default function App() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-5 flex flex-col justify-between bg-neutral-50/50 rounded-3xl p-5 md:p-6 lg:p-7 border border-neutral-100 h-full"
+            className="hero-category-grid lg:col-span-5 flex flex-col justify-between rounded-3xl p-5 md:p-6 lg:p-7 border border-neutral-100 h-full"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 lg:gap-y-2 flex-1">
               {SERVICE_CATEGORIES.map((cat, index) => (
@@ -1142,15 +1152,15 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence mode="popLayout">
               {filteredCases.map((cs) => (
-                <motion.div 
+                <motion.a 
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
                   key={cs.id}
-                  onClick={() => setSelectedCase(cs)}
-                  className="group bg-white rounded-2xl border border-neutral-200/50 cursor-pointer shadow-sm hover:shadow-xl relative h-[460px] transition-all duration-400 ease-out flex flex-col justify-start overflow-visible"
+                  href={`/cases/${cs.id}`}
+                  className="group bg-white rounded-2xl border border-neutral-200/50 cursor-pointer shadow-sm hover:shadow-xl relative h-[460px] transition-all duration-400 ease-out flex flex-col justify-start overflow-visible block"
                 >
                   {/* High fidelity Graphic Illustration Representing Case Logo/Photo */}
                   {/* 相框层 & 主体图 容器：无 overflow-hidden，部分带有柔和品牌色渐变底色，允许内容探出边界 */}
@@ -1214,60 +1224,21 @@ export default function App() {
                       </div>
                     )}
 
-                    {cs.logoType === 'xiaoxiandun' && (
-                      <img 
-                        src="https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png" 
-                        alt="小仙炖鲜炖燕窝包装创新咨询设计" 
-                        referrerPolicy="no-referrer"
-                        loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover rounded-t-2xl transition-all duration-500 ease-out drop-shadow-md group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)] group-hover:scale-140 group-hover:-translate-y-8"
-                      />
+                    {['xiaoxiandun', 'estun'].includes(cs.logoType || '') && (
+                      <div 
+                        style={{ backgroundColor: getCasePlaceholderColor(cs.logoType) }}
+                        className="absolute inset-0 w-full h-full rounded-t-2xl flex items-center justify-center p-4 transition-all duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-4"
+                      >
+                        <span className="text-xs font-bold text-neutral-400 select-none">
+                          {getCaseShortTitle(cs.id, cs.title)}（待替换）
+                        </span>
+                      </div>
                     )}
 
-                    {cs.logoType === 'haidilao' && (
+                    {['haidilao', 'sizherui', 'hit', 'yuexianhuo'].includes(cs.logoType || '') && (
                       <img 
-                        src="https://github.com/minaxyue-ops/MINA/releases/download/1/image.35.png" 
-                        alt="海底捞火锅" 
-                        referrerPolicy="no-referrer"
-                        loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover rounded-t-2xl transition-all duration-500 ease-out drop-shadow-md group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)] group-hover:scale-140 group-hover:-translate-y-8"
-                      />
-                    )}
-
-                    {cs.logoType === 'sizherui' && (
-                      <img 
-                        src="https://github.com/minaxyue-ops/MINA/releases/download/1/image.36.png" 
-                        alt="思哲睿康多多手术臂" 
-                        referrerPolicy="no-referrer"
-                        loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover rounded-t-2xl transition-all duration-500 ease-out drop-shadow-md group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)] group-hover:scale-140 group-hover:-translate-y-8"
-                      />
-                    )}
-
-                    {cs.logoType === 'estun' && (
-                      <img 
-                        src="https://github.com/minaxyue-ops/MINA/releases/download/1/image.8.png" 
-                        alt="埃斯顿人形机器人产品创新咨询设计" 
-                        referrerPolicy="no-referrer"
-                        loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover rounded-t-2xl transition-all duration-500 ease-out drop-shadow-md group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)] group-hover:scale-140 group-hover:-translate-y-8"
-                      />
-                    )}
-
-                    {cs.logoType === 'hit' && (
-                      <img 
-                        src="https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png" 
-                        alt="哈工大机器人" 
-                        referrerPolicy="no-referrer"
-                        loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover rounded-t-2xl transition-all duration-500 ease-out drop-shadow-md group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)] group-hover:scale-140 group-hover:-translate-y-8"
-                      />
-                    )}
-
-                    {cs.logoType === 'yuexianhuo' && (
-                      <img 
-                        src="https://github.com/minaxyue-ops/MINA/releases/download/1/image.38.png" 
-                        alt="悦鲜活鲜牛奶" 
+                        src={getCaseLocalImage(cs.logoType) || ''} 
+                        alt={cs.title} 
                         referrerPolicy="no-referrer"
                         loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover rounded-t-2xl transition-all duration-500 ease-out drop-shadow-md group-hover:drop-shadow-[0_25px_35px_rgba(0,0,0,0.25)] group-hover:scale-140 group-hover:-translate-y-8"
@@ -1289,12 +1260,28 @@ export default function App() {
                     </div>
 
                     {/* Card footer */}
-                    <div className="flex items-center justify-between text-neutral-400 group-hover:text-[#0D5EFF] transition-colors duration-400 pt-4 border-t border-neutral-100">
+                    <div 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedCase(cs);
+                      }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setSelectedCase(cs);
+                        }
+                      }}
+                      className="flex items-center justify-between text-neutral-400 hover:text-[#0D5EFF] group-hover:text-[#0D5EFF] transition-colors duration-400 pt-4 border-t border-neutral-100 cursor-pointer focus:outline-none"
+                    >
                       <span className="text-xs font-medium">查看案例战略简介</span>
                       <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-400" />
                     </div>
                   </div>
-                </motion.div>
+                </motion.a>
               ))}
             </AnimatePresence>
 
@@ -1331,48 +1318,70 @@ export default function App() {
             {filteredCasesV2.map((cs) => {
               const v2Data = getCaseV2Data(cs);
               return (
-                <div 
+                <a 
                   key={cs.id}
-                  onClick={(e) => handleV2CardClick(e, cs.id, cs)}
+                  href={`/cases/${cs.id}`}
+                  onClick={(e) => {
+                    const isTouch = window.matchMedia('(hover: none)').matches;
+                    if (isTouch) {
+                      e.preventDefault(); // Stop navigation on touch devices to allow hover effect
+                      const wasActive = activeV2Card === cs.id;
+                      if (wasActive) {
+                        setActiveV2Card(null);
+                      } else {
+                        setActiveV2Card(cs.id);
+                      }
+                    }
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      handleV2CardClick(e as any, cs.id, cs);
+                      window.location.href = `/cases/${cs.id}`;
                     }
                   }}
                   tabIndex={0}
-                  role="button"
                   aria-label={`${cs.title} 案例详情`}
-                  className={`case-card-v2 ${activeV2Card === cs.id ? 'is-active' : ''}`}
+                  className={`case-card-v2 ${activeV2Card === cs.id ? 'is-active' : ''} block`}
                 >
-                  <img 
-                    src={getCaseV2Image(cs.id)} 
-                    alt={cs.title} 
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                  />
+                  {getCaseV2LocalImage(cs.id) ? (
+                    <img 
+                      src={getCaseV2LocalImage(cs.id) || ''} 
+                      alt={cs.title} 
+                      referrerPolicy="no-referrer"
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div 
+                      style={{ backgroundColor: getCaseV2PlaceholderColor(cs.id) }}
+                      className="w-full h-full flex items-center justify-center p-4"
+                    >
+                      <span className="text-xs font-bold text-neutral-400 select-none text-center">
+                        {v2Data.brand}（待替换）
+                      </span>
+                    </div>
+                  )}
                   <div className="case-summary-v2">
                     <div className="case-brand-label">{v2Data.brand}</div>
-                    <a 
+                    <button 
+                      type="button"
                       className="case-detail-arrow" 
-                      href="#" 
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         setSelectedCase(cs);
                       }} 
-                      aria-label="查看案例战略简介"
+                      aria-label="查看案例简介"
                     >
-                      ↗
-                    </a>
+                      <span>案例简介</span><span>↗</span>
+                    </button>
                     <div className="case-bottom-block">
                       <div className="case-divider">-</div>
                       <div className="case-title">{v2Data.title}</div>
                       <div className="case-desc">{v2Data.desc}</div>
                     </div>
                   </div>
-                </div>
+                </a>
               );
             })}
 
@@ -1686,7 +1695,7 @@ export default function App() {
                 <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 scale-0 group-hover/social:scale-100 transition-all duration-200 origin-bottom bg-neutral-850 p-2 rounded-lg border border-neutral-700 shadow-2xl z-20 w-28">
                   <div className="w-24 h-24 bg-white rounded-lg p-1 flex items-center justify-center overflow-hidden">
                     <img 
-                      src="https://github.com/minaxyue-ops/MINA/releases/download/1/3.png" 
+                      src="/src/assets/images/lkk_wechat_qr.png" 
                       alt="洛可可官方企业微信" 
                       className="w-full h-full object-contain"
                     />
@@ -1862,19 +1871,41 @@ export default function App() {
                 <div className="absolute inset-0 opacity-[0.03] bg-radial from-neutral-950 to-transparent pointer-events-none"></div>
 
                 {selectedCase.id.startsWith('case-v2-') ? (
-                  <img 
-                    src={getCaseV2Image(selectedCase.id)} 
-                    alt={selectedCase.title}
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
+                  getCaseV2LocalImage(selectedCase.id) ? (
+                    <img 
+                      src={getCaseV2LocalImage(selectedCase.id) || ''} 
+                      alt={selectedCase.title}
+                      referrerPolicy="no-referrer"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div 
+                      style={{ backgroundColor: getCaseV2PlaceholderColor(selectedCase.id) }}
+                      className="absolute inset-0 w-full h-full flex items-center justify-center p-4"
+                    >
+                      <span className="text-sm font-bold text-neutral-400 select-none">
+                        {getCaseV2Data(selectedCase).brand}（待替换）
+                      </span>
+                    </div>
+                  )
                 ) : ['xiaoxiandun', 'estun', 'haidilao', 'sizherui', 'hit', 'yuexianhuo'].includes(selectedCase.logoType || '') ? (
-                  <img 
-                    src={getCaseImage(selectedCase.logoType)} 
-                    alt={selectedCase.title}
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
+                  getCaseLocalImage(selectedCase.logoType) ? (
+                    <img 
+                      src={getCaseLocalImage(selectedCase.logoType) || ''} 
+                      alt={selectedCase.title}
+                      referrerPolicy="no-referrer"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div 
+                      style={{ backgroundColor: getCasePlaceholderColor(selectedCase.logoType) }}
+                      className="absolute inset-0 w-full h-full flex items-center justify-center p-4"
+                    >
+                      <span className="text-sm font-bold text-neutral-400 select-none">
+                        {getCaseShortTitle(selectedCase.id, selectedCase.title)}（待替换）
+                      </span>
+                    </div>
+                  )
                 ) : (
                   <div className="scale-125">
                     {selectedCase.logoType === 'pophie' && (

@@ -9,7 +9,7 @@ export default function LKKLogo({ className = '', isLight = false }: LKKLogoProp
   return (
     <div id="lkk-logo" className={`flex items-center select-none ${className}`}>
       <img 
-        src="https://github.com/minaxyue-ops/MINA/releases/download/1/2.png" 
+        src="/src/assets/images/lkk_logo.png" 
         alt="LKK 洛可可" 
         className={`h-10 w-auto object-contain ${isLight ? 'brightness-0 invert' : ''}`}
       />

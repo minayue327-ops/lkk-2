@@ -272,15 +272,18 @@ body {
   position: absolute;
   top: 16px;
   right: 16px;
-  width: 32px;
+  width: auto;
   height: 32px;
-  display: flex;
+  padding: 0 14px;
+  border-radius: 16px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  gap: 4px;
+  font-size: 13px;
   color: #FFFFFF;
-  font-size: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
   text-decoration: none;
   pointer-events: auto; /* 确保箭头本身可以正常点击，不受浮层pointer-events:none影响 */
   transition: background 0.3s ease;
@@ -288,6 +291,76 @@ body {
 }
 .case-detail-arrow:hover {
   background: #0D5EFF;
+}
+
+/* Style 1 Case Card Badge */
+.case-badge-v1 {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: auto;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #FFFFFF;
+  background: rgba(26, 26, 26, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
+  text-decoration: none;
+  pointer-events: auto;
+  transition: background 0.3s ease, transform 0.2s ease;
+  z-index: 30;
+  cursor: pointer;
+}
+.case-badge-v1:hover {
+  background: #0D5EFF;
+  transform: translateY(-1px);
+}
+
+/* Industry Matrix Section Background & Dynamic Glow */
+.hero-category-grid {
+  position: relative;
+  background: linear-gradient(135deg, #F0F5FF 0%, #E8F0FF 50%, #F7FAFF 100%);
+  overflow: hidden;
+}
+.hero-category-grid::before {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(13, 94, 255, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  top: -120px;
+  right: -100px;
+  z-index: 0;
+  pointer-events: none;
+  animation: glowFloat 10s ease-in-out infinite;
+}
+@keyframes glowFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 40px) scale(1.15); }
+}
+/* Ensure text and interactive contents stay above the glow */
+.hero-category-grid > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero Slogan Centering */
+.hero-slogan-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto !important;
 }
 
 
