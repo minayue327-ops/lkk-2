@@ -58,37 +58,7 @@ body {
   background: #a3a3a3;
 }
 
-/* Custom Cursor styling */
-#cursor-dot {
-  display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  html, body {
-    cursor: none;
-  }
-  *, a, button, input, textarea, select, [role="button"], .service-card, .case-card, .news-card, .pagination-arrow, [class*="card"] {
-    cursor: none !important;
-  }
-
-  #cursor-dot {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #0D5EFF;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 10000;
-    box-shadow: none; /* 默认无描边 */
-  }
-  #cursor-dot.has-outline {
-    box-shadow: inset 0 0 0 2px #000000; /* 内部黑色描边，无transition，瞬间生效 */
-  }
-}
+/* Custom Cursor styling removed to restore default browser cursor */
 
 /* Accessibility focus-visible outline for keyboard navigation */
 *:focus-visible {
