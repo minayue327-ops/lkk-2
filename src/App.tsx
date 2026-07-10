@@ -29,16 +29,16 @@ import {
 
 const CASE_STUDIES_V2: CaseStudy[] = [
   {
-    id: 'case-v2-1',
-    title: '悦鲜活年轻化产品包装创新咨询设计',
-    description: '打造差异化视觉识别，助力新品牌抢占年轻消费市场',
-    logoType: 'yuexianhuo'
-  },
-  {
     id: 'case-v2-2',
     title: '良品铺子产品包装创新咨询设计',
     description: '从线下走到线上的零食新零售',
     logoType: 'jingkelong'
+  },
+  {
+    id: 'case-v2-1',
+    title: '悦鲜活年轻化产品包装创新咨询设计',
+    description: '打造差异化视觉识别，助力新品牌抢占年轻消费市场',
+    logoType: 'yuexianhuo'
   },
   {
     id: 'case-v2-3',
@@ -53,16 +53,16 @@ const CASE_STUDIES_V2: CaseStudy[] = [
     logoType: 'cotti'
   },
   {
-    id: 'case-v2-5',
-    title: '思哲睿康多手术机器人产品创新咨询设计',
-    description: '集工业设计美学、临床需求、卓越稳定性能于一体',
-    logoType: 'sizherui'
-  },
-  {
     id: 'case-v2-6',
     title: '埃斯顿ED3S系列伺服驱动器产品创新咨询设计',
     description: '全面赋能工业自动化运动控制领域升级',
     logoType: 'estun'
+  },
+  {
+    id: 'case-v2-5',
+    title: '思哲睿康多手术机器人产品创新咨询设计',
+    description: '集工业设计美学、临床需求、卓越稳定性能于一体',
+    logoType: 'sizherui'
   }
 ];
 
@@ -123,12 +123,16 @@ export default function App() {
 
   const getCaseLocalImage = (logoType?: string): string | null => {
     switch (logoType) {
+      case 'xiaoxiandun':
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png';
       case 'haidilao':
-        return '/src/assets/images/case_haidilao.jpg';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.35.png';
       case 'sizherui':
-        return '/src/assets/images/case_sizherui.jpg';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.36.png';
+      case 'estun':
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.39.png';
       case 'hit':
-        return '/src/assets/images/case_hit.jpg';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png';
       case 'yuexianhuo':
         return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.38.png';
       case 'pophie':
@@ -145,9 +149,17 @@ export default function App() {
   const getCaseV2LocalImage = (id: string): string | null => {
     switch (id) {
       case 'case-v2-1':
-        return '/src/assets/images/case_yuexianhuo.jpg';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.9.2.gif';
+      case 'case-v2-2':
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/liangpin.png';
+      case 'case-v2-3':
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/gugongmao.png';
+      case 'case-v2-4':
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/xiaozhi.png';
       case 'case-v2-5':
-        return '/src/assets/images/case_sizherui.jpg';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui.png';
+      case 'case-v2-6':
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/Group.10.png';
       default:
         return null;
     }
@@ -1224,18 +1236,7 @@ export default function App() {
                       </div>
                     )}
 
-                    {['xiaoxiandun', 'estun'].includes(cs.logoType || '') && (
-                      <div 
-                        style={{ backgroundColor: getCasePlaceholderColor(cs.logoType) }}
-                        className="absolute inset-0 w-full h-full rounded-t-2xl flex items-center justify-center p-4 transition-all duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-4"
-                      >
-                        <span className="text-xs font-bold text-neutral-400 select-none">
-                          {getCaseShortTitle(cs.id, cs.title)}（待替换）
-                        </span>
-                      </div>
-                    )}
-
-                    {['haidilao', 'sizherui', 'hit', 'yuexianhuo'].includes(cs.logoType || '') && (
+                    {['xiaoxiandun', 'estun', 'haidilao', 'sizherui', 'hit', 'yuexianhuo'].includes(cs.logoType || '') && (
                       <img 
                         src={getCaseLocalImage(cs.logoType) || ''} 
                         alt={cs.title} 
@@ -1695,7 +1696,7 @@ export default function App() {
                 <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 scale-0 group-hover/social:scale-100 transition-all duration-200 origin-bottom bg-neutral-850 p-2 rounded-lg border border-neutral-700 shadow-2xl z-20 w-28">
                   <div className="w-24 h-24 bg-white rounded-lg p-1 flex items-center justify-center overflow-hidden">
                     <img 
-                      src="/src/assets/images/lkk_wechat_qr.png" 
+                      src="https://github.com/minaxyue-ops/MINA/releases/download/1/3.png" 
                       alt="洛可可官方企业微信" 
                       className="w-full h-full object-contain"
                     />
