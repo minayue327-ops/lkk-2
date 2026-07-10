@@ -151,15 +151,15 @@ export default function App() {
       case 'case-v2-1':
         return 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.9.2.gif';
       case 'case-v2-2':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/liangpin.png';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/liangpin.jpg';
       case 'case-v2-3':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/gugongmao.png';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/gugong.jpg';
       case 'case-v2-4':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/xiaozhi.png';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/xiaozhi.jpg';
       case 'case-v2-5':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui.png';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui.jpg';
       case 'case-v2-6':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/Group.10.png';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/aisidun.jpg';
       default:
         return null;
     }
@@ -167,14 +167,14 @@ export default function App() {
 
   const getCasePlaceholderColor = (logoType?: string): string => {
     if (['jingkelong', 'cotti', 'haidilao', 'pophie'].includes(logoType || '')) {
-      return '#E8F0FF';
+      return '#E5F2FA';
     }
     return '#F5F5F5';
   };
 
   const getCaseV2PlaceholderColor = (id: string): string => {
     if (['case-v2-2', 'case-v2-3'].includes(id)) {
-      return '#E8F0FF';
+      return '#E5F2FA';
     }
     return '#F5F5F5';
   };
@@ -513,7 +513,7 @@ export default function App() {
     : CASE_STUDIES_V2;
 
   return (
-    <div className="relative min-h-screen bg-white text-neutral-800 selection:bg-[#0D5EFF] selection:text-white font-sans overflow-x-hidden">
+    <div className="relative min-h-screen bg-white text-neutral-800 selection:bg-[#007BC7] selection:text-white font-sans overflow-x-hidden">
       
       {/* SITE HEADER WRAPPER */}
       <div className="site-header">
@@ -522,20 +522,20 @@ export default function App() {
         <div className="max-w-[95%] w-full mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           {/* Left Links */}
           <div className="flex items-center gap-4 flex-wrap justify-center">
-            <span className="flex items-center gap-1 text-neutral-600 hover:text-[#0D5EFF] cursor-pointer transition-colors">
+            <span className="flex items-center gap-1 text-neutral-600 hover:text-[#005F96] cursor-pointer transition-colors">
               <Globe className="w-3.5 h-3.5" />
               China (简体中文)
             </span>
             <span className="h-3 w-px bg-neutral-200"></span>
-            <span className="hover:text-[#0D5EFF] cursor-pointer transition-colors">全国办事处</span>
+            <span className="hover:text-[#005F96] cursor-pointer transition-colors">全国办事处</span>
             <span className="h-3 w-px bg-neutral-200"></span>
-            <span className="hover:text-[#0D5EFF] cursor-pointer transition-colors">新闻中心</span>
+            <span className="hover:text-[#005F96] cursor-pointer transition-colors">新闻中心</span>
             <span className="h-3 w-px bg-neutral-200"></span>
-            <span className="hover:text-[#0D5EFF] cursor-pointer transition-colors">加入我们</span>
+            <span className="hover:text-[#005F96] cursor-pointer transition-colors">加入我们</span>
           </div>
           {/* Right Phone number */}
           <div className="flex items-center gap-1.5 font-medium tracking-wider text-neutral-700">
-            <Phone className="w-[18.2px] h-[18.2px] text-[#0D5EFF] animate-pulse" />
+            <Phone className="w-[18.2px] h-[18.2px] text-[#007BC7] animate-pulse" />
             <span className="text-[15.6px]">咨询热线：</span>
             <span className="text-[18.2px] font-semibold text-neutral-900 font-display">400-062-3130</span>
           </div>
@@ -558,9 +558,9 @@ export default function App() {
               onMouseEnter={() => setActiveMenu('品类创新咨询')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#0D5EFF] transition-colors py-2">
+              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2">
                 品类创新咨询
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '品类创新咨询' ? 'rotate-180 text-[#0D5EFF]' : 'text-neutral-400'}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '品类创新咨询' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
               </button>
               
               {/* Dropdown Menu */}
@@ -577,29 +577,29 @@ export default function App() {
                     <div className="grid grid-cols-3 gap-4">
                       <a href="#professional-services" className="group/item flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors">
                         <div>
-                          <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#0D5EFF] transition-colors">三品合一品类创新咨询</div>
+                          <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#007BC7] transition-colors">三品合一品类创新咨询</div>
                           <div className="text-xs text-neutral-500 mt-1">重构战略定位与市场品类</div>
                         </div>
                         <div className="flex items-center justify-end mt-2">
-                          <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#0D5EFF] group-hover/item:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#007BC7] group-hover/item:translate-x-1 transition-all" />
                         </div>
                       </a>
                       <a href="#professional-services" className="group/item flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors">
                         <div>
-                          <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#0D5EFF] transition-colors">产品创新0-1全案咨询</div>
+                          <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#007BC7] transition-colors">产品创新0-1全案咨询</div>
                           <div className="text-xs text-neutral-500 mt-1">从用户洞察到爆品定义</div>
                         </div>
                         <div className="flex items-center justify-end mt-2">
-                          <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#0D5EFF] group-hover/item:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#007BC7] group-hover/item:translate-x-1 transition-all" />
                         </div>
                       </a>
                       <a href="#professional-services" className="group/item flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors">
                         <div>
-                          <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#0D5EFF] transition-colors">品牌创新0-1全案咨询</div>
+                          <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#007BC7] transition-colors">品牌创新0-1全案咨询</div>
                           <div className="text-xs text-neutral-500 mt-1">构建差异化战略与视觉IP</div>
                         </div>
                         <div className="flex items-center justify-end mt-2">
-                          <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#0D5EFF] group-hover/item:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#007BC7] group-hover/item:translate-x-1 transition-all" />
                         </div>
                       </a>
                     </div>
@@ -613,9 +613,9 @@ export default function App() {
               onMouseEnter={() => setActiveMenu('品牌与产品设计')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#0D5EFF] transition-colors py-2">
+              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2">
                 品牌&产品设计
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '品牌与产品设计' ? 'rotate-180 text-[#0D5EFF]' : 'text-neutral-400'}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '品牌与产品设计' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
               </button>
 
               <AnimatePresence>
@@ -629,23 +629,23 @@ export default function App() {
                   >
                     {/* Left Column: 产品创新 */}
                     <div className="flex flex-col">
-                      <div className="text-xs font-bold uppercase tracking-wider text-[#0D5EFF] border-b border-neutral-100 pb-2 mb-3">产品创新</div>
+                      <div className="text-xs font-bold uppercase tracking-wider text-[#007BC7] border-b border-neutral-100 pb-2 mb-3">产品创新</div>
                       <div className="flex flex-col divide-y divide-neutral-100">
-                        <a href="#professional-services" className="py-2.5 hover:text-[#0D5EFF] text-sm text-neutral-700 transition-colors font-medium">工业设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#0D5EFF] text-sm text-neutral-700 transition-colors font-medium">结构设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#0D5EFF] text-sm text-neutral-700 transition-colors font-medium">生产落地</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#0D5EFF] text-sm text-neutral-700 transition-colors font-medium">交互设计</a>
+                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">工业设计</a>
+                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">结构设计</a>
+                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">生产落地</a>
+                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">交互设计</a>
                       </div>
                     </div>
 
                     {/* Right Column: 品牌创新 */}
                     <div className="flex flex-col">
-                      <div className="text-xs font-bold uppercase tracking-wider text-[#0D5EFF] border-b border-neutral-100 pb-2 mb-3">品牌创新</div>
+                      <div className="text-xs font-bold uppercase tracking-wider text-[#007BC7] border-b border-neutral-100 pb-2 mb-3">品牌创新</div>
                       <div className="flex flex-col divide-y divide-neutral-100">
-                        <a href="#professional-services" className="py-2.5 hover:text-[#0D5EFF] text-sm text-neutral-700 transition-colors font-medium">品牌全案设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#0D5EFF] text-sm text-neutral-700 transition-colors font-medium">包装设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#0D5EFF] text-sm text-neutral-700 transition-colors font-medium">IP设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#0D5EFF] text-sm text-neutral-700 transition-colors font-medium">商业空间设计</a>
+                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">品牌全案设计</a>
+                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">包装设计</a>
+                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">IP设计</a>
+                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">商业空间设计</a>
                       </div>
                     </div>
                   </motion.div>
@@ -658,9 +658,9 @@ export default function App() {
               onMouseEnter={() => setActiveMenu('行业')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#0D5EFF] transition-colors py-2">
+              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2">
                 行业
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '行业' ? 'rotate-180 text-[#0D5EFF]' : 'text-neutral-400'}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '行业' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
               </button>
 
               <AnimatePresence>
@@ -677,49 +677,49 @@ export default function App() {
                       {/* Column 1 */}
                       <div className="flex flex-col gap-2">
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">工业装备</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">工业装备</div>
                         </a>
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">智能3C</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">智能3C</div>
                         </a>
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">美妆个护</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">美妆个护</div>
                         </a>
                       </div>
                       {/* Column 2 */}
                       <div className="flex flex-col gap-2">
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">机器人</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">机器人</div>
                         </a>
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">医疗健康</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">医疗健康</div>
                         </a>
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">文化创意</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">文化创意</div>
                         </a>
                       </div>
                       {/* Column 3 */}
                       <div className="flex flex-col gap-2">
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">新能源</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">新能源</div>
                         </a>
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">食品酒饮</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">食品酒饮</div>
                         </a>
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">宠物经济</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">宠物经济</div>
                         </a>
                       </div>
                       {/* Column 4 */}
                       <div className="flex flex-col gap-2">
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">家居家电</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">家居家电</div>
                         </a>
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">连锁零售</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">连锁零售</div>
                         </a>
                         <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
-                          <div className="font-medium text-neutral-800 hover:text-[#0D5EFF] text-sm whitespace-nowrap">交通工具</div>
+                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">交通工具</div>
                         </a>
                       </div>
                     </div>
@@ -728,7 +728,7 @@ export default function App() {
               </AnimatePresence>
             </div>
 
-            <a href="#case-studies" className="text-[15px] font-medium text-neutral-700 hover:text-[#0D5EFF] transition-colors">
+            <a href="#case-studies" className="text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors">
               案例
             </a>
 
@@ -737,9 +737,9 @@ export default function App() {
               onMouseEnter={() => setActiveMenu('我们')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#0D5EFF] transition-colors py-2">
+              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2">
                 我们
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '我们' ? 'rotate-180 text-[#0D5EFF]' : 'text-neutral-400'}`} />
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '我们' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
               </button>
 
               <AnimatePresence>
@@ -751,10 +751,10 @@ export default function App() {
                     transition={{ duration: 0.2 }}
                     className="absolute right-0 top-full mt-1 w-[480px] bg-white border border-neutral-100 shadow-2xl rounded-2xl p-4 grid grid-cols-4 gap-2 z-50"
                   >
-                    <a href="#about-lkk" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#0D5EFF] transition-colors">关于我们</a>
-                    <button onClick={() => { setIsContactModalOpen(true); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#0D5EFF] transition-colors w-full">联系我们</button>
-                    <a href="#news-center" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#0D5EFF] transition-colors">新闻中心</a>
-                    <a href="#case-studies" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#0D5EFF] transition-colors">成功路径</a>
+                    <a href="#about-lkk" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">关于我们</a>
+                    <button onClick={() => { setIsContactModalOpen(true); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors w-full">联系我们</button>
+                    <a href="#news-center" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">新闻中心</a>
+                    <a href="#case-studies" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">成功路径</a>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -764,7 +764,7 @@ export default function App() {
           {/* Search Box & Mobile Menu Button */}
           <div className="flex items-center gap-4">
             {/* Search Input */}
-            <div className={`relative hidden md:flex items-center rounded-full border px-3.5 py-1.5 transition-all duration-300 ${isSearchFocused ? 'border-[#0D5EFF] ring-2 ring-blue-100 w-64' : 'border-neutral-200 w-48'}`}>
+            <div className={`relative hidden md:flex items-center rounded-full border px-3.5 py-1.5 transition-all duration-300 ${isSearchFocused ? 'border-[#007BC7] ring-2 ring-blue-100 w-64' : 'border-neutral-200 w-48'}`}>
               <Search className="w-4 h-4 text-neutral-400 mr-2 shrink-0" aria-hidden="true" />
               <input 
                 type="text" 
@@ -833,7 +833,7 @@ export default function App() {
                 setMobileMenuOpen(false);
                 setIsContactModalOpen(true);
               }} 
-              className="w-full bg-[#1a1a1a] text-white font-medium py-2.5 rounded-xl text-center shadow-lg hover:bg-[#0D5EFF] transition-all text-sm"
+              className="w-full bg-[#1a1a1a] text-white font-medium py-2.5 rounded-xl text-center shadow-lg hover:bg-[#007BC7] transition-all text-sm"
             >
               即刻获取创新设计方案
             </button>
@@ -845,8 +845,8 @@ export default function App() {
       <section id="hero-section" className="hero-section px-[0.8px] md:px-[1.6px] py-12 md:py-20 text-center bg-radial from-neutral-50 to-white relative">
         <div className="hero-slogan-block max-w-4xl mx-auto hero-inner">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <span className="h-[1px] w-8 bg-[#0D5EFF]"></span>
-            <span className="text-[12px] tracking-[0.3em] font-bold text-[#0D5EFF] font-mono">22 YEARS OF DESIGN EXCELLENCE</span>
+            <span className="h-[1px] w-8 bg-[#007BC7]"></span>
+            <span className="text-[12px] tracking-[0.3em] font-bold text-[#007BC7] font-mono">22 YEARS OF DESIGN EXCELLENCE</span>
           </div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -905,14 +905,14 @@ export default function App() {
               {/* Left Column: Content overlays */}
               <div className="flex flex-col justify-center w-full md:max-w-[58%] flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#0D5EFF] animate-pulse"></span>
-                  <span className="text-[clamp(11px,1.1vw,14px)] font-semibold uppercase tracking-widest text-[#0D5EFF] font-mono">Category Innovation</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#007BC7] animate-pulse"></span>
+                  <span className="text-[clamp(11px,1.1vw,14px)] font-semibold uppercase tracking-widest text-[#007BC7] font-mono">Category Innovation</span>
                 </div>
                 
                 <div className="mt-3 md:mt-6">
                   <h3 className="text-[clamp(24px,3.2vw,40px)] font-extrabold tracking-wide leading-[1.15] max-h-[3.6em] overflow-hidden line-clamp-3">
                     洛可可 <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0D5EFF] to-blue-400">未来五年的两件事</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007BC7] to-blue-400">未来五年的两件事</span>
                   </h3>
                   <p className="text-[clamp(11px,1vw,13.5px)] tracking-[0.2em] font-bold text-neutral-400 uppercase mt-1 md:mt-2 font-mono">
                     CREATE POPULAR PRODUCTS
@@ -922,14 +922,14 @@ export default function App() {
                 {/* Bottom highlights inside the same column */}
                 <div className="border-t border-white/15 pt-3 md:pt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-6 hidden sm:grid">
                   <div className="flex items-start gap-3 group/focus">
-                    <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#0D5EFF] tracking-tighter">01</span>
+                    <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#007BC7] tracking-tighter">01</span>
                     <div>
                       <h4 className="text-[clamp(13px,1.2vw,16px)] font-semibold tracking-wide text-white group-hover/focus:text-blue-350 transition-colors">聚焦垂直行业</h4>
                       <p className="text-[clamp(11px,1vw,13.5px)] text-neutral-400 mt-1 leading-relaxed line-clamp-2 md:line-clamp-none">深耕机器人、医疗健康、智能家电等支柱品类，提供精准洞察</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 group/focus">
-                    <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#0D5EFF] tracking-tighter">02</span>
+                    <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#007BC7] tracking-tighter">02</span>
                     <div>
                       <h4 className="text-[clamp(13px,1.2vw,16px)] font-semibold tracking-wide text-white group-hover/focus:text-blue-350 transition-colors">陪跑品类冠军</h4>
                       <p className="text-[clamp(11px,1vw,13.5px)] text-neutral-400 mt-1 leading-relaxed line-clamp-2 md:line-clamp-none">从研发设计、品牌构建到产业落地，全生命周期提供支持</p>
@@ -943,10 +943,10 @@ export default function App() {
                 <div className="relative w-full h-full">
                   
                   {/* SVG Lines & Glows in background */}
-                  <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full overflow-visible drop-shadow-[0_0_15px_rgba(13,94,255,0.3)]">
+                  <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full overflow-visible drop-shadow-[0_0_15px_rgba(0,123,199,0.3)]">
                     <defs>
                       <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#0D5EFF" stopOpacity="0.8" />
+                        <stop offset="0%" stopColor="#007BC7" stopOpacity="0.8" />
                         <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.8" />
                       </linearGradient>
                       <filter id="glow">
@@ -968,17 +968,17 @@ export default function App() {
                     />
 
                     {/* Inner glowing core */}
-                    <circle cx="100" cy="112" r="24" fill="rgba(13,94,255,0.15)" stroke="#0D5EFF" strokeWidth="1" />
-                    <circle cx="100" cy="112" r="6" fill="#0D5EFF" filter="url(#glow)" />
+                    <circle cx="100" cy="112" r="24" fill="rgba(0,123,199,0.15)" stroke="#007BC7" strokeWidth="1" />
+                    <circle cx="100" cy="112" r="6" fill="#007BC7" filter="url(#glow)" />
                     
                     {/* Vertex Circles */}
-                    <circle cx="100" cy="45" r="14" fill="#111" stroke="#0D5EFF" strokeWidth="1.5" />
+                    <circle cx="100" cy="45" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
                     <circle cx="100" cy="45" r="3" fill="#60A5FA" filter="url(#glow)" />
 
-                    <circle cx="45" cy="145" r="14" fill="#111" stroke="#0D5EFF" strokeWidth="1.5" />
+                    <circle cx="45" cy="145" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
                     <circle cx="45" cy="145" r="3" fill="#60A5FA" filter="url(#glow)" />
 
-                    <circle cx="155" cy="145" r="14" fill="#111" stroke="#0D5EFF" strokeWidth="1.5" />
+                    <circle cx="155" cy="145" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
                     <circle cx="155" cy="145" r="3" fill="#60A5FA" filter="url(#glow)" />
                   </svg>
 
@@ -1030,14 +1030,14 @@ export default function App() {
                 <motion.div 
                   key={cat.id}
                   whileHover={{ x: 4 }}
-                  className="group flex flex-col justify-center py-2 border-b border-neutral-200/70 hover:border-[#0D5EFF] transition-colors text-left"
+                  className="group flex flex-col justify-center py-2 border-b border-neutral-200/70 hover:border-[#005F96] transition-colors text-left"
                 >
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="text-base font-bold text-neutral-800 group-hover:text-[#0D5EFF] transition-colors">
+                      <span className="text-base font-bold text-neutral-800 group-hover:text-[#005F96] transition-colors">
                         {cat.name}
                       </span>
-                      <ArrowRight className="w-4 h-4 text-neutral-300 group-hover:text-[#0D5EFF] group-hover:translate-x-1.5 transition-all" />
+                      <ArrowRight className="w-4 h-4 text-neutral-300 group-hover:text-[#005F96] group-hover:translate-x-1.5 transition-all" />
                     </div>
                     <p className="text-xs text-neutral-500 mt-1 leading-relaxed pr-2">
                       {cat.description}
@@ -1053,7 +1053,7 @@ export default function App() {
               </span>
               <button 
                 onClick={() => setIsContactModalOpen(true)}
-                className="shrink-0 flex items-center gap-2 bg-[#1a1a1a] text-white hover:bg-[#0D5EFF] px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all"
+                className="shrink-0 flex items-center gap-2 bg-[#1a1a1a] text-white hover:bg-[#007BC7] px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all"
               >
                 立即对接垂直专家
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1070,7 +1070,7 @@ export default function App() {
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-              <span className="text-xs font-bold text-[#0D5EFF] uppercase tracking-widest font-mono">Expertise</span>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Expertise</span>
               <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
                 <span className="char char-black">专</span><span className="char char-black">业</span><span className="char char-black">服</span><span className="char char-black">务</span>
               </h2>
@@ -1107,13 +1107,13 @@ export default function App() {
                 {/* Content Details */}
                 <div className="p-8 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className="text-xl font-bold text-neutral-900 group-hover:text-[#0D5EFF] transition-colors mb-4">
+                    <h3 className="text-xl font-bold text-neutral-900 group-hover:text-[#005F96] transition-colors mb-4">
                       {service.title}
                     </h3>
                     <ul className="grid gap-2.5">
                       {service.bullets.map((bullet, index) => (
                         <li key={index} className="flex items-center gap-2 text-sm text-neutral-500">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#0D5EFF]"></span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]"></span>
                           {bullet}
                         </li>
                       ))}
@@ -1121,10 +1121,10 @@ export default function App() {
                   </div>
 
                   <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center justify-between">
-                    <span className="text-xs text-neutral-500 font-semibold uppercase tracking-wider group-hover:text-[#0D5EFF] transition-colors">
+                    <span className="text-xs text-neutral-500 font-semibold uppercase tracking-wider group-hover:text-[#005F96] transition-colors">
                       查看详情
                     </span>
-                    <div className="w-10 h-10 rounded-full bg-neutral-50 group-hover:bg-[#0D5EFF] flex items-center justify-center text-neutral-500 group-hover:text-white transition-all transform group-hover:rotate-45">
+                    <div className="w-10 h-10 rounded-full bg-neutral-50 group-hover:bg-[#005F96] flex items-center justify-center text-neutral-500 group-hover:text-white transition-all transform group-hover:rotate-45">
                       <ArrowRight className="w-4 h-4" />
                     </div>
                   </div>
@@ -1141,7 +1141,7 @@ export default function App() {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-              <span className="text-xs font-bold text-[#0D5EFF] uppercase tracking-widest font-mono">Portfolios</span>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Portfolios</span>
               <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
                 <span className="char char-black">成</span><span className="char char-black">功</span><span className="char char-black">案</span><span className="char char-black">例</span>
               </h2>
@@ -1151,7 +1151,7 @@ export default function App() {
             {searchQuery ? (
               <div className="text-xs text-neutral-500 mt-4 md:mt-0 flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full">
                 <span>找到含有 <strong className="text-blue-700">"{searchQuery}"</strong> 的案例 {filteredCases.length} 个</span>
-                <button onClick={() => setSearchQuery('')} className="font-bold text-[#0D5EFF] hover:underline">清除搜索</button>
+                <button onClick={() => setSearchQuery('')} className="font-bold text-[#007BC7] hover:underline">清除搜索</button>
               </div>
             ) : (
               <p className="text-sm text-neutral-500 max-w-sm mt-4 md:mt-0">
@@ -1250,7 +1250,7 @@ export default function App() {
                   {/* 文字层 */}
                   <div className="px-6 pb-6 pt-3 flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="text-base md:text-lg font-bold text-neutral-900 group-hover:text-[#0D5EFF] transition-colors duration-400 leading-snug">
+                      <h3 className="text-base md:text-lg font-bold text-neutral-900 group-hover:text-[#005F96] transition-colors duration-400 leading-snug">
                         {cs.title}
                       </h3>
                       <div className="pb-6">
@@ -1276,7 +1276,7 @@ export default function App() {
                           setSelectedCase(cs);
                         }
                       }}
-                      className="flex items-center justify-between text-neutral-400 hover:text-[#0D5EFF] group-hover:text-[#0D5EFF] transition-colors duration-400 pt-4 border-t border-neutral-100 cursor-pointer focus:outline-none"
+                      className="flex items-center justify-between text-neutral-400 hover:text-[#005F96] group-hover:text-[#005F96] transition-colors duration-400 pt-4 border-t border-neutral-100 cursor-pointer focus:outline-none"
                     >
                       <span className="text-xs font-medium">查看案例战略简介</span>
                       <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-400" />
@@ -1289,7 +1289,7 @@ export default function App() {
             {filteredCases.length === 0 && (
               <div className="col-span-full py-16 text-center border-2 border-dashed border-neutral-200 rounded-3xl">
                 <p className="text-neutral-400">无匹配案例，请尝试搜索其他关键字</p>
-                <button onClick={() => setSearchQuery('')} className="mt-2 text-sm text-[#0D5EFF] font-bold hover:underline">
+                <button onClick={() => setSearchQuery('')} className="mt-2 text-sm text-[#007BC7] font-bold hover:underline">
                   重置搜索
                 </button>
               </div>
@@ -1304,7 +1304,7 @@ export default function App() {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-              <span className="text-xs font-bold text-[#0D5EFF] uppercase tracking-widest font-mono">Portfolios - Style 2</span>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Portfolios - Style 2</span>
               <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
                 <span className="char char-black">成</span><span className="char char-black">功</span><span className="char char-black">案</span><span className="char char-black">例</span><span className="char char-black">呈</span><span className="char char-black">现</span><span className="char char-black">方</span><span className="char char-black">式</span><span className="char char-black">二</span>
               </h2>
@@ -1401,7 +1401,7 @@ export default function App() {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-              <span className="text-xs font-bold text-[#0D5EFF] uppercase tracking-widest font-mono">Company News</span>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Company News</span>
               <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
                 <span className="char char-black">新</span><span className="char char-black">闻</span><span className="char char-black">中</span><span className="char char-black">心</span>
               </h2>
@@ -1420,7 +1420,7 @@ export default function App() {
               </button>
               <button 
                 onClick={() => setNewsIndex((prev) => (prev + 1) % NEWS_ARTICLES.length)}
-                className="w-11 h-11 rounded-full bg-[#1a1a1a] hover:bg-[#0D5EFF] flex items-center justify-center text-white transition-all shadow-md active:scale-95"
+                className="w-11 h-11 rounded-full bg-[#1a1a1a] hover:bg-[#007BC7] flex items-center justify-center text-white transition-all shadow-md active:scale-95"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -1434,7 +1434,7 @@ export default function App() {
               return (
                 <motion.div 
                   key={article.id}
-                  className={`bg-white rounded-3xl overflow-hidden border transition-all duration-300 flex flex-col justify-between ${isActive ? 'border-[#0D5EFF] ring-2 ring-blue-50/50 shadow-xl' : 'border-neutral-200/60 shadow-sm opacity-90'}`}
+                  className={`bg-white rounded-3xl overflow-hidden border transition-all duration-300 flex flex-col justify-between ${isActive ? 'border-[#007BC7] ring-2 ring-blue-50/50 shadow-xl' : 'border-neutral-200/60 shadow-sm opacity-90'}`}
                 >
                   <div className="h-48 relative overflow-hidden bg-neutral-100">
                     <img 
@@ -1454,7 +1454,7 @@ export default function App() {
                       <span className="text-[11px] font-semibold text-neutral-400 font-mono">
                         {article.date}
                       </span>
-                      <h3 className="text-base font-bold text-neutral-800 mt-2 line-clamp-2 leading-snug group-hover:text-[#0D5EFF]">
+                      <h3 className="text-base font-bold text-neutral-800 mt-2 line-clamp-2 leading-snug group-hover:text-[#005F96]">
                         {article.title}
                       </h3>
                       <p className="text-xs text-neutral-500 mt-3 line-clamp-3 leading-relaxed">
@@ -1463,10 +1463,10 @@ export default function App() {
                     </div>
 
                     <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between text-xs font-semibold">
-                      <span className={isActive ? 'text-[#0D5EFF]' : 'text-neutral-400'}>
+                      <span className={isActive ? 'text-[#007BC7]' : 'text-neutral-400'}>
                         阅读资讯全文
                       </span>
-                      <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'text-[#0D5EFF] translate-x-1' : 'text-neutral-300'}`} />
+                      <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'text-[#007BC7] translate-x-1' : 'text-neutral-300'}`} />
                     </div>
                   </div>
                 </motion.div>
@@ -1475,7 +1475,7 @@ export default function App() {
           </div>
 
           <div className="mt-12 flex justify-start">
-            <a href="#" className="inline-flex items-center gap-2 text-sm font-semibold text-[#0D5EFF] hover:text-[#0D5EFF]/80 hover:underline">
+            <a href="#" className="inline-flex items-center gap-2 text-sm font-semibold text-[#007BC7] hover:text-[#005F96]/80 hover:underline">
               更多详情
               <ArrowRight className="w-4 h-4" />
             </a>
@@ -1489,7 +1489,7 @@ export default function App() {
         <div className="max-w-[95%] w-full mx-auto footer-inner">
           
           {/* Merged Consultation Area */}
-          <div className="bg-[#0D5EFF] rounded-3xl shadow-xl p-8 md:p-12 text-white mb-16 relative overflow-hidden">
+          <div className="bg-[#007BC7] rounded-3xl shadow-xl p-8 md:p-12 text-white mb-16 relative overflow-hidden">
             {/* Radial visual decor overlay */}
             <div className="absolute right-0 top-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
 
@@ -1529,7 +1529,7 @@ export default function App() {
                     className="bg-white/10 border border-white/20 rounded-2xl p-6 text-white"
                   >
                     <div className="flex items-center gap-3">
-                      <Check className="w-5 h-5 shrink-0 bg-white text-[#0D5EFF] rounded-full p-0.5" />
+                      <Check className="w-5 h-5 shrink-0 bg-white text-[#007BC7] rounded-full p-0.5" />
                       <span className="font-bold text-white text-sm">预约提交成功！</span>
                     </div>
                     <p className="text-xs mt-2 text-blue-100 leading-relaxed text-left">
@@ -1560,10 +1560,10 @@ export default function App() {
                     </div>
                     <button 
                       type="submit"
-                      className="w-full bg-white hover:bg-[#F0F0F0] text-[#0D5EFF] font-bold px-8 py-3.5 rounded-xl text-sm transition-all shadow-md shrink-0 flex items-center justify-center gap-2"
+                      className="w-full bg-white hover:bg-[#F0F0F0] text-[#007BC7] font-bold px-8 py-3.5 rounded-xl text-sm transition-all shadow-md shrink-0 flex items-center justify-center gap-2"
                     >
                       咨询我们
-                      <ArrowRight className="w-4 h-4 text-[#0D5EFF]" />
+                      <ArrowRight className="w-4 h-4 text-[#007BC7]" />
                     </button>
                   </form>
                 )}
@@ -1599,7 +1599,7 @@ export default function App() {
 
             {/* Cases columns */}
             <div className="col-span-1 md:col-span-3 text-left">
-              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#0D5EFF] pl-2">案例</h5>
+              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2">案例</h5>
               <ul className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs">
                 <li><a href="#case-studies" className="hover:text-white transition-colors">工业装备</a></li>
                 <li><a href="#case-studies" className="hover:text-white transition-colors">机器人</a></li>
@@ -1618,7 +1618,7 @@ export default function App() {
 
             {/* Services columns */}
             <div className="col-span-1 md:col-span-2 text-left">
-              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#0D5EFF] pl-2">服务</h5>
+              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2">服务</h5>
               <ul className="grid gap-2 text-xs">
                 <li><a href="#professional-services" className="hover:text-white transition-colors">工业设计</a></li>
                 <li><a href="#professional-services" className="hover:text-white transition-colors">结构设计</a></li>
@@ -1631,7 +1631,7 @@ export default function App() {
 
             {/* Contact Columns */}
             <div className="col-span-1 md:col-span-1.5 text-left">
-              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#0D5EFF] pl-2">联系</h5>
+              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2">联系</h5>
               <ul className="grid gap-2 text-xs text-neutral-400">
                 <li className="hover:text-white cursor-pointer">北京·总部</li>
                 <li className="hover:text-white cursor-pointer">深圳</li>
@@ -1647,7 +1647,7 @@ export default function App() {
 
             {/* About us columns */}
             <div className="col-span-1 md:col-span-1.5 text-left">
-              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#0D5EFF] pl-2">我们</h5>
+              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2">我们</h5>
               <ul className="grid gap-2 text-xs">
                 <li><a href="#about-lkk" className="hover:text-white transition-colors">公司简介</a></li>
                 <li><a href="#news-center" className="hover:text-white transition-colors">新闻中心</a></li>
@@ -1738,7 +1738,7 @@ export default function App() {
               </button>
 
               <div className="mb-6">
-                <div className="flex items-center gap-2 text-[#0D5EFF] text-xs font-bold uppercase tracking-wider font-mono">
+                <div className="flex items-center gap-2 text-[#007BC7] text-xs font-bold uppercase tracking-wider font-mono">
                   <Sparkles className="w-4 h-4" />
                   Design & Consulting Proposal
                 </div>
@@ -1774,7 +1774,7 @@ export default function App() {
                         value={modalForm.name}
                         onChange={(e) => setModalForm({ ...modalForm, name: e.target.value })}
                         placeholder="例如：陈经理" 
-                        className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#0D5EFF]"
+                        className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#007BC7]"
                       />
                     </div>
                     <div>
@@ -1786,7 +1786,7 @@ export default function App() {
                         value={modalForm.phone}
                         onChange={(e) => setModalForm({ ...modalForm, phone: e.target.value })}
                         placeholder="您的联系电话" 
-                        className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#0D5EFF]"
+                        className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#007BC7]"
                       />
                     </div>
                   </div>
@@ -1797,7 +1797,7 @@ export default function App() {
                       id="modal-industry"
                       value={modalForm.industry}
                       onChange={(e) => setModalForm({ ...modalForm, industry: e.target.value })}
-                      className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#0D5EFF]"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#007BC7]"
                     >
                       <option value="智能制造">智能机器人 / 机械臂 / 高端制造</option>
                       <option value="医疗健康">医疗保健 / 医疗器械 / 创新药盒</option>
@@ -1816,7 +1816,7 @@ export default function App() {
                       value={modalForm.desc}
                       onChange={(e) => setModalForm({ ...modalForm, desc: e.target.value })}
                       placeholder="例如：我们想打造一款针对家庭端的情感陪伴机器人，需要产品0-1外观设计与结构开模评估。" 
-                      className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#0D5EFF] resize-none"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#007BC7] resize-none"
                     />
                   </div>
 
@@ -1827,7 +1827,7 @@ export default function App() {
 
                   <button 
                     type="submit"
-                    className="w-full bg-[#1a1a1a] hover:bg-[#0D5EFF] text-white font-bold py-3 rounded-xl transition-all shadow-lg hover:shadow-xl mt-4 flex items-center justify-center gap-2 text-sm"
+                    className="w-full bg-[#1a1a1a] hover:bg-[#007BC7] text-white font-bold py-3 rounded-xl transition-all shadow-lg hover:shadow-xl mt-4 flex items-center justify-center gap-2 text-sm"
                   >
                     立即预约品类总监咨询
                     <ArrowRight className="w-4 h-4" />
@@ -1934,7 +1934,7 @@ export default function App() {
               {/* Details of Case study */}
               <div className="w-full md:w-1/2 p-6 md:p-8 text-left flex flex-col justify-between">
                 <div>
-                  <div className="bg-blue-50 text-[#0D5EFF] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full w-fit">
+                  <div className="bg-blue-50 text-[#007BC7] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full w-fit">
                     品类爆品创新案例 · Class Case
                   </div>
                   
@@ -1968,13 +1968,13 @@ export default function App() {
                       setSelectedCase(null);
                       setIsContactModalOpen(true);
                     }}
-                    className="flex-grow bg-[#0D5EFF] hover:bg-[#0D5EFF]/90 text-white font-bold py-2.5 rounded-xl text-center text-xs transition-all"
+                    className="flex-grow bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-2.5 rounded-xl text-center text-xs transition-all"
                   >
                     获取同款爆品孵化方案
                   </button>
                   <button 
                     onClick={() => setSelectedCase(null)}
-                    className="bg-white hover:bg-[#E8F0FF] text-[#0D5EFF] border border-[#0D5EFF] font-bold px-4 py-2.5 rounded-xl text-xs transition-all"
+                    className="bg-white hover:bg-[#E5F2FA] text-[#007BC7] border border-[#007BC7] font-bold px-4 py-2.5 rounded-xl text-xs transition-all"
                   >
                     查看详情
                   </button>
