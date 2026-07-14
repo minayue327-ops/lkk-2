@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   ChevronDown, 
   Search, 
@@ -66,6 +66,88 @@ const CASE_STUDIES_V2: CaseStudy[] = [
   }
 ];
 
+const AWARDS_LIST = [
+  'RED DOT',
+  'iF DESIGN AWARD',
+  'IDEA',
+  'G-MARK',
+  '红星奖',
+  '金点设计奖'
+];
+const REPEATED_AWARDS = [...AWARDS_LIST, ...AWARDS_LIST, ...AWARDS_LIST, ...AWARDS_LIST];
+
+const CLIENTS_LIST = [
+  '诺基亚 (Nokia)',
+  '西门子 (Siemens)',
+  '三星 (Samsung)',
+  '壳牌 (Shell)',
+  '松下 (Panasonic)',
+  '奥迪 (Audi)',
+  '戴尔 (Dell)',
+  '联合利华 (Unilever)',
+  '雀巢 (Nestlé)',
+  '玛氏 (Mars)',
+  '通用电气 (GE)',
+  '大众 (Volkswagen)',
+  '联想',
+  '海尔',
+  '美的',
+  '茅台',
+  '青岛啤酒',
+  '万达集团',
+  '汇源',
+  '中储粮',
+  '京东',
+  '奇瑞汽车',
+  '海底捞',
+  '吉利',
+  '库迪咖啡'
+];
+const REPEATED_CLIENTS = [...CLIENTS_LIST, ...CLIENTS_LIST];
+
+const Counter: React.FC<{ target: number }> = ({ target }) => {
+  const [count, setCount] = useState(0);
+  const elementRef = useRef<HTMLSpanElement>(null);
+  const animatedRef = useRef(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !animatedRef.current) {
+            animatedRef.current = true;
+            const duration = 1500;
+            const startTime = performance.now();
+
+            const update = (now: number) => {
+              const progress = Math.min((now - startTime) / duration, 1);
+              setCount(Math.floor(progress * target));
+              if (progress < 1) {
+                requestAnimationFrame(update);
+              } else {
+                setCount(target);
+              }
+            };
+            requestAnimationFrame(update);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [target]);
+
+  return <span ref={elementRef}>{count}</span>;
+};
+
 export default function App() {
   // Navigation active state
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -77,6 +159,17 @@ export default function App() {
 
   // Carousel state for news
   const [newsIndex, setNewsIndex] = useState(0);
+
+  // Active state for Banner Carousel
+  const [activeBannerIndex, setActiveBannerIndex] = useState(0);
+
+  // Auto-scroll banner carousel (8 seconds interval)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveBannerIndex((prev) => (prev + 1) % 2);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Form submission states
   const [footerForm, setFooterForm] = useState({ name: '', phone: '' });
@@ -886,135 +979,301 @@ export default function App() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-7 relative group overflow-hidden rounded-3xl shadow-lg border border-neutral-100 bg-neutral-900 text-white flex flex-col justify-center w-full aspect-[16/9]"
+            className="lg:col-span-7 relative group overflow-hidden rounded-3xl shadow-lg border border-neutral-100 bg-white flex flex-col justify-center w-full aspect-[16/9]"
           >
-            {/* Background Image with elegant overlay */}
-            <div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105">
-              <img 
-                src="/src/assets/images/lkk_hero_banner_1783412912488.jpg" 
-                alt="LKK Category Innovation Banner" 
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover opacity-60"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent"></div>
-            </div>
-
-            {/* Inner horizontal flex container to avoid text overlap and support dynamic alignment */}
-            <div className="absolute inset-0 z-10 w-full h-full flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 px-6 md:px-12 py-4 md:py-6">
+            <div className="absolute inset-0 w-full h-full flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${activeBannerIndex * 100}%)` }}>
               
-              {/* Left Column: Content overlays */}
-              <div className="flex flex-col justify-center w-full md:max-w-[58%] flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#007BC7] animate-pulse"></span>
-                  <span className="text-[clamp(11px,1.1vw,14px)] font-semibold uppercase tracking-widest text-[#007BC7] font-mono">Category Innovation</span>
-                </div>
-                
-                <div className="mt-3 md:mt-6">
-                  <h3 className="text-[clamp(24px,3.2vw,40px)] font-extrabold tracking-wide leading-[1.15] max-h-[3.6em] overflow-hidden line-clamp-3">
-                    洛可可 <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007BC7] to-blue-400">未来五年的两件事</span>
-                  </h3>
-                  <p className="text-[clamp(11px,1vw,13.5px)] tracking-[0.2em] font-bold text-neutral-400 uppercase mt-1 md:mt-2 font-mono">
-                    CREATE POPULAR PRODUCTS
-                  </p>
+              {/* SLIDE 1: Achievements Slide (Five stats + Logo loop with image background) */}
+              <div className="w-full h-full shrink-0 relative bg-neutral-900 text-white flex flex-col justify-between overflow-hidden select-none">
+                {/* Background Image that covers the full screen */}
+                <div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105">
+                  <img 
+                    src="https://github.com/minaxyue-ops/MINA/releases/download/1/Group.15.jpg" 
+                    alt="LKK Achievement Background" 
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Subtle vignette/shading overlay to guarantee text readability while fully retaining image colors */}
+                  <div className="absolute inset-0 bg-neutral-950/25"></div>
                 </div>
 
-                {/* Bottom highlights inside the same column */}
-                <div className="border-t border-white/15 pt-3 md:pt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-6 hidden sm:grid">
-                  <div className="flex items-start gap-3 group/focus">
-                    <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#007BC7] tracking-tighter">01</span>
-                    <div>
-                      <h4 className="text-[clamp(13px,1.2vw,16px)] font-semibold tracking-wide text-white group-hover/focus:text-blue-350 transition-colors">聚焦垂直行业</h4>
-                      <p className="text-[clamp(11px,1vw,13.5px)] text-neutral-400 mt-1 leading-relaxed line-clamp-2 md:line-clamp-none">深耕机器人、医疗健康、智能家电等支柱品类，提供精准洞察</p>
+                {/* Top and middle content wrap with proper paddings, keeping bottom marquee section outside so it fits perfectly flush */}
+                <div className="flex flex-col flex-1 justify-between p-4 pb-0 md:pt-6 md:px-8 z-10 w-full">
+                  {/* 1. Header */}
+                  <div className="flex items-center justify-between">
+                    <div className="hero-badge">
+                      <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+                      <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-white font-mono uppercase">
+                        DESIGN EXCELLENCE DISPLAY • PAGE 1 OF 4
+                      </span>
+                    </div>
+                    <div className="text-[10px] md:text-xs font-bold text-neutral-300 font-mono tracking-wider">
+                      EST. 2004
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 group/focus">
-                    <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#007BC7] tracking-tighter">02</span>
-                    <div>
-                      <h4 className="text-[clamp(13px,1.2vw,16px)] font-semibold tracking-wide text-white group-hover/focus:text-blue-350 transition-colors">陪跑品类冠军</h4>
-                      <p className="text-[clamp(11px,1vw,13.5px)] text-neutral-400 mt-1 leading-relaxed line-clamp-2 md:line-clamp-none">从研发设计、品牌构建到产业落地，全生命周期提供支持</p>
+
+                  {/* 2. Four Quantitative Stats with Larger, Bolder Numbers, evenly distributed inside a CSS Grid */}
+                  <div className="stats-section my-auto py-2 w-full px-2 md:px-8">
+                    <div className="stat-item">
+                      <div className="stat-number stat-number-large">
+                        <Counter target={600} /><span className="text-white font-light ml-0.5">+</span>
+                      </div>
+                      <div className="stat-label">
+                        国内外设计大奖
+                      </div>
+                    </div>
+
+                    <div className="stat-item">
+                      <div className="stat-number">
+                        <Counter target={200} /><span className="text-white font-light ml-0.5">+</span>
+                      </div>
+                      <div className="stat-label">
+                        国际500强客户
+                      </div>
+                    </div>
+
+                    <div className="stat-item">
+                      <div className="stat-number">
+                        <Counter target={300} /><span className="text-white font-light ml-0.5">+</span>
+                      </div>
+                      <div className="stat-label">
+                        国内500强客户
+                      </div>
+                    </div>
+
+                    <div className="stat-item">
+                      <div className="stat-number">
+                        <Counter target={100} /><span className="text-white font-light ml-0.5">+</span>
+                      </div>
+                      <div className="stat-label">
+                        打造品类冠军
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Double-Row Logo Marquees (Compact and responsive, styled with capsule glass pills) */}
+                <div className="hero-logo-marquee-wrapper mt-auto z-10">
+                  {/* Row 1: Leftwards Marquee (Awards with custom grey-scaled images - scaled up 30%, gap 24px) */}
+                  <div className="awards-marquee-row flex items-center">
+                    <div className="awards-marquee-track flex">
+                      <div className="flex gap-6 shrink-0 pr-6">
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/idsa.png" alt="美国IDEA奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/good.png" alt="日本G-Mark奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/redstar.png" alt="中国红星奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/jindian.png" alt="金点设计奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/jpred.png" alt="德国红点设计奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/if.png" alt="iF设计奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/k-desgan.png" alt="韩国K-Design奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/Adesgan.png" alt="意大利A'设计奖" />
+                        </div>
+                      </div>
+                      <div className="flex gap-6 shrink-0 pr-6">
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/idsa.png" alt="美国IDEA奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/good.png" alt="日本G-Mark奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/redstar.png" alt="中国红星奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/jindian.png" alt="金点设计奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/jpred.png" alt="德国红点设计奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/if.png" alt="iF设计奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/k-desgan.png" alt="韩国K-Design奖" />
+                        </div>
+                        <div className="awards-logo-item flex items-center justify-center shrink-0">
+                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/Adesgan.png" alt="意大利A'设计奖" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Row 2: Rightwards Marquee (Clients text in glass pills) */}
+                  <div className="hero-logo-marquee-row h-12 md:h-14 flex items-center">
+                    <div className="hero-logo-marquee-track reverse flex">
+                      <div className="flex gap-3 shrink-0 pr-3">
+                        {CLIENTS_LIST.map((client, i) => (
+                          <div 
+                            key={`client-1-${i}`} 
+                            className="marquee-chip flex items-center justify-center text-[9px] md:text-[10px] font-bold shrink-0" 
+                          >
+                            {client}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex gap-3 shrink-0 pr-3">
+                        {CLIENTS_LIST.map((client, i) => (
+                          <div 
+                            key={`client-2-${i}`} 
+                            className="marquee-chip flex items-center justify-center text-[9px] md:text-[10px] font-bold shrink-0" 
+                          >
+                            {client}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column: Interactive Responsive Triangular Relationship Diagram */}
-              <div className="w-[38%] aspect-square hidden md:block shrink-0 relative z-10">
-                <div className="relative w-full h-full">
-                  
-                  {/* SVG Lines & Glows in background */}
-                  <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full overflow-visible drop-shadow-[0_0_15px_rgba(0,123,199,0.3)]">
-                    <defs>
-                      <linearGradient id="line-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#007BC7" stopOpacity="0.8" />
-                        <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.8" />
-                      </linearGradient>
-                      <filter id="glow">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                        <feMerge>
-                          <feMergeNode in="coloredBlur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                    </defs>
+              {/* SLIDE 2: Original Category Innovation Slide (Dark theme) */}
+              <div className="w-full h-full shrink-0 relative bg-neutral-900 text-white flex flex-col justify-center overflow-hidden">
+                {/* Background Image with elegant overlay */}
+                <div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105">
+                  <img 
+                    src="/src/assets/images/lkk_hero_banner_1783412912488.jpg" 
+                    alt="LKK Category Innovation Banner" 
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover opacity-60"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent"></div>
+                </div>
 
-                    {/* Pulsing connections (Triangle lines) */}
-                    <polygon 
-                      points="100,45 45,145 155,145" 
-                      fill="none" 
-                      stroke="url(#line-grad)" 
-                      strokeWidth="2" 
-                      strokeDasharray="4 2"
-                    />
-
-                    {/* Inner glowing core */}
-                    <circle cx="100" cy="112" r="24" fill="rgba(0,123,199,0.15)" stroke="#007BC7" strokeWidth="1" />
-                    <circle cx="100" cy="112" r="6" fill="#007BC7" filter="url(#glow)" />
+                {/* Inner Content */}
+                <div className="absolute inset-0 z-10 w-full h-full flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 px-6 md:px-12 py-4 md:py-6">
+                  {/* Left Column */}
+                  <div className="flex flex-col justify-center w-full md:max-w-[58%] flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#007BC7] animate-pulse"></span>
+                      <span className="text-[clamp(11px,1.1vw,14px)] font-semibold uppercase tracking-widest text-[#007BC7] font-mono">Category Innovation</span>
+                    </div>
                     
-                    {/* Vertex Circles */}
-                    <circle cx="100" cy="45" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
-                    <circle cx="100" cy="45" r="3" fill="#60A5FA" filter="url(#glow)" />
+                    <div className="mt-3 md:mt-6">
+                      <h3 className="text-[clamp(24px,3.2vw,40px)] font-extrabold tracking-wide leading-[1.15] max-h-[3.6em] overflow-hidden line-clamp-3 text-white">
+                        洛可可 <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007BC7] to-blue-400">未来五年的两件事</span>
+                      </h3>
+                      <p className="text-[clamp(11px,1vw,13.5px)] tracking-[0.2em] font-bold text-neutral-400 uppercase mt-1 md:mt-2 font-mono">
+                        CREATE POPULAR PRODUCTS
+                      </p>
+                    </div>
 
-                    <circle cx="45" cy="145" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
-                    <circle cx="45" cy="145" r="3" fill="#60A5FA" filter="url(#glow)" />
-
-                    <circle cx="155" cy="145" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
-                    <circle cx="155" cy="145" r="3" fill="#60A5FA" filter="url(#glow)" />
-                  </svg>
-
-                  {/* HTML Text Labels with clamp() responsive font sizes positioned exactly over vertices */}
-                  
-                  {/* Center text */}
-                  <div className="absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                    <span className="text-[clamp(11px,1vw,14px)] font-bold text-white tracking-wider">三品合一</span>
+                    <div className="border-t border-white/15 pt-3 md:pt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-6 hidden sm:grid">
+                      <div className="flex items-start gap-3 group/focus">
+                        <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#007BC7] tracking-tighter">01</span>
+                        <div>
+                          <h4 className="text-[clamp(13px,1.2vw,16px)] font-semibold tracking-wide text-white group-hover/focus:text-blue-350 transition-colors">聚焦垂直行业</h4>
+                          <p className="text-[clamp(11px,1vw,13.5px)] text-neutral-400 mt-1 leading-relaxed line-clamp-2 md:line-clamp-none">深耕机器人、医疗健康、智能家电等支柱品类，提供精准洞察</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3 group/focus">
+                        <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#007BC7] tracking-tighter">02</span>
+                        <div>
+                          <h4 className="text-[clamp(13px,1.2vw,16px)] font-semibold tracking-wide text-white group-hover/focus:text-blue-350 transition-colors">陪跑品类冠军</h4>
+                          <p className="text-[clamp(11px,1vw,13.5px)] text-neutral-400 mt-1 leading-relaxed line-clamp-2 md:line-clamp-none">从研发设计、品牌构建到产业落地，全生命周期提供支持</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Top: 品类 (Category) */}
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[60%] text-center flex flex-col items-center">
-                    <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono">CATEGORY</span>
-                    <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide mt-0.5">品类</span>
+                  {/* Right Column (Triangle diagram) */}
+                  <div className="w-[38%] aspect-square hidden md:block shrink-0 relative z-10">
+                    <div className="relative w-full h-full">
+                      <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full overflow-visible drop-shadow-[0_0_15px_rgba(0,123,199,0.3)]">
+                        <defs>
+                          <linearGradient id="line-grad-carousel" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#007BC7" stopOpacity="0.8" />
+                            <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.8" />
+                          </linearGradient>
+                          <filter id="glow-carousel">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                              <feMergeNode in="coloredBlur"/>
+                              <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                          </filter>
+                        </defs>
+                        <polygon points="100,45 45,145 155,145" fill="none" stroke="url(#line-grad-carousel)" strokeWidth="2" strokeDasharray="4 2"/>
+                        <circle cx="100" cy="112" r="24" fill="rgba(0,123,199,0.15)" stroke="#007BC7" strokeWidth="1" />
+                        <circle cx="100" cy="112" r="6" fill="#007BC7" filter="url(#glow-carousel)" />
+                        <circle cx="100" cy="45" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
+                        <circle cx="100" cy="45" r="3" fill="#60A5FA" filter="url(#glow-carousel)" />
+                        <circle cx="45" cy="145" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
+                        <circle cx="45" cy="145" r="3" fill="#60A5FA" filter="url(#glow-carousel)" />
+                        <circle cx="155" cy="145" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
+                        <circle cx="155" cy="145" r="3" fill="#60A5FA" filter="url(#glow-carousel)" />
+                      </svg>
+                      <div className="absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                        <span className="text-[clamp(11px,1vw,14px)] font-bold text-white tracking-wider">三品合一</span>
+                      </div>
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[60%] text-center flex flex-col items-center">
+                        <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono">CATEGORY</span>
+                        <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide mt-0.5">品类</span>
+                      </div>
+                      <div className="absolute bottom-0 left-[22.5%] -translate-x-1/2 translate-y-[80%] text-center flex flex-col items-center">
+                        <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide">产品</span>
+                        <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono mt-0.5">PRODUCT</span>
+                      </div>
+                      <div className="absolute bottom-0 left-[77.5%] -translate-x-1/2 translate-y-[80%] text-center flex flex-col items-center">
+                        <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide">品牌</span>
+                        <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono mt-0.5">BRAND</span>
+                      </div>
+                    </div>
                   </div>
+                </div>
 
-                  {/* Bottom Left: 产品 (Product) */}
-                  <div className="absolute bottom-0 left-[22.5%] -translate-x-1/2 translate-y-[80%] text-center flex flex-col items-center">
-                    <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide">产品</span>
-                    <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono mt-0.5">PRODUCT</span>
-                  </div>
-
-                  {/* Bottom Right: 品牌 (Brand) */}
-                  <div className="absolute bottom-0 left-[77.5%] -translate-x-1/2 translate-y-[80%] text-center flex flex-col items-center">
-                    <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide">品牌</span>
-                    <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono mt-0.5">BRAND</span>
-                  </div>
-
+                {/* Float Logo Tag */}
+                <div className="absolute top-6 right-6 z-10 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white">
+                  LKK 洛可可
                 </div>
               </div>
 
             </div>
 
-            {/* Float Logo Tag */}
-            <div className="absolute top-8 right-4 md:right-6 z-10 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white">
-              LKK 洛可可
+            {/* Prev/Next arrows on hover */}
+            <button
+              onClick={(e) => { e.stopPropagation(); setActiveBannerIndex((prev) => (prev - 1 + 2) % 2); }}
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 slide-arrow"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft className="w-4.5 h-4.5" />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); setActiveBannerIndex((prev) => (prev + 1) % 2); }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 slide-arrow"
+              aria-label="Next Slide"
+            >
+              <ChevronRight className="w-4.5 h-4.5" />
+            </button>
+
+            {/* Indicator Dots */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+              {[0, 1].map((idx) => (
+                <button
+                  key={idx}
+                  onClick={(e) => { e.stopPropagation(); setActiveBannerIndex(idx); }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    activeBannerIndex === idx 
+                      ? 'bg-[#007BC7] w-6' 
+                      : 'bg-neutral-300/60 hover:bg-neutral-400/80'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
             </div>
           </motion.div>
 

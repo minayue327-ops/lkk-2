@@ -363,4 +363,312 @@ body {
   margin: 0 auto !important;
 }
 
+/* Logo Marquee Styles */
+.logo-marquee-wrapper {
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.logo-marquee-row {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+.logo-marquee-track {
+  display: inline-flex;
+  gap: 48px;
+  animation: marqueeLeft 35s linear infinite;
+}
+.logo-marquee-track.reverse {
+  animation: marqueeRight 45s linear infinite;
+}
+.logo-marquee-row:hover .logo-marquee-track {
+  animation-play-state: paused;
+}
+.logo-item {
+  font-size: 18px;
+  font-weight: 600;
+  color: #8C8C8C;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Hero Banner Inner Logo Marquee Styles */
+.hero-logo-marquee-wrapper {
+  position: relative !important;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100% !important; /* Perfect flush width */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important; /* Perfect bottom alignment */
+  padding: 16px 16px 12px 16px !important; /* Clean interior spacing lining up with above content */
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.45) 0%, 
+    rgba(255, 255, 255, 0.28) 8%, 
+    rgba(255, 255, 255, 0.20) 25%, 
+    rgba(255, 255, 255, 0.16) 75%, 
+    rgba(255, 255, 255, 0.28) 100%
+  ) !important; /* Multi-stop Apple glass specular refraction gradient with enhanced white tone and thickness */
+  backdrop-filter: blur(3px) !important; /* Changed from none to blur(3px) as requested */
+  -webkit-backdrop-filter: blur(3px) !important; /* Changed from none to blur(3px) as requested */
+  border-top: 1px solid rgba(255, 255, 255, 0.45) !important; /* Thinned down and refined top white highlight border */
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-radius: 0 0 24px 24px !important;
+  box-shadow: 
+    0 -4px 18px rgba(0, 0, 0, 0.12), /* Reduced outer shadow from 12px/36px/0.35 to 4px/18px/0.12 */
+    inset 0 1px 0 rgba(255, 255, 255, 0.65), 
+    inset 0 2px 6px rgba(255, 255, 255, 0.2), 
+    inset 0 -1px 3px rgba(0, 0, 0, 0.2) !important; /* Enhanced layered glass refraction shadows */
+  margin-top: auto;
+}
+
+.hero-logo-marquee-wrapper::after {
+  content: "";
+  position: absolute;
+  top: -1px; /* Align precisely with the border-top */
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 1) 50%, 
+    rgba(255, 255, 255, 0.1) 100%
+  ) !important;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #fff, transparent) !important;
+  mask-image: linear-gradient(90deg, transparent, #fff, transparent) !important;
+  -webkit-mask-size: 200% 100% !important;
+  mask-size: 200% 100% !important;
+  animation: glassBorderFlow 4.5s infinite linear !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+}
+
+@keyframes glassBorderFlow {
+  0% {
+    -webkit-mask-position: 200% 0;
+    mask-position: 200% 0;
+  }
+  100% {
+    -webkit-mask-position: -200% 0;
+    mask-position: -200% 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-logo-marquee-wrapper {
+    width: 100% !important; /* Perfect flush width */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 0 !important; /* Perfect bottom alignment */
+    padding: 18px 32px 12px 32px !important; /* Matches md:px-8 padding of the slide content above */
+  }
+}
+.hero-logo-marquee-row {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  transform: translateY(-20%) !important;
+}
+.hero-logo-marquee-track {
+  display: inline-flex;
+  gap: 16px;
+  animation: marqueeLeft 35s linear infinite;
+}
+.hero-logo-marquee-track.reverse {
+  animation: clientMarqueeRight 30s linear infinite !important;
+}
+.hero-logo-marquee-row:hover .hero-logo-marquee-track {
+  animation-play-state: paused;
+}
+
+/* Stats Section and Items Grid with CSS Grid equal-width column layout */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+  align-items: end; /* Bottom align numbers */
+}
+.stat-item {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  min-width: 0; /* 防止内容溢出撑破等宽列 */
+}
+.stat-number {
+  font-size: clamp(26px, 4.2vw, 54px);
+  font-weight: 400; /* Regular weight as requested previously */
+  color: #FFFFFF;
+  line-height: 1;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+.stat-number-large {
+  font-size: clamp(32px, 5.2vw, 66px); /* ~20% larger than 54px */
+}
+.stat-label {
+  font-size: clamp(8px, 0.85vw, 12px);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 8px;
+  white-space: nowrap;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 移动端4列放不下时，收为2列自动换行 */
+@media (max-width: 768px) {
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 12px;
+  }
+}
+
+/* iOS 26 Light Glass styles - transparent border, 5% background, 6px blur, no shadow */
+.hero-badge, .slide-arrow {
+  border: 1px solid transparent !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease;
+}
+
+.marquee-chip {
+  border-radius: 999px;
+  padding: 8px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important; /* Visible glassy border with enhanced intensity */
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.35), 
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important; /* Stronger drop shadow and inner highlight border */
+  transition: all 0.3s ease;
+}
+.marquee-chip:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.38) !important;
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.4), 
+    0 2px 5px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45) !important; /* Enhanced hover reflection, shadow, & depth */
+  transform: translateY(-2px);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 8px 18px;
+}
+
+.slide-arrow {
+  border-radius: 999px;
+}
+.slide-arrow:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Clean, transparent logo item style for awards logo marquee */
+.logo-item {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom Awards Marquee styling (scaled up 30%, spacing increased 50%) */
+.awards-marquee-row {
+  height: 72px !important; /* height scaled up comfortably to prevent cropping */
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+.awards-marquee-track {
+  display: inline-flex;
+  gap: 24px !important; /* Spacing increased 50% from 16px to 24px */
+  animation: awardsMarqueeLeft 15s linear infinite !important; /* Accelerated speed as requested */
+}
+.awards-marquee-row:hover .awards-marquee-track {
+  animation-play-state: paused;
+}
+.awards-logo-item {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.awards-logo-item img {
+  height: 42px !important; /* Logo size scaled up 30% from 32px to 42px */
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transform: scale(1);
+  transition: filter 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.awards-logo-item:hover img {
+  filter: grayscale(0%) !important;
+  transform: scale(1.1) !important;
+}
+
+.logo-item img,
+.client-logo-item img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+.logo-item:hover img,
+.client-logo-item:hover img {
+  filter: grayscale(0%);
+}
+
+@keyframes marqueeLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes awardsMarqueeLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 12px)); } /* 12px is exactly half of the 24px gap between sets to guarantee perfect, seamless infinite flow */
+}
+@keyframes clientMarqueeRight {
+  from { transform: translateX(calc(-50% - 6px)); } /* 6px is half of 12px gap between client items to guarantee perfect, seamless infinite flow */
+  to { transform: translateX(0); }
+}
+@keyframes marqueeRight {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
 
