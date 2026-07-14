@@ -327,27 +327,13 @@ body {
 /* Industry Matrix Section Background & Dynamic Glow */
 .hero-category-grid {
   position: relative;
-  background: linear-gradient(135deg, #F0F5FF 0%, #E5F2FA 50%, #F7FAFF 100%);
+  background: #FFFFFF;
   overflow: hidden;
 }
 .hero-category-grid::before {
-  content: '';
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(0, 123, 199, 0.12) 0%, transparent 70%);
-  border-radius: 50%;
-  top: -120px;
-  right: -100px;
-  z-index: 0;
-  pointer-events: none;
-  animation: glowFloat 10s ease-in-out infinite;
+  display: none; /* 去掉之前加的光晕装饰元素 */
 }
-@keyframes glowFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-30px, 40px) scale(1.15); }
-}
-/* Ensure text and interactive contents stay above the glow */
+/* Ensure text and interactive contents stay above the background */
 .hero-category-grid > * {
   position: relative;
   z-index: 1;
