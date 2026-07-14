@@ -1140,106 +1140,14 @@ export default function App() {
                 </div>
               </div>
 
-              {/* SLIDE 2: Original Category Innovation Slide (Dark theme) */}
-              <div className="w-full h-full shrink-0 relative bg-neutral-900 text-white flex flex-col justify-center overflow-hidden">
-                {/* Background Image with elegant overlay */}
-                <div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105">
-                  <img 
-                    src="/src/assets/images/lkk_hero_banner_1783412912488.jpg" 
-                    alt="LKK Category Innovation Banner" 
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover opacity-60"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent"></div>
-                </div>
-
-                {/* Inner Content */}
-                <div className="absolute inset-0 z-10 w-full h-full flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 px-6 md:px-12 py-4 md:py-6">
-                  {/* Left Column */}
-                  <div className="flex flex-col justify-center w-full md:max-w-[58%] flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#007BC7] animate-pulse"></span>
-                      <span className="text-[clamp(11px,1.1vw,14px)] font-semibold uppercase tracking-widest text-[#007BC7] font-mono">Category Innovation</span>
-                    </div>
-                    
-                    <div className="mt-3 md:mt-6">
-                      <h3 className="text-[clamp(24px,3.2vw,40px)] font-extrabold tracking-wide leading-[1.15] max-h-[3.6em] overflow-hidden line-clamp-3 text-white">
-                        洛可可 <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007BC7] to-blue-400">未来五年的两件事</span>
-                      </h3>
-                      <p className="text-[clamp(11px,1vw,13.5px)] tracking-[0.2em] font-bold text-neutral-400 uppercase mt-1 md:mt-2 font-mono">
-                        CREATE POPULAR PRODUCTS
-                      </p>
-                    </div>
-
-                    <div className="border-t border-white/15 pt-3 md:pt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-3 md:mt-6 hidden sm:grid">
-                      <div className="flex items-start gap-3 group/focus">
-                        <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#007BC7] tracking-tighter">01</span>
-                        <div>
-                          <h4 className="text-[clamp(13px,1.2vw,16px)] font-semibold tracking-wide text-white group-hover/focus:text-blue-350 transition-colors">聚焦垂直行业</h4>
-                          <p className="text-[clamp(11px,1vw,13.5px)] text-neutral-400 mt-1 leading-relaxed line-clamp-2 md:line-clamp-none">深耕机器人、医疗健康、智能家电等支柱品类，提供精准洞察</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3 group/focus">
-                        <span className="text-[clamp(20px,2vw,28px)] font-bold font-display text-[#007BC7] tracking-tighter">02</span>
-                        <div>
-                          <h4 className="text-[clamp(13px,1.2vw,16px)] font-semibold tracking-wide text-white group-hover/focus:text-blue-350 transition-colors">陪跑品类冠军</h4>
-                          <p className="text-[clamp(11px,1vw,13.5px)] text-neutral-400 mt-1 leading-relaxed line-clamp-2 md:line-clamp-none">从研发设计、品牌构建到产业落地，全生命周期提供支持</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Column (Triangle diagram) */}
-                  <div className="w-[38%] aspect-square hidden md:block shrink-0 relative z-10">
-                    <div className="relative w-full h-full">
-                      <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full overflow-visible drop-shadow-[0_0_15px_rgba(0,123,199,0.3)]">
-                        <defs>
-                          <linearGradient id="line-grad-carousel" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#007BC7" stopOpacity="0.8" />
-                            <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.8" />
-                          </linearGradient>
-                          <filter id="glow-carousel">
-                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                            <feMerge>
-                              <feMergeNode in="coloredBlur"/>
-                              <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                          </filter>
-                        </defs>
-                        <polygon points="100,45 45,145 155,145" fill="none" stroke="url(#line-grad-carousel)" strokeWidth="2" strokeDasharray="4 2"/>
-                        <circle cx="100" cy="112" r="24" fill="rgba(0,123,199,0.15)" stroke="#007BC7" strokeWidth="1" />
-                        <circle cx="100" cy="112" r="6" fill="#007BC7" filter="url(#glow-carousel)" />
-                        <circle cx="100" cy="45" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
-                        <circle cx="100" cy="45" r="3" fill="#60A5FA" filter="url(#glow-carousel)" />
-                        <circle cx="45" cy="145" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
-                        <circle cx="45" cy="145" r="3" fill="#60A5FA" filter="url(#glow-carousel)" />
-                        <circle cx="155" cy="145" r="14" fill="#111" stroke="#007BC7" strokeWidth="1.5" />
-                        <circle cx="155" cy="145" r="3" fill="#60A5FA" filter="url(#glow-carousel)" />
-                      </svg>
-                      <div className="absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                        <span className="text-[clamp(11px,1vw,14px)] font-bold text-white tracking-wider">三品合一</span>
-                      </div>
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[60%] text-center flex flex-col items-center">
-                        <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono">CATEGORY</span>
-                        <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide mt-0.5">品类</span>
-                      </div>
-                      <div className="absolute bottom-0 left-[22.5%] -translate-x-1/2 translate-y-[80%] text-center flex flex-col items-center">
-                        <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide">产品</span>
-                        <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono mt-0.5">PRODUCT</span>
-                      </div>
-                      <div className="absolute bottom-0 left-[77.5%] -translate-x-1/2 translate-y-[80%] text-center flex flex-col items-center">
-                        <span className="text-[clamp(13px,1.3vw,17px)] font-black text-white tracking-wide">品牌</span>
-                        <span className="text-[clamp(7px,0.7vw,11px)] font-bold text-neutral-400 uppercase tracking-widest font-mono mt-0.5">BRAND</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Float Logo Tag */}
-                <div className="absolute top-6 right-6 z-10 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest text-white">
-                  LKK 洛可可
-                </div>
+              {/* SLIDE 2: Clean Image-Only Banner Slide */}
+              <div className="w-full h-full shrink-0 relative overflow-hidden select-none">
+                <img 
+                  src="https://github.com/minaxyue-ops/MINA/releases/download/1/ChatGPT.Image.2026.7.14.14_34_56.1.jpg" 
+                  alt="LKK Design Strategy Banner" 
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
               </div>
 
             </div>
