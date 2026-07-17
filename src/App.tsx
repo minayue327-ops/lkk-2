@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   ChevronDown, 
   Search, 
@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import LKKLogo from './components/LKKLogo';
+import CategoryConsultingPage from './components/CategoryConsultingPage';
 import { 
   SERVICE_CATEGORIES, 
   NEWS_ARTICLES, 
@@ -149,6 +150,9 @@ const Counter: React.FC<{ target: number }> = ({ target }) => {
 };
 
 export default function App() {
+  // Current page state
+  const [currentPage, setCurrentPage] = useState<'home' | 'category'>('home');
+
   // Navigation active state
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -163,10 +167,12 @@ export default function App() {
   // Active state for Banner Carousel
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
 
+
+
   // Auto-scroll banner carousel (8 seconds interval)
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveBannerIndex((prev) => (prev + 1) % 2);
+      setActiveBannerIndex((prev) => (prev + 1) % 3);
     }, 8000);
     return () => clearInterval(timer);
   }, []);
@@ -227,7 +233,7 @@ export default function App() {
       case 'hit':
         return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png';
       case 'yuexianhuo':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.38.png';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif';
       case 'pophie':
         return '/src/assets/images/case_pophie.jpg';
       case 'jingkelong':
@@ -242,7 +248,7 @@ export default function App() {
   const getCaseV2LocalImage = (id: string): string | null => {
     switch (id) {
       case 'case-v2-1':
-        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.9.2.gif';
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif';
       case 'case-v2-2':
         return 'https://github.com/minaxyue-ops/MINA/releases/download/1/liangpin.jpg';
       case 'case-v2-3':
@@ -521,7 +527,7 @@ export default function App() {
       window.removeEventListener('resize', handleScroll);
       clearTimeout(timer);
     };
-  }, []);
+  }, [currentPage]);
 
   // Hero Slogan Page-Load cascading animation delay setting
   useEffect(() => {
@@ -640,7 +646,7 @@ export default function App() {
         <div className="max-w-[95%] w-full mx-auto flex items-center justify-between">
           
           {/* Logo */}
-          <a href="#" className="flex-shrink-0">
+          <a href="#" className="flex-shrink-0" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
             <LKKLogo />
           </a>
 
@@ -651,7 +657,10 @@ export default function App() {
               onMouseEnter={() => setActiveMenu('品类创新咨询')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2">
+              <button 
+                onClick={() => setCurrentPage('category')}
+                className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2"
+              >
                 品类创新咨询
                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '品类创新咨询' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
               </button>
@@ -668,7 +677,10 @@ export default function App() {
                   >
                     <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500 border-b border-neutral-100 pb-2">品类服务专区</div>
                     <div className="grid grid-cols-3 gap-4">
-                      <a href="#professional-services" className="group/item flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors">
+                      <button 
+                        onClick={() => { setCurrentPage('category'); setActiveMenu(null); }} 
+                        className="group/item text-left flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors cursor-pointer w-full"
+                      >
                         <div>
                           <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#007BC7] transition-colors">三品合一品类创新咨询</div>
                           <div className="text-xs text-neutral-500 mt-1">重构战略定位与市场品类</div>
@@ -676,8 +688,11 @@ export default function App() {
                         <div className="flex items-center justify-end mt-2">
                           <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#007BC7] group-hover/item:translate-x-1 transition-all" />
                         </div>
-                      </a>
-                      <a href="#professional-services" className="group/item flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors">
+                      </button>
+                      <button 
+                        onClick={() => { setCurrentPage('category'); setActiveMenu(null); }} 
+                        className="group/item text-left flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors cursor-pointer w-full"
+                      >
                         <div>
                           <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#007BC7] transition-colors">产品创新0-1全案咨询</div>
                           <div className="text-xs text-neutral-500 mt-1">从用户洞察到爆品定义</div>
@@ -685,8 +700,11 @@ export default function App() {
                         <div className="flex items-center justify-end mt-2">
                           <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#007BC7] group-hover/item:translate-x-1 transition-all" />
                         </div>
-                      </a>
-                      <a href="#professional-services" className="group/item flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors">
+                      </button>
+                      <button 
+                        onClick={() => { setCurrentPage('category'); setActiveMenu(null); }} 
+                        className="group/item text-left flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors cursor-pointer w-full"
+                      >
                         <div>
                           <div className="font-semibold text-sm text-neutral-800 group-hover/item:text-[#007BC7] transition-colors">品牌创新0-1全案咨询</div>
                           <div className="text-xs text-neutral-500 mt-1">构建差异化战略与视觉IP</div>
@@ -694,7 +712,7 @@ export default function App() {
                         <div className="flex items-center justify-end mt-2">
                           <ArrowRight className="w-4 h-4 text-neutral-300 group-hover/item:text-[#007BC7] group-hover/item:translate-x-1 transition-all" />
                         </div>
-                      </a>
+                      </button>
                     </div>
                   </motion.div>
                 )}
@@ -724,10 +742,10 @@ export default function App() {
                     <div className="flex flex-col">
                       <div className="text-xs font-bold uppercase tracking-wider text-[#007BC7] border-b border-neutral-100 pb-2 mb-3">产品创新</div>
                       <div className="flex flex-col divide-y divide-neutral-100">
-                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">工业设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">结构设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">生产落地</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">交互设计</a>
+                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">工业设计</a>
+                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">结构设计</a>
+                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">生产落地</a>
+                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">交互设计</a>
                       </div>
                     </div>
 
@@ -735,10 +753,10 @@ export default function App() {
                     <div className="flex flex-col">
                       <div className="text-xs font-bold uppercase tracking-wider text-[#007BC7] border-b border-neutral-100 pb-2 mb-3">品牌创新</div>
                       <div className="flex flex-col divide-y divide-neutral-100">
-                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">品牌全案设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">包装设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">IP设计</a>
-                        <a href="#professional-services" className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">商业空间设计</a>
+                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">品牌全案设计</a>
+                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">包装设计</a>
+                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">IP设计</a>
+                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">商业空间设计</a>
                       </div>
                     </div>
                   </motion.div>
@@ -769,49 +787,49 @@ export default function App() {
                     <div className="grid grid-cols-4 gap-4">
                       {/* Column 1 */}
                       <div className="flex flex-col gap-2">
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">工业装备</div>
                         </a>
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">智能3C</div>
                         </a>
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">美妆个护</div>
                         </a>
                       </div>
                       {/* Column 2 */}
                       <div className="flex flex-col gap-2">
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">机器人</div>
                         </a>
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">医疗健康</div>
                         </a>
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">文化创意</div>
                         </a>
                       </div>
                       {/* Column 3 */}
                       <div className="flex flex-col gap-2">
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">新能源</div>
                         </a>
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">食品酒饮</div>
                         </a>
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">宠物经济</div>
                         </a>
                       </div>
                       {/* Column 4 */}
                       <div className="flex flex-col gap-2">
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">家居家电</div>
                         </a>
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">连锁零售</div>
                         </a>
-                        <a href="#case-studies" className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">交通工具</div>
                         </a>
                       </div>
@@ -821,7 +839,7 @@ export default function App() {
               </AnimatePresence>
             </div>
 
-            <a href="#case-studies" className="text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors">
+            <a href="#case-studies" onClick={() => setCurrentPage('home')} className="text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors">
               案例
             </a>
 
@@ -844,10 +862,10 @@ export default function App() {
                     transition={{ duration: 0.2 }}
                     className="absolute right-0 top-full mt-1 w-[480px] bg-white border border-neutral-100 shadow-2xl rounded-2xl p-4 grid grid-cols-4 gap-2 z-50"
                   >
-                    <a href="#about-lkk" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">关于我们</a>
-                    <button onClick={() => { setIsContactModalOpen(true); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors w-full">联系我们</button>
-                    <a href="#news-center" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">新闻中心</a>
-                    <a href="#case-studies" className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">成功路径</a>
+                    <a href="#about-lkk" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">关于我们</a>
+                    <button onClick={() => { setIsContactModalOpen(true); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors w-full cursor-pointer">联系我们</button>
+                    <a href="#news-center" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">新闻中心</a>
+                    <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">成功路径</a>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -915,10 +933,10 @@ export default function App() {
             
             <nav aria-label="手机端导航" className="grid gap-2">
               <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">业务专区</span>
-              <a href="#professional-services" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">品类创新咨询</a>
-              <a href="#professional-services" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">品牌&产品设计</a>
-              <a href="#case-studies" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">经典成功案例</a>
-              <a href="#about-lkk" onClick={() => setMobileMenuOpen(false)} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">公司简介</a>
+              <button onClick={() => { setCurrentPage('category'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品类创新咨询</button>
+              <a href="#professional-services" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">品牌&产品设计</a>
+              <a href="#case-studies" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">经典案例锦集</a>
+              <a href="#about-lkk" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">公司简介</a>
             </nav>
             
             <button 
@@ -934,8 +952,10 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 3. HERO / BIG TITLE SECTION */}
-      <section id="hero-section" className="hero-section px-[0.8px] md:px-[1.6px] py-12 md:py-20 text-center bg-radial from-neutral-50 to-white relative">
+      {currentPage === 'home' ? (
+        <>
+          {/* 3. HERO / BIG TITLE SECTION */}
+          <section id="hero-section" className="hero-section px-[0.8px] md:px-[1.6px] py-12 md:py-20 text-center bg-radial from-neutral-50 to-white relative">
         <div className="hero-slogan-block max-w-4xl mx-auto hero-inner">
           <div className="flex items-center justify-center gap-3 mb-6">
             <span className="h-[1px] w-8 bg-[#007BC7]"></span>
@@ -988,7 +1008,7 @@ export default function App() {
                 {/* Background Image that covers the full screen */}
                 <div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105">
                   <img 
-                    src="https://github.com/minaxyue-ops/MINA/releases/download/1/Group.15.jpg" 
+                    src="https://github.com/minaxyue-ops/MINA/releases/download/1/banner1.jpg" 
                     alt="LKK Achievement Background" 
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover"
@@ -1004,7 +1024,7 @@ export default function App() {
                     <div className="hero-badge">
                       <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
                       <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-white font-mono uppercase">
-                        DESIGN EXCELLENCE DISPLAY • PAGE 1 OF 4
+                        DESIGN EXCELLENCE DISPLAY • PAGE 1 OF 3
                       </span>
                     </div>
                     <div className="text-[10px] md:text-xs font-bold text-neutral-300 font-mono tracking-wider">
@@ -1054,68 +1074,36 @@ export default function App() {
 
                 {/* 3. Double-Row Logo Marquees (Compact and responsive, styled with capsule glass pills) */}
                 <div className="hero-logo-marquee-wrapper mt-auto z-10">
-                  {/* Row 1: Leftwards Marquee (Awards with custom grey-scaled images - scaled up 30%, gap 24px) */}
-                  <div className="awards-marquee-row flex items-center">
-                    <div className="awards-marquee-track flex">
-                      <div className="flex gap-6 shrink-0 pr-6">
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/idsa.png" alt="美国IDEA奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/good.png" alt="日本G-Mark奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/redstar.png" alt="中国红星奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/jindian.png" alt="金点设计奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/jpred.png" alt="德国红点设计奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/if.png" alt="iF设计奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/k-desgan.png" alt="韩国K-Design奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/Adesgan.png" alt="意大利A'设计奖" />
-                        </div>
+                  {/* Row 1: Leftwards Marquee (Awards with custom grey-scaled images - scaled up 30%, gap 64px, pure CSS) */}
+                  <div className="logo-marquee-row awards-row">
+                    <div className="logo-marquee-track awards-track">
+                      <div className="logo-marquee-group awards-group">
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/jpred.png" alt="德国红点设计奖" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/if.png" alt="iF设计奖" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/idsa.png" alt="美国IDEA奖" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/good.png" alt="日本G-Mark奖" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/redstar.png" alt="中国红星奖" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/jindian.png" alt="金点设计奖" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/k-desgan.png" alt="韩国K-Design奖" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/Adesgan.png" alt="意大利A'设计奖" width="90" height="40" />
                       </div>
-                      <div className="flex gap-6 shrink-0 pr-6">
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/idsa.png" alt="美国IDEA奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/good.png" alt="日本G-Mark奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/redstar.png" alt="中国红星奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/jindian.png" alt="金点设计奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/jpred.png" alt="德国红点设计奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/if.png" alt="iF设计奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/k-desgan.png" alt="韩国K-Design奖" />
-                        </div>
-                        <div className="awards-logo-item flex items-center justify-center shrink-0">
-                          <img src="https://github.com/minaxyue-ops/MINA/releases/download/1/Adesgan.png" alt="意大利A'设计奖" />
-                        </div>
+                      <div className="logo-marquee-group awards-group" aria-hidden="true">
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/jpred.png" alt="" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/if.png" alt="" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/idsa.png" alt="" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/good.png" alt="" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/redstar.png" alt="" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/jindian.png" alt="" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/k-desgan.png" alt="" width="90" height="40" />
+                        <img className="logo-item" src="https://github.com/minaxyue-ops/MINA/releases/download/1/Adesgan.png" alt="" width="90" height="40" />
                       </div>
                     </div>
                   </div>
 
                   {/* Row 2: Rightwards Marquee (Clients text in glass pills) */}
-                  <div className="hero-logo-marquee-row h-12 md:h-14 flex items-center">
-                    <div className="hero-logo-marquee-track reverse flex">
-                      <div className="flex gap-3 shrink-0 pr-3">
+                  <div className="logo-marquee-row brands-row h-12 md:h-14 flex items-center">
+                    <div className="logo-marquee-track brands">
+                      <div className="logo-marquee-group brands-group">
                         {CLIENTS_LIST.map((client, i) => (
                           <div 
                             key={`client-1-${i}`} 
@@ -1125,7 +1113,7 @@ export default function App() {
                           </div>
                         ))}
                       </div>
-                      <div className="flex gap-3 shrink-0 pr-3">
+                      <div className="logo-marquee-group brands-group" aria-hidden="true">
                         {CLIENTS_LIST.map((client, i) => (
                           <div 
                             key={`client-2-${i}`} 
@@ -1143,8 +1131,18 @@ export default function App() {
               {/* SLIDE 2: Clean Image-Only Banner Slide */}
               <div className="w-full h-full shrink-0 relative overflow-hidden select-none">
                 <img 
-                  src="https://github.com/minaxyue-ops/MINA/releases/download/1/ChatGPT.Image.2026.7.14.14_34_56.1.jpg" 
+                  src="https://github.com/minaxyue-ops/MINA/releases/download/1/banner2.png" 
                   alt="LKK Design Strategy Banner" 
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* SLIDE 3: Clean Image-Only Banner Slide */}
+              <div className="w-full h-full shrink-0 relative overflow-hidden select-none">
+                <img 
+                  src="https://github.com/minaxyue-ops/MINA/releases/download/1/banner3.png" 
+                  alt="LKK Category Innovation Banner" 
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"
                 />
@@ -1154,14 +1152,14 @@ export default function App() {
 
             {/* Prev/Next arrows on hover */}
             <button
-              onClick={(e) => { e.stopPropagation(); setActiveBannerIndex((prev) => (prev - 1 + 2) % 2); }}
+              onClick={(e) => { e.stopPropagation(); setActiveBannerIndex((prev) => (prev - 1 + 3) % 3); }}
               className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 slide-arrow"
               aria-label="Previous Slide"
             >
               <ChevronLeft className="w-4.5 h-4.5" />
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); setActiveBannerIndex((prev) => (prev + 1) % 2); }}
+              onClick={(e) => { e.stopPropagation(); setActiveBannerIndex((prev) => (prev + 1) % 3); }}
               className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 slide-arrow"
               aria-label="Next Slide"
             >
@@ -1170,7 +1168,7 @@ export default function App() {
 
             {/* Indicator Dots */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-              {[0, 1].map((idx) => (
+              {[0, 1, 2].map((idx) => (
                 <button
                   key={idx}
                   onClick={(e) => { e.stopPropagation(); setActiveBannerIndex(idx); }}
@@ -1302,7 +1300,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 5. 成功案例 SECTION */}
+      {/* 5. 案例锦集 SECTION */}
       <section id="case-studies" className="py-20 bg-neutral-50 px-[0.8px] md:px-[1.6px] border-t border-neutral-150">
         <div className="max-w-[95%] w-full mx-auto cases-inner">
           {/* Header */}
@@ -1310,7 +1308,7 @@ export default function App() {
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Portfolios</span>
               <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
-                <span className="char char-black">成</span><span className="char char-black">功</span><span className="char char-black">案</span><span className="char char-black">例</span>
+                <span className="char char-black">案</span><span className="char char-black">例</span><span className="char char-black">锦</span><span className="char char-black">集</span>
               </h2>
             </div>
             <p className="text-sm text-neutral-500 max-w-sm mt-4 md:mt-0">
@@ -1487,6 +1485,14 @@ export default function App() {
 
         </div>
       </section>
+        </>
+      ) : (
+        <CategoryConsultingPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onSelectCase={(cs) => setSelectedCase(cs)}
+          CounterComponent={Counter}
+        />
+      )}
 
       {/* 8. FOOTER WITH ACCORDION & FORMS */}
       <footer id="about-lkk" className="bg-neutral-900 text-neutral-400 pt-16 pb-8 px-[0.8px] md:px-[1.6px] relative z-10">

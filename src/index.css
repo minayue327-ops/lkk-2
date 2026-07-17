@@ -389,8 +389,9 @@ body {
   width: 100% !important; /* Perfect flush width */
   margin-left: 0 !important;
   margin-right: 0 !important;
-  margin-bottom: 0 !important; /* Perfect bottom alignment */
-  padding: 16px 16px 12px 16px !important; /* Clean interior spacing lining up with above content */
+  margin-bottom: -15px !important; /* Offset translateY offset to prevent gap at the bottom */
+  padding: 16px 16px 27px 16px !important; /* Added bottom padding to compensate bottom offset */
+  transform: translateY(-5%) !important; /* Translate entire glass wrapper, awards and brands rows up 5% as a unit */
   background: linear-gradient(180deg, 
     rgba(255, 255, 255, 0.45) 0%, 
     rgba(255, 255, 255, 0.28) 8%, 
@@ -450,27 +451,12 @@ body {
     width: 100% !important; /* Perfect flush width */
     margin-left: 0 !important;
     margin-right: 0 !important;
-    margin-bottom: 0 !important; /* Perfect bottom alignment */
-    padding: 18px 32px 12px 32px !important; /* Matches md:px-8 padding of the slide content above */
+    margin-bottom: -15px !important; /* Offset translateY offset to prevent gap at the bottom */
+    padding: 18px 32px 27px 32px !important; /* Matches md:px-8 padding of the slide content above, with extra bottom padding */
+    transform: translateY(-5%) !important; /* Translate entire glass wrapper, awards and brands rows up 5% as a unit */
   }
 }
-.hero-logo-marquee-row {
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-  transform: translateY(-20%) !important;
-}
-.hero-logo-marquee-track {
-  display: inline-flex;
-  gap: 16px;
-  animation: marqueeLeft 35s linear infinite;
-}
-.hero-logo-marquee-track.reverse {
-  animation: clientMarqueeRight 30s linear infinite !important;
-}
-.hero-logo-marquee-row:hover .hero-logo-marquee-track {
-  animation-play-state: paused;
-}
+
 
 /* Stats Section and Items Grid with CSS Grid equal-width column layout */
 .stats-section {
@@ -587,72 +573,67 @@ body {
   justify-content: center;
 }
 
-/* Custom Awards Marquee styling (scaled up 30%, spacing increased 50%) */
-.awards-marquee-row {
-  height: 72px !important; /* height scaled up comfortably to prevent cropping */
+/* --- Completely Refactored Marquee Styles (Pure CSS, No JS) --- */
+.logo-marquee-row {
   overflow: hidden;
-  white-space: nowrap;
   width: 100%;
 }
-.awards-marquee-track {
-  display: inline-flex;
-  gap: 24px !important; /* Spacing increased 50% from 16px to 24px */
-  animation: awardsMarqueeLeft 15s linear infinite !important; /* Accelerated speed as requested */
+.logo-marquee-track {
+  display: flex !important;
+  width: max-content !important;
+  flex-shrink: 0 !important;
+  gap: 0 !important;
+  animation: marqueeScroll 25s linear infinite !important;
 }
-.awards-marquee-row:hover .awards-marquee-track {
-  animation-play-state: paused;
+.logo-marquee-row:hover .logo-marquee-track {
+  animation-play-state: paused !important;
 }
-.awards-logo-item {
-  background: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  padding: 0 !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.logo-marquee-group {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  gap: 38px !important; /* Shrunk 40% from 64px to 38px */
+  padding-right: 38px !important; /* Matches gap exactly to guarantee perfect seamless flow */
 }
-.awards-logo-item img {
-  height: 42px !important; /* Logo size scaled up 30% from 32px to 42px */
-  width: auto;
-  object-fit: contain;
-  filter: grayscale(100%);
+.awards-group {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  gap: 19px !important; /* Shrunk to 30% of original 64px, approx 19px */
+  padding-right: 19px !important; /* Matches gap exactly to guarantee perfect seamless flow */
+}
+.logo-item {
+  width: 90px !important;
+  height: 40px !important;
+  object-fit: contain !important;
+  flex-shrink: 0 !important;
+  filter: grayscale(100%) !important;
   transform: scale(1);
   transition: filter 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
-.awards-logo-item:hover img {
+.logo-item:hover {
   filter: grayscale(0%) !important;
   transform: scale(1.1) !important;
 }
 
-.logo-item img,
-.client-logo-item img {
-  height: 32px;
-  width: auto;
-  object-fit: contain;
-  filter: grayscale(100%);
-  transition: filter 0.3s ease;
+/* Brands/Clients Row custom properties */
+.logo-marquee-track.brands {
+  animation: marqueeScrollReverse 45s linear infinite !important;
 }
-.logo-item:hover img,
-.client-logo-item:hover img {
-  filter: grayscale(0%);
+.brands-group {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  gap: 10px !important; /* Shrunk 40% from 16px to 10px */
+  padding-right: 10px !important; /* Matches gap exactly to guarantee perfect seamless flow */
 }
 
-@keyframes marqueeLeft {
+/* Keyframe animations */
+@keyframes marqueeScroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-@keyframes awardsMarqueeLeft {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(-50% - 12px)); } /* 12px is exactly half of the 24px gap between sets to guarantee perfect, seamless infinite flow */
-}
-@keyframes clientMarqueeRight {
-  from { transform: translateX(calc(-50% - 6px)); } /* 6px is half of 12px gap between client items to guarantee perfect, seamless infinite flow */
-  to { transform: translateX(0); }
-}
-@keyframes marqueeRight {
+@keyframes marqueeScrollReverse {
   from { transform: translateX(-50%); }
   to { transform: translateX(0); }
 }
