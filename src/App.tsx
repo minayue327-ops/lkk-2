@@ -935,7 +935,7 @@ export default function App() {
               <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">业务专区</span>
               <button onClick={() => { setCurrentPage('category'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品类创新咨询</button>
               <a href="#professional-services" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">品牌&产品设计</a>
-              <a href="#case-studies" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">经典案例锦集</a>
+              <a href="#case-studies" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">经典成功案例</a>
               <a href="#about-lkk" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">公司简介</a>
             </nav>
             
@@ -1131,7 +1131,7 @@ export default function App() {
               {/* SLIDE 2: Clean Image-Only Banner Slide */}
               <div className="w-full h-full shrink-0 relative overflow-hidden select-none">
                 <img 
-                  src="https://github.com/minaxyue-ops/MINA/releases/download/1/banner2.png" 
+                  src="https://github.com/minaxyue-ops/MINA/releases/download/1/bannner2.png" 
                   alt="LKK Design Strategy Banner" 
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"
@@ -1300,7 +1300,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 5. 案例锦集 SECTION */}
+      {/* 5. 成功案例 SECTION */}
       <section id="case-studies" className="py-20 bg-neutral-50 px-[0.8px] md:px-[1.6px] border-t border-neutral-150">
         <div className="max-w-[95%] w-full mx-auto cases-inner">
           {/* Header */}
@@ -1308,7 +1308,7 @@ export default function App() {
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Portfolios</span>
               <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
-                <span className="char char-black">案</span><span className="char char-black">例</span><span className="char char-black">锦</span><span className="char char-black">集</span>
+                <span className="char char-black">成</span><span className="char char-black">功</span><span className="char char-black">案</span><span className="char char-black">例</span>
               </h2>
             </div>
             <p className="text-sm text-neutral-500 max-w-sm mt-4 md:mt-0">

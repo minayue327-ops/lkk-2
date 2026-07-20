@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { ArrowRight, Sparkles, Plus } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ArrowRight, Sparkles, Plus, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CaseStudy } from '../types';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface CategoryConsultingPageProps {
   onOpenContactModal: () => void;
@@ -16,6 +20,101 @@ export default function CategoryConsultingPage({
 }: CategoryConsultingPageProps) {
   // Accordion state
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const showcaseRef = useRef<HTMLDivElement>(null);
+  const statsContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 1. SCROLL-DRIVEN STACKING STATS CARDS TIMELINE
+    const statsContainer = statsContainerRef.current;
+    let statsCtx: gsap.Context | null = null;
+
+    if (statsContainer) {
+      statsCtx = gsap.context(() => {
+        const cards = statsContainer.querySelectorAll('.stat-card');
+        if (cards.length) {
+          const collapsedHeight = 72;
+          const overlap = 16;
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: statsContainer,
+              start: 'top 80px',
+              end: `+=${cards.length * 350}`,
+              scrub: true,
+              pin: true,
+              pinSpacing: true,
+            }
+          });
+
+          cards.forEach((card, i) => {
+            const eyebrow = card.querySelector('.stat-eyebrow');
+            const label = card.querySelector('.stat-label');
+            const details = card.querySelector('.card-details');
+            const number = card.querySelector('.stat-number');
+
+            tl.to(card, {
+              height: collapsedHeight,
+              marginTop: i === 0 ? 0 : -overlap,
+              paddingTop: '1rem',
+              paddingBottom: '1rem',
+              borderRadius: '1rem',
+              ease: 'none',
+              duration: 1,
+            }, i)
+            .to([eyebrow, label, details], {
+              opacity: 0,
+              height: 0,
+              marginTop: 0,
+              marginBottom: 0,
+              paddingTop: 0,
+              paddingBottom: 0,
+              overflow: 'hidden',
+              ease: 'none',
+              duration: 0.6,
+            }, i)
+            .to(number, {
+              fontSize: '1.75rem',
+              ease: 'none',
+              duration: 0.6,
+            }, i);
+          });
+        }
+      }, statsContainer);
+    }
+
+    // 2. PHOTO REVEAL HOOK FOR EXPERIENCE SHOWCASE SECTION
+    const showcaseContainer = showcaseRef.current;
+    let showcaseCtx: gsap.Context | null = null;
+
+    if (showcaseContainer) {
+      showcaseCtx = gsap.context(() => {
+        const revealItems = gsap.utils.toArray('.photo-reveal-item');
+        revealItems.forEach((item: any) => {
+          gsap.fromTo(item,
+            { opacity: 0, y: 60 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1.0,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 85%',
+                toggleActions: 'play reverse play reverse',
+              }
+            }
+          );
+        });
+      }, showcaseContainer);
+    }
+
+    return () => {
+      if (statsCtx) statsCtx.revert();
+      if (showcaseCtx) showcaseCtx.revert();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
 
   // 13 FAQ items
   const faqItems = [
@@ -193,50 +292,110 @@ export default function CategoryConsultingPage({
             </button>
           </div>
 
-          {/* 4 Quantitative Stats Grid (Equal width, 4 columns, huge bold numbers) */}
-          <div className="w-full max-w-5xl mt-16 md:mt-20">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 border-t border-neutral-150 pt-10 text-center">
-              
-              <div className="flex flex-col items-center">
-                <span className="text-5xl md:text-6xl lg:text-[72px] font-black text-[#007BC7] tracking-tight font-display leading-none">
-                  <CounterComponent target={22} />
-                </span>
-                <span className="text-xs font-semibold text-neutral-400 mt-3 tracking-widest">
-                  年行业经验积淀
-                </span>
-              </div>
+        </div>
+      </section>
 
-              <div className="flex flex-col items-center">
-                <span className="text-5xl md:text-6xl lg:text-[72px] font-black text-[#007BC7] tracking-tight font-display leading-none flex items-center justify-center">
-                  <CounterComponent target={600} /><span className="text-3xl md:text-4xl font-light -translate-y-1 md:-translate-y-2 ml-0.5">+</span>
-                </span>
-                <span className="text-xs font-semibold text-neutral-400 mt-3 tracking-widest">
-                  专业奖项认证
-                </span>
-              </div>
+      {/* 1.5 SCROLL-DRIVEN OVERLAPPING STATS CARDS */}
+      <section id="category-stats-scroll" className="w-full bg-[#fafafa] py-16 lg:py-24">
+        
+        {/* Section header to give context when cards are stacking */}
+        <div className="text-center mb-12 px-6">
+          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">LKK BRAND INTEGRITY</span>
+          <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mt-1 font-display">
+            洛可可品牌创新实力数据
+          </h3>
+        </div>
 
-              <div className="flex flex-col items-center">
-                <span className="text-5xl md:text-6xl lg:text-[72px] font-black text-[#007BC7] tracking-tight font-display leading-none flex items-center justify-center">
-                  <CounterComponent target={1000} /><span className="text-3xl md:text-4xl font-light -translate-y-1 md:-translate-y-2 ml-0.5">+</span>
-                </span>
-                <span className="text-xs font-semibold text-neutral-400 mt-3 tracking-widest">
-                  行业头部客户认可
-                </span>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <span className="text-5xl md:text-6xl lg:text-[72px] font-black text-[#007BC7] tracking-tight font-display leading-none flex items-center justify-center">
-                  <CounterComponent target={10000} /><span className="text-3xl md:text-4xl font-light -translate-y-1 md:-translate-y-2 ml-0.5">+</span>
-                </span>
-                <span className="text-xs font-semibold text-neutral-400 mt-3 tracking-widest">
-                  产品成功落地
-                </span>
-              </div>
-
+        <div className="stat-cards-section flex flex-col gap-6" ref={statsContainerRef}>
+          {/* Card 1 */}
+          <div 
+            className="stat-card stat-card-1 bg-sky-50 border border-sky-100 text-neutral-900"
+            style={{ zIndex: 10 }}
+          >
+            <span className="stat-eyebrow text-[10px] uppercase font-bold text-sky-500 tracking-wider bg-white px-2.5 py-1 rounded-full border border-sky-100/50 font-mono">
+              Since 2004
+            </span>
+            <div className="stat-card-header">
+              <span className="stat-number font-black text-[#007BC7] font-display">
+                <CounterComponent target={22} />
+              </span>
+              <span className="stat-label font-bold text-[#005F96]">年行业深耕</span>
+            </div>
+            <div className="card-details">
+              <h4 className="text-sm lg:text-base font-bold text-neutral-800">中国工业设计与战略咨询拓荒者</h4>
+              <p className="text-xs lg:text-[13px] text-neutral-500 mt-2 leading-relaxed max-w-2xl">
+                22年潜心探索，深度服务各领域龙头及创新品牌，沉淀出行业领先的“三品合一”战略咨询与爆品打造方法论，助力中国制造向中国品牌跃迁。
+              </p>
             </div>
           </div>
 
+          {/* Card 2 */}
+          <div 
+            className="stat-card stat-card-2 bg-emerald-50 border border-emerald-100 text-neutral-900"
+            style={{ zIndex: 20 }}
+          >
+            <span className="stat-eyebrow text-[10px] uppercase font-bold text-emerald-500 tracking-wider bg-white px-2.5 py-1 rounded-full border border-emerald-100/50 font-mono">
+              Design Awards
+            </span>
+            <div className="stat-card-header">
+              <span className="stat-number font-black text-emerald-600 font-display flex items-baseline">
+                <CounterComponent target={600} /><span className="text-2xl font-light -translate-y-0.5 ml-0.5">+</span>
+              </span>
+              <span className="stat-label font-bold text-emerald-800">创意设计大奖</span>
+            </div>
+            <div className="card-details">
+              <h4 className="text-sm lg:text-base font-bold text-neutral-800">荣获红点、iF、IDEA等国际顶尖大奖</h4>
+              <p className="text-xs lg:text-[13px] text-neutral-500 mt-2 leading-relaxed max-w-2xl">
+                揽获德国红点奖、德国iF设计奖、美国IDEA、日本G-Mark等国内外重量级设计大奖超600项。我们用国际一流水准的创意美学，为每一个战略新品类构筑起坚实的心智护城河。
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div 
+            className="stat-card stat-card-3 bg-amber-50 border border-amber-100 text-neutral-900"
+            style={{ zIndex: 30 }}
+          >
+            <span className="stat-eyebrow text-[10px] uppercase font-bold text-amber-500 tracking-wider bg-white px-2.5 py-1 rounded-full border border-amber-100/50 font-mono">
+              Trusted Clients
+            </span>
+            <div className="stat-card-header">
+              <span className="stat-number font-black text-amber-600 font-display flex items-baseline">
+                <CounterComponent target={1000} /><span className="text-2xl font-light -translate-y-0.5 ml-0.5">+</span>
+              </span>
+              <span className="stat-label font-bold text-amber-800">品牌客户挚信</span>
+            </div>
+            <div className="card-details">
+              <h4 className="text-sm lg:text-base font-bold text-neutral-800">500强与高增长新锐品牌的一致选择</h4>
+              <p className="text-xs lg:text-[13px] text-neutral-500 mt-2 leading-relaxed max-w-2xl">
+                服务涵盖世界500强企业、国内头部大型企业（如海尔、美的、茅台、西门子、奥迪等），以及众多新锐爆品赛道开创者，共同见证品类爆品从0到1、从1到100的卓越跃升。
+              </p>
+            </div>
+          </div>
+
+          {/* Card 4 */}
+          <div 
+            className="stat-card stat-card-4 bg-neutral-900 border border-neutral-800 text-white"
+            style={{ zIndex: 40 }}
+          >
+            <span className="stat-eyebrow text-[10px] uppercase font-bold text-[#007BC7] tracking-wider bg-neutral-800 px-2.5 py-1 rounded-full border border-neutral-700 font-mono">
+              Market Success
+            </span>
+            <div className="stat-card-header">
+              <span className="stat-number font-black text-[#007BC7] font-display flex items-baseline">
+                <CounterComponent target={10000} /><span className="text-2xl font-light -translate-y-0.5 ml-0.5">+</span>
+              </span>
+              <span className="stat-label font-bold text-neutral-200">成功上市产品</span>
+            </div>
+            <div className="card-details">
+              <h4 className="text-sm lg:text-base font-bold text-neutral-100">强大的供应链护航与极致的落地量产</h4>
+              <p className="text-xs lg:text-[13px] text-neutral-400 mt-2 leading-relaxed max-w-2xl">
+                我们不仅定位品类与设计产品，更能深度链接全球柔性制造供应链网络，打通打样、开模、材料测试到量产交货全闭环。真正做到“咨询战略即爆品，方案出炉即量产”。
+              </p>
+            </div>
+          </div>
         </div>
+
       </section>
 
       {/* 2. SERVICES - THREE CARD SERVICE AREA */}
@@ -390,7 +549,313 @@ export default function CategoryConsultingPage({
         </div>
       </section>
 
-      {/* 3. CASES - GRID WORK REUSING HOMEPAGE DESIGN SYSTEM (3 COLUMNS x 2 ROWS) */}
+      {/* 洛可可实战中不断总结的经验板块 - EXPERIENCE SHOWCASE */}
+      {/* 洛可可实战中不断总结的经验板块 - EXPERIENCE SHOWCASE */}
+      <section 
+        id="experience-showcase" 
+        ref={showcaseRef}
+        className="py-24 bg-neutral-950 text-white border-b border-neutral-800"
+      >
+        <div className="max-w-[95%] w-full mx-auto px-6 mb-20 text-center">
+          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">LKK PRACTICE EXPERIENCE</span>
+          <h2 className="text-3xl md:text-5xl font-black text-white mt-2 font-display">
+            洛可可实战中不断总结的经验
+          </h2>
+          <p className="text-sm text-neutral-400 mt-4 max-w-xl mx-auto leading-relaxed">
+            22年深耕品类创新，沉淀出系统化的战略咨询原理与方法论，帮助客户定义品类，直达爆品。
+          </p>
+        </div>
+
+        <div className="photo-reveal-group max-w-[85%] w-full mx-auto flex flex-col gap-32">
+          
+          {/* Panel 1: 品类创新解决方案 */}
+          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+            {/* Left Photo Reveal Item */}
+            <div className="photo-reveal-item w-full md:w-1/2 aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative border border-neutral-800 shrink-0">
+              <img 
+                src="/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg" 
+                alt="品类创新解决方案" 
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
+              <div className="absolute bottom-6 left-6 text-left">
+                <span className="text-xs font-bold text-sky-400 uppercase tracking-wider font-mono">PART 01</span>
+                <h3 className="text-xl font-bold text-white mt-1">品类创新解决方案</h3>
+              </div>
+            </div>
+
+            {/* Right Content */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center text-left">
+              <span className="text-[#007BC7] text-xs font-bold uppercase tracking-[0.25em] mb-3 block font-mono">
+                洛可可为客户提供的价值
+              </span>
+              <h3 className="text-2xl md:text-3xl font-black text-white mb-8 font-display tracking-tight">
+                品类创新解决方案
+              </h3>
+              
+              <div className="grid grid-cols-1 gap-4 w-full">
+                {/* Card 1 */}
+                <div className="bg-neutral-900/60 border border-neutral-800/60 p-5 rounded-2xl flex items-center gap-4 hover:border-[#007BC7]/40 transition-all">
+                  <div className="w-8 h-8 rounded-full bg-[#007BC7]/10 text-[#007BC7] flex items-center justify-center font-bold text-xs shrink-0">01</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">为中小企业</h4>
+                    <p className="text-xs text-neutral-400 mt-0.5">在竞争内卷中寻找创新增长机会</p>
+                  </div>
+                </div>
+
+                {/* Card 2 */}
+                <div className="bg-neutral-900/60 border border-neutral-800/60 p-5 rounded-2xl flex items-center gap-4 hover:border-[#007BC7]/40 transition-all">
+                  <div className="w-8 h-8 rounded-full bg-[#007BC7]/10 text-[#007BC7] flex items-center justify-center font-bold text-xs shrink-0">02</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">为大型企业</h4>
+                    <p className="text-xs text-neutral-400 mt-0.5">探索第二增长曲线</p>
+                  </div>
+                </div>
+
+                {/* Card 3 */}
+                <div className="bg-neutral-900/60 border border-neutral-800/60 p-5 rounded-2xl flex items-center gap-4 hover:border-[#007BC7]/40 transition-all">
+                  <div className="w-8 h-8 rounded-full bg-[#007BC7]/10 text-[#007BC7] flex items-center justify-center font-bold text-xs shrink-0">03</div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">为技术型企业</h4>
+                    <p className="text-xs text-neutral-400 mt-0.5">提供新品类商品化解决方案</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Panel 2: 三品合一原理 */}
+          <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
+            {/* Right Photo Reveal Item */}
+            <div className="photo-reveal-item w-full md:w-1/2 aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative border border-neutral-800 shrink-0">
+              <img 
+                src="/src/assets/images/lkk_humanoid_robot_1783302961282.jpg" 
+                alt="三品合一原理" 
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
+              <div className="absolute bottom-6 left-6 text-left">
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider font-mono">PART 02</span>
+                <h3 className="text-xl font-bold text-white mt-1">三品合一原理</h3>
+              </div>
+            </div>
+
+            {/* Left Content with SVG Diagram */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center text-left">
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-[0.2em] font-mono mb-2">Core Theory</span>
+              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight font-display mb-3">
+                三品合一
+              </h3>
+              <p className="text-md text-[#007BC7] font-semibold mb-4">
+                是构建品类创新增长的原理
+              </p>
+              <p className="text-xs text-neutral-400 leading-relaxed mb-6">
+                洛可可三品合一将品类定位（找准赛道）、产品创新（极致工业设计与结构堆叠）和品牌创新（打造心智超级符号）进行有机融合，从源头降低企业的战略决策和执行磨损成本。
+              </p>
+
+              {/* Triangle Diagram Container */}
+              <div className="relative w-full max-w-[360px] aspect-[4/3] bg-neutral-900/50 p-4 rounded-3xl border border-neutral-800/60 select-none">
+                {/* SVG Connections */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 300">
+                  {/* Outer lines */}
+                  <line x1="200" y1="45" x2="65" y2="245" stroke="#007BC7" strokeWidth="2" strokeDasharray="5 5" />
+                  <line x1="200" y1="45" x2="335" y2="245" stroke="#007BC7" strokeWidth="2" strokeDasharray="5 5" />
+                  <line x1="65" y1="245" x2="335" y2="245" stroke="#007BC7" strokeWidth="2" strokeDasharray="5 5" />
+                  
+                  {/* Center lines */}
+                  <line x1="200" y1="45" x2="200" y2="160" stroke="#007BC7" strokeWidth="1.5" />
+                  <line x1="65" y1="245" x2="200" y2="160" stroke="#007BC7" strokeWidth="1.5" />
+                  <line x1="335" y1="245" x2="200" y2="160" stroke="#007BC7" strokeWidth="1.5" />
+                </svg>
+
+                {/* Top Node */}
+                <div className="absolute top-[45px] left-[200px] -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-neutral-900 border border-[#007BC7] rounded-full flex flex-col items-center justify-center shadow-md">
+                  <span className="text-[#007BC7] font-black text-xs">品类</span>
+                  <span className="text-[8px] text-neutral-400 font-mono tracking-wider">CATEGORY</span>
+                </div>
+
+                {/* Bottom Left Node */}
+                <div className="absolute top-[245px] left-[65px] -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-neutral-900 border border-[#007BC7] rounded-full flex flex-col items-center justify-center shadow-md">
+                  <span className="text-[#007BC7] font-black text-xs">产品</span>
+                  <span className="text-[8px] text-neutral-400 font-mono tracking-wider">PRODUCT</span>
+                </div>
+
+                {/* Bottom Right Node */}
+                <div className="absolute top-[245px] left-[335px] -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-neutral-900 border border-[#007BC7] rounded-full flex flex-col items-center justify-center shadow-md">
+                  <span className="text-[#007BC7] font-black text-xs">品牌</span>
+                  <span className="text-[8px] text-neutral-400 font-mono tracking-wider">BRAND</span>
+                </div>
+
+                {/* Center Node */}
+                <div className="absolute top-[160px] left-[200px] -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-neutral-800 border border-[#007BC7] rounded-full flex flex-col items-center justify-center shadow-lg ring-4 ring-[#007BC7]/10">
+                  <span className="text-white font-bold text-xs mb-0.5">用户欲求</span>
+                  <span className="text-[8px] text-neutral-400 font-mono tracking-wider uppercase">DESIRE</span>
+                </div>
+
+                {/* Labels */}
+                <div className="absolute top-[135px] left-[110px] -translate-x-1/2 -translate-y-1/2 bg-neutral-800 border border-neutral-700 text-[10px] font-bold text-neutral-300 px-1.5 py-0.5 rounded shadow-sm">
+                  方案
+                </div>
+                <div className="absolute top-[135px] left-[290px] -translate-x-1/2 -translate-y-1/2 bg-neutral-800 border border-neutral-700 text-[10px] font-bold text-neutral-300 px-1.5 py-0.5 rounded shadow-sm">
+                  价值
+                </div>
+                <div className="absolute top-[260px] left-[200px] -translate-x-1/2 -translate-y-1/2 bg-neutral-800 border border-neutral-700 text-[10px] font-bold text-neutral-300 px-2 py-0.5 rounded shadow-sm">
+                  价值交易
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Panel 3: 认知行价值框架 */}
+          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+            {/* Left Photo Reveal Item */}
+            <div className="photo-reveal-item w-full md:w-1/2 aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative border border-neutral-800 shrink-0">
+              <img 
+                src="/src/assets/images/lkk_coffee_mockup_1783302972120.jpg" 
+                alt="认知行价值框架" 
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
+              <div className="absolute bottom-6 left-6 text-left">
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider font-mono">PART 03</span>
+                <h3 className="text-xl font-bold text-white mt-1">认知行价值框架</h3>
+              </div>
+            </div>
+
+            {/* Right Content */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center text-left">
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-[0.2em] font-mono mb-2">Methodology</span>
+              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight font-display mb-6">
+                品类创新方法论——认知行价值框架
+              </h3>
+
+              {/* Process Flow */}
+              <div className="flex items-center gap-3 mb-6 bg-neutral-900/40 p-4 rounded-2xl border border-neutral-800/50 w-full max-w-[400px]">
+                <div className="flex flex-col items-center bg-[#007BC7]/20 border border-[#007BC7]/40 px-3 py-1 rounded-xl">
+                  <span className="text-sm font-black text-[#007BC7]">认</span>
+                  <span className="text-[8px] text-neutral-400 uppercase font-mono">Identify</span>
+                </div>
+                <span className="text-neutral-600">→</span>
+                <div className="flex flex-col items-center bg-[#007BC7]/20 border border-[#007BC7]/40 px-3 py-1 rounded-xl">
+                  <span className="text-sm font-black text-[#007BC7]">知</span>
+                  <span className="text-[8px] text-neutral-400 uppercase font-mono">Know</span>
+                </div>
+                <span className="text-neutral-600">→</span>
+                <div className="flex flex-col items-center bg-[#007BC7]/20 border border-[#007BC7]/40 px-3 py-1 rounded-xl">
+                  <span className="text-sm font-black text-[#007BC7]">行</span>
+                  <span className="text-[8px] text-neutral-400 uppercase font-mono">Action</span>
+                </div>
+                <span className="text-neutral-600">→</span>
+                <div className="flex flex-col items-center bg-[#007BC7] px-4 py-1 rounded-xl shadow-md">
+                  <span className="text-sm font-black text-white">价值</span>
+                  <span className="text-[8px] text-white/80 uppercase font-mono">Value</span>
+                </div>
+              </div>
+
+              {/* Diagrams Grid */}
+              <div className="grid grid-cols-2 gap-4 w-full max-w-[440px]">
+                <div className="bg-neutral-900/50 p-4 rounded-2xl border border-neutral-800/60 flex flex-col items-center">
+                  <span className="text-[10px] font-bold text-neutral-400 mb-2">业务取舍：三圆维恩图</span>
+                  <div className="relative w-40 h-36 scale-90 select-none">
+                    <div className="absolute top-1 left-2 w-20 h-20 rounded-full bg-[#007BC7]/15 border border-[#007BC7]/30 flex flex-col items-center justify-center">
+                      <span className="text-[#007BC7] font-black text-[10px]">想做</span>
+                    </div>
+                    <div className="absolute top-1 right-2 w-20 h-20 rounded-full bg-neutral-800 border border-neutral-700 flex flex-col items-center justify-center">
+                      <span className="text-neutral-300 font-black text-[10px]">可做</span>
+                    </div>
+                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-[#007BC7]/5 border border-[#007BC7]/15 flex flex-col items-center justify-center">
+                      <span className="text-neutral-400 font-black text-[10px]">能做</span>
+                    </div>
+                    <div className="absolute top-[45px] left-1/2 -translate-x-1/2 bg-white text-neutral-950 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full shadow-md z-10">
+                      该做
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-neutral-900/50 p-4 rounded-2xl border border-neutral-800/60 flex flex-col items-center">
+                  <span className="text-[10px] font-bold text-neutral-400 mb-2">三品体系联动</span>
+                  <div className="relative w-40 h-36 scale-[0.8] select-none">
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 200 160">
+                      <line x1="100" y1="20" x2="30" y2="130" stroke="#007BC7" strokeWidth="1.5" strokeDasharray="3 3" />
+                      <line x1="100" y1="20" x2="170" y2="130" stroke="#007BC7" strokeWidth="1.5" strokeDasharray="3 3" />
+                      <line x1="30" y1="130" x2="170" y2="130" stroke="#007BC7" strokeWidth="1.5" strokeDasharray="3 3" />
+                    </svg>
+                    <div className="absolute top-[20px] left-[100px] -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-neutral-900 border border-[#007BC7] rounded-full flex items-center justify-center">
+                      <span className="text-[#007BC7] font-bold text-[8px]">品类</span>
+                    </div>
+                    <div className="absolute top-[130px] left-[30px] -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-neutral-900 border border-[#007BC7] rounded-full flex items-center justify-center">
+                      <span className="text-[#007BC7] font-bold text-[8px]">产品</span>
+                    </div>
+                    <div className="absolute top-[130px] left-[170px] -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-neutral-900 border border-[#007BC7] rounded-full flex items-center justify-center">
+                      <span className="text-[#007BC7] font-bold text-[8px]">品牌</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Panel 4: 爆品价值循环 + 品牌营销杠杆 */}
+          <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
+            {/* Right Photo Reveal Item */}
+            <div className="photo-reveal-item w-full md:w-1/2 aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative border border-neutral-800 shrink-0">
+              <img 
+                src="/src/assets/images/lkk_hero_banner_1783412912488.jpg" 
+                alt="爆品价值循环" 
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
+              <div className="absolute bottom-6 left-6 text-left">
+                <span className="text-xs font-bold text-[#007BC7] uppercase tracking-wider font-mono">PART 04</span>
+                <h3 className="text-xl font-bold text-white mt-1">爆品价值与营销杠杆</h3>
+              </div>
+            </div>
+
+            {/* Left Content */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center text-left">
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-[0.2em] font-mono mb-2">Growth Engine</span>
+              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight font-display mb-6">
+                爆品价值循环 + 品牌营销杠杆
+              </h3>
+
+              <div className="grid grid-cols-1 gap-4 w-full max-w-[440px]">
+                {/* Value Cycle Diagram Card */}
+                <div className="bg-neutral-900/50 p-5 rounded-2xl border border-neutral-800/60">
+                  <span className="text-[10px] font-bold text-neutral-400 mb-3 block uppercase tracking-wider">五维爆品价值循环</span>
+                  <div className="flex flex-wrap gap-2">
+                    {['废品', '作品', '制品', '商品', '用品'].map((lbl, idx) => (
+                      <div key={idx} className="bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg flex flex-col items-center">
+                        <span className="text-[10px] font-bold text-white">{lbl}</span>
+                        <span className="text-[7px] text-neutral-400 font-mono">VALUE</span>
+                      </div>
+                    ))}
+                    <div className="bg-[#007BC7] px-2.5 py-1 rounded-lg flex flex-col items-center shadow-md">
+                      <span className="text-[10px] font-bold text-white">爆品价值</span>
+                      <span className="text-[7px] text-white/80 font-mono">CORE</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Lever Diagram Card */}
+                <div className="bg-neutral-900/50 p-5 rounded-2xl border border-neutral-800/60">
+                  <span className="text-[10px] font-bold text-neutral-400 mb-2 block uppercase tracking-wider">品牌营销杠杆示意</span>
+                  <div className="flex items-center justify-between bg-neutral-800/80 p-3 rounded-xl border border-neutral-700/50">
+                    <span className="text-xs font-bold text-white">品牌营销杠杆 (撬动心智距离)</span>
+                    <span className="text-[10px] font-bold text-white bg-[#007BC7] px-2.5 py-0.5 rounded-full shadow-sm">极致定位</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3. CASES - GRID WORK REUSING HOMEPAGE DESIGN SYSTEM (3 COLUMNS x 2 ROWS) - RENAME TO 案例锦集 */}
       <section id="category-cases" className="py-20 bg-neutral-50 px-6 border-b border-neutral-100">
         <div className="max-w-[95%] w-full mx-auto relative z-10">
           
@@ -457,10 +922,13 @@ export default function CategoryConsultingPage({
       </section>
 
       {/* 4. FAQ - NEW CORE ACCORDION SECTION */}
-      <section id="category-faq" className="py-20 bg-white px-6">
-        <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto relative z-10">
-          
-          <div className="text-center mb-16">
+      <section 
+        id="category-faq" 
+        className="py-20 bg-white w-full overflow-hidden"
+      >
+        {/* Title Area - Centered */}
+        <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 relative z-10 mb-16">
+          <div className="text-center">
             <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">FAQ</span>
             <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
               <span className="char char-black">成</span><span className="char char-black">功</span><span className="char char-black">路</span><span className="char char-black">径</span>
@@ -469,25 +937,39 @@ export default function CategoryConsultingPage({
               关于洛可可“三品合一”战略咨询与爆品落地全流程，解答您关心的一切核心诉求。
             </p>
           </div>
+        </div>
 
-          <div className="flex flex-col border-t border-neutral-150">
-            {faqItems.map((item, index) => {
-              const isOpen = openIndex === index;
-              return (
+        {/* Full-width List Container */}
+        <div className="flex flex-col border-t border-neutral-150 w-full">
+          {faqItems.map((item, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div 
+                key={index} 
+                className="w-full border-b border-[#E5E5E5] relative overflow-hidden group"
+              >
+                {/* Sliding background overlay from left to right */}
                 <div 
-                  key={index} 
-                  className="border-b border-[#E5E5E5] py-5 flex flex-col transition-all duration-300"
-                >
+                  className="absolute inset-0 bg-[#007bc7] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] z-0 pointer-events-none"
+                  style={{
+                    clipPath: isOpen 
+                      ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' 
+                      : 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
+                  }}
+                />
+
+                {/* Centered item content */}
+                <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 py-6 flex flex-col text-left relative z-10">
                   {/* Question header */}
                   <button 
                     onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="flex items-center justify-between gap-6 text-left w-full group py-1"
+                    className="flex items-center justify-between gap-6 text-left w-full group py-1 relative z-10 outline-none"
                   >
-                    <span className={`text-[15px] font-bold font-sans transition-colors duration-300 ${isOpen ? 'text-[#007BC7]' : 'text-[#1A1A1A] group-hover:text-[#005F96]'}`}>
+                    <span className={`text-[15px] font-bold font-sans transition-colors duration-500 ${isOpen ? 'text-white' : 'text-[#1A1A1A] group-hover:text-[#007BC7]'}`}>
                       {item.q}
                     </span>
                     <div 
-                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen ? 'bg-neutral-50 text-[#007BC7] rotate-45' : 'bg-neutral-50 text-neutral-400 group-hover:bg-[#E5F2FA] group-hover:text-[#007BC7]'}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-500 ${isOpen ? 'bg-white/20 text-white rotate-45 shadow-sm' : 'bg-neutral-50 text-neutral-400 group-hover:bg-[#E5F2FA] group-hover:text-[#007BC7]'}`}
                     >
                       <Plus className="w-4 h-4 stroke-[2.5]" />
                     </div>
@@ -500,20 +982,19 @@ export default function CategoryConsultingPage({
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        transition={{ duration: 0.35, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <p className="text-xs leading-relaxed text-[#4D4D4D] pt-3 pb-1 text-left font-normal max-w-4xl text-balance">
+                        <p className={`text-xs leading-relaxed pt-4 pb-1 text-left font-normal max-w-4xl text-balance transition-colors duration-500 ${isOpen ? 'text-neutral-100' : 'text-[#4D4D4D]'}`}>
                           {item.a}
                         </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-              );
-            })}
-          </div>
-
+              </div>
+            );
+          })}
         </div>
       </section>
 
