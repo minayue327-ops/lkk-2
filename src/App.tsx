@@ -20,6 +20,14 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import LKKLogo from './components/LKKLogo';
 import CategoryConsultingPage from './components/CategoryConsultingPage';
+import ProductInnovationPage from './components/ProductInnovationPage';
+import BrandInnovationPage from './components/BrandInnovationPage';
+import ServiceDetailPage from './components/ServiceDetailPage';
+import IndustryCollectionPage from './components/IndustryCollectionPage';
+import IndustryDetailPage from './components/IndustryDetailPage';
+import { CasesPage } from './components/CasesPage';
+import { AboutUsPage } from './components/AboutUsPage';
+import { NewsPage } from './components/NewsPage';
 import { 
   SERVICE_CATEGORIES, 
   NEWS_ARTICLES, 
@@ -149,9 +157,69 @@ const Counter: React.FC<{ target: number }> = ({ target }) => {
   return <span ref={elementRef}>{count}</span>;
 };
 
+type PageType = 
+  | 'home' 
+  | 'category' 
+  | 'product' 
+  | 'brand' 
+  | 'industry'
+  | 'industry-detail'
+  | 'industrial-design' 
+  | 'structural-design' 
+  | 'production-landing' 
+  | 'full-case-design' 
+  | 'packaging-design' 
+  | 'ip-design'
+  | 'cases'
+  | 'about'
+  | 'news';
+
 export default function App() {
   // Current page state
-  const [currentPage, setCurrentPage] = useState<'home' | 'category'>('home');
+  const [currentPage, setCurrentPage] = useState<PageType>('home');
+  const [currentIndustryKey, setCurrentIndustryKey] = useState<string>('industrial-equipment');
+
+  const handleNavigateUrl = (url: string) => {
+    if (url === '/about' || url === '/about-us' || url === '#about-lkk') {
+      setCurrentPage('about');
+    } else if (url === '/cases' || url === '/case-studies' || url.startsWith('/cases')) {
+      setCurrentPage('cases');
+    } else if (url === '/news' || url === '/news-center' || url.startsWith('/news') || url === '#news-center') {
+      setCurrentPage('news');
+    } else if (url === '/product-innovation/industrial-design') {
+      setCurrentPage('industrial-design');
+    } else if (url === '/product-innovation/structural-design') {
+      setCurrentPage('structural-design');
+    } else if (url === '/product-innovation/production-landing') {
+      setCurrentPage('production-landing');
+    } else if (url === '/brand-innovation/full-case-design') {
+      setCurrentPage('full-case-design');
+    } else if (url === '/brand-innovation/packaging-design') {
+      setCurrentPage('packaging-design');
+    } else if (url === '/brand-innovation/ip-design') {
+      setCurrentPage('ip-design');
+    } else if (url === '/product-innovation') {
+      setCurrentPage('product');
+    } else if (url === '/brand-innovation') {
+      setCurrentPage('brand');
+    } else if (url === '/category-consulting') {
+      setCurrentPage('category');
+    } else if (url.startsWith('/industry/') || url.startsWith('/hangye/')) {
+      const parts = url.split('/');
+      const key = parts[parts.length - 1];
+      if (key && key !== 'industry' && key !== 'hangye') {
+        setCurrentIndustryKey(key);
+        setCurrentPage('industry-detail');
+      } else {
+        setCurrentPage('industry');
+      }
+    } else if (url === '/industry' || url === '/hangye') {
+      setCurrentPage('industry');
+    } else {
+      setCurrentPage('home');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Navigation active state
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -178,7 +246,7 @@ export default function App() {
   }, []);
 
   // Form submission states
-  const [footerForm, setFooterForm] = useState({ name: '', phone: '' });
+  const [footerForm, setFooterForm] = useState({ name: '', phone: '', company: '', city: '' });
   const [footerFormSuccess, setFooterFormSuccess] = useState(false);
   
   const [modalForm, setModalForm] = useState({ name: '', phone: '', industry: '智能制造', desc: '' });
@@ -187,6 +255,23 @@ export default function App() {
 
   // Selected case for details modal
   const [selectedCase, setSelectedCase] = useState<CaseStudy | null>(null);
+
+  const isFooterLight = false;
+
+  // Helper to navigate to a section on the Product Innovation page
+  const navigateToProductSection = (sectionId: string) => {
+    setCurrentPage('product');
+    setActiveMenu(null);
+    setMobileMenuOpen(false);
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 120);
+  };
 
   // Active state for Case Studies Style 2 on touch devices
   const [activeV2Card, setActiveV2Card] = useState<string | null>(null);
@@ -480,32 +565,63 @@ export default function App() {
 
 
 
-  // Section Title Scroll Reveal (Bidirectional Follow, 500px range)
+  // Section Title Scroll Reveal (Scrubbed Bidirectional Scroll Color Reveal)
   useEffect(() => {
-    const groups = document.querySelectorAll('.section-title.scroll-reveal-heading');
-    if (groups.length === 0) return;
-
-    const computeProgress = (el: Element) => {
-      const rect = el.getBoundingClientRect();
-      const viewportH = window.innerHeight;
-      const startPoint = viewportH * 0.85; // Reveal begins when header enters bottom 85% of viewport
-      const triggerRange = 500;            // Slower progress over 500px range
-      const scrolled = Math.min(Math.max(startPoint - rect.top, 0), triggerRange);
-      return scrolled / triggerRange;
-    };
-
     const updateAll = () => {
+      const groups = document.querySelectorAll('.scroll-reveal-heading, .section-title');
+      if (groups.length === 0) return;
+
       groups.forEach((group) => {
+        // Auto wrap text if no .char elements exist yet
+        if (!group.querySelector('.char') && group.childNodes.length > 0) {
+          let text = '';
+          group.childNodes.forEach((node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              text += node.textContent || '';
+            } else if ((node as HTMLElement).classList?.contains('char')) {
+              text += (node as HTMLElement).textContent || '';
+            } else {
+              text += (node as HTMLElement).innerText || '';
+            }
+          });
+          if (text.trim()) {
+            group.innerHTML = text
+              .trim()
+              .split('')
+              .map((c) => `<span class="char">${c}</span>`)
+              .join('');
+          }
+        }
+
         const chars = group.querySelectorAll('.char');
         if (chars.length === 0) return;
-        const progress = computeProgress(group);
-        const revealCount = Math.floor(progress * chars.length);
-        
+
+        const rect = group.getBoundingClientRect();
+        const viewportH = window.innerHeight;
+        const startY = viewportH * 0.90; // Reveal begins when header enters bottom 90% of viewport
+        const triggerRange = 450;         // Slower progress over 450px scroll range (~0.6-0.7s feel)
+        const scrolled = Math.min(Math.max(startY - rect.top, 0), triggerRange);
+        const progress = scrolled / triggerRange; // 0 to 1
+
+        const count = chars.length;
         chars.forEach((char, i) => {
-          if (i < revealCount) {
-            char.classList.add('is-revealed');
+          const charStart = count > 1 ? (i / count) * 0.5 : 0;
+          const charEnd = count > 1 ? charStart + 0.5 : 1;
+          const charProgress = Math.min(Math.max((progress - charStart) / (charEnd - charStart), 0), 1);
+
+          // Interpolate from #D9D9D9 (217, 217, 217) to #1A1A1A (26, 26, 26)
+          const r = Math.round(217 - charProgress * (217 - 26));
+          const g = Math.round(217 - charProgress * (217 - 26));
+          const b = Math.round(217 - charProgress * (217 - 26));
+          const opacity = (0.35 + charProgress * 0.65).toFixed(3);
+
+          const el = char as HTMLElement;
+          el.style.color = `rgb(${r}, ${g}, ${b})`;
+          el.style.opacity = opacity;
+          if (charProgress > 0.5) {
+            el.classList.add('is-revealed');
           } else {
-            char.classList.remove('is-revealed');
+            el.classList.remove('is-revealed');
           }
         });
       });
@@ -520,7 +636,7 @@ export default function App() {
     updateAll();
 
     // Small delay to ensure any dynamic/layout shifts are accounted for
-    const timer = setTimeout(updateAll, 100);
+    const timer = setTimeout(updateAll, 120);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -577,11 +693,11 @@ export default function App() {
 
   const handleFooterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!footerForm.name || !footerForm.phone) return;
+    if (!footerForm.name || !footerForm.phone || !footerForm.company || !footerForm.city) return;
     setFooterFormSuccess(true);
     setTimeout(() => {
       setFooterFormSuccess(false);
-      setFooterForm({ name: '', phone: '' });
+      setFooterForm({ name: '', phone: '', company: '', city: '' });
     }, 4000);
   };
 
@@ -617,7 +733,7 @@ export default function App() {
       {/* SITE HEADER WRAPPER */}
       <div className="site-header">
         {/* 1. TOP NAV BAR */}
-      <div className="border-b border-neutral-100 bg-neutral-50/50 text-[11px] text-neutral-500 py-2.5 px-[0.8px] md:px-[1.6px]">
+      <div className="border-b border-neutral-100 bg-neutral-50/50 text-[11px] text-neutral-500 py-2.5">
         <div className="max-w-[95%] w-full mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           {/* Left Links */}
           <div className="flex items-center gap-4 flex-wrap justify-center">
@@ -642,7 +758,7 @@ export default function App() {
       </div>
 
       {/* 2. MAIN HEADER */}
-      <header className="border-b border-neutral-100 px-[0.8px] md:px-[1.6px] py-4 transition-all bg-transparent">
+      <header className="border-b border-neutral-100 py-4 transition-all bg-transparent">
         <div className="max-w-[95%] w-full mx-auto flex items-center justify-between">
           
           {/* Logo */}
@@ -740,23 +856,111 @@ export default function App() {
                   >
                     {/* Left Column: 产品创新 */}
                     <div className="flex flex-col">
-                      <div className="text-xs font-bold uppercase tracking-wider text-[#007BC7] border-b border-neutral-100 pb-2 mb-3">产品创新</div>
+                      <a 
+                        href="/product-innovation" 
+                        onClick={(e) => { 
+                          e.preventDefault(); 
+                          setCurrentPage('product'); 
+                          setActiveMenu(null); 
+                          window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                        }} 
+                        className="text-xs font-bold uppercase tracking-wider text-[#007BC7] hover:text-[#005F96] border-b border-neutral-100 pb-2 mb-3 flex items-center justify-between group/title transition-colors"
+                      >
+                        <span>产品创新</span>
+                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover/title:opacity-100 transition-opacity" />
+                      </a>
                       <div className="flex flex-col divide-y divide-neutral-100">
-                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">工业设计</a>
-                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">结构设计</a>
-                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">生产落地</a>
-                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">交互设计</a>
+                        <a 
+                          href="/product-innovation/industrial-design" 
+                          onClick={(e) => { 
+                            e.preventDefault(); 
+                            setCurrentPage('industrial-design'); 
+                            setActiveMenu(null); 
+                            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                          }} 
+                          className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium"
+                        >
+                          工业设计
+                        </a>
+                        <a 
+                          href="/product-innovation/structural-design" 
+                          onClick={(e) => { 
+                            e.preventDefault(); 
+                            setCurrentPage('structural-design'); 
+                            setActiveMenu(null); 
+                            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                          }} 
+                          className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium"
+                        >
+                          结构设计
+                        </a>
+                        <a 
+                          href="/product-innovation/production-landing" 
+                          onClick={(e) => { 
+                            e.preventDefault(); 
+                            setCurrentPage('production-landing'); 
+                            setActiveMenu(null); 
+                            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                          }} 
+                          className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium"
+                        >
+                          生产落地
+                        </a>
                       </div>
                     </div>
 
                     {/* Right Column: 品牌创新 */}
                     <div className="flex flex-col">
-                      <div className="text-xs font-bold uppercase tracking-wider text-[#007BC7] border-b border-neutral-100 pb-2 mb-3">品牌创新</div>
+                      <a 
+                        href="/brand-innovation" 
+                        onClick={(e) => { 
+                          e.preventDefault(); 
+                          setCurrentPage('brand'); 
+                          setActiveMenu(null); 
+                          window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                        }} 
+                        className="text-xs font-bold uppercase tracking-wider text-[#007BC7] hover:text-[#005F96] border-b border-neutral-100 pb-2 mb-3 flex items-center justify-between group/title transition-colors"
+                      >
+                        <span>品牌创新</span>
+                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover/title:opacity-100 transition-opacity" />
+                      </a>
                       <div className="flex flex-col divide-y divide-neutral-100">
-                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">品牌全案设计</a>
-                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">包装设计</a>
-                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">IP设计</a>
-                        <a href="#professional-services" onClick={() => setCurrentPage('home')} className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium">商业空间设计</a>
+                        <a 
+                          href="/brand-innovation/full-case-design" 
+                          onClick={(e) => { 
+                            e.preventDefault(); 
+                            setCurrentPage('full-case-design'); 
+                            setActiveMenu(null); 
+                            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                          }} 
+                          className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium"
+                        >
+                          品牌全案设计
+                        </a>
+                        <a 
+                          href="/brand-innovation/packaging-design" 
+                          onClick={(e) => { 
+                            e.preventDefault(); 
+                            setCurrentPage('packaging-design'); 
+                            setActiveMenu(null); 
+                            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                          }} 
+                          className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium"
+                        >
+                          包装设计
+                        </a>
+                        <a 
+                          href="/brand-innovation/ip-design" 
+                          onClick={(e) => { 
+                            e.preventDefault(); 
+                            setCurrentPage('ip-design'); 
+                            setActiveMenu(null); 
+                            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                          }} 
+                          className="py-2.5 hover:text-[#005F96] text-sm text-neutral-700 transition-colors font-medium"
+                        >
+                          IP设计
+                        </a>
                       </div>
                     </div>
                   </motion.div>
@@ -769,7 +973,10 @@ export default function App() {
               onMouseEnter={() => setActiveMenu('行业')}
               onMouseLeave={() => setActiveMenu(null)}
             >
-              <button className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2">
+              <button 
+                onClick={() => { setCurrentPage('industry'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2 cursor-pointer"
+              >
                 行业
                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${activeMenu === '行业' ? 'rotate-180 text-[#007BC7]' : 'text-neutral-400'}`} />
               </button>
@@ -783,55 +990,63 @@ export default function App() {
                     transition={{ duration: 0.2 }}
                     className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[560px] bg-white border border-neutral-100 shadow-2xl rounded-2xl p-6 grid gap-4 z-50"
                   >
-                    <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500 border-b border-neutral-100 pb-2">垂直行业赛道</div>
+                    <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">垂直行业赛道</span>
+                      <button 
+                        onClick={() => { setCurrentPage('industry'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        className="text-xs text-[#007BC7] hover:underline cursor-pointer bg-transparent border-none p-0 font-medium"
+                      >
+                        全部分类集合页 →
+                      </button>
+                    </div>
                     <div className="grid grid-cols-4 gap-4">
                       {/* Column 1 */}
                       <div className="flex flex-col gap-2">
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <button onClick={() => { handleNavigateUrl('/industry/industrial-equipment'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">工业装备</div>
-                        </a>
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        </button>
+                        <button onClick={() => { handleNavigateUrl('/industry/smart-3c'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">智能3C</div>
-                        </a>
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        </button>
+                        <button onClick={() => { handleNavigateUrl('/industry/beauty-personal-care'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">美妆个护</div>
-                        </a>
+                        </button>
                       </div>
                       {/* Column 2 */}
                       <div className="flex flex-col gap-2">
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <button onClick={() => { handleNavigateUrl('/industry/robotics'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">机器人</div>
-                        </a>
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        </button>
+                        <button onClick={() => { handleNavigateUrl('/industry/healthcare'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">医疗健康</div>
-                        </a>
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        </button>
+                        <button onClick={() => { handleNavigateUrl('/industry/cultural-creative'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">文化创意</div>
-                        </a>
+                        </button>
                       </div>
                       {/* Column 3 */}
                       <div className="flex flex-col gap-2">
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <button onClick={() => { handleNavigateUrl('/industry/new-energy'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">新能源</div>
-                        </a>
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        </button>
+                        <button onClick={() => { handleNavigateUrl('/industry/food-beverage'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">食品酒饮</div>
-                        </a>
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        </button>
+                        <button onClick={() => { handleNavigateUrl('/industry/pet-economy'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">宠物经济</div>
-                        </a>
+                        </button>
                       </div>
                       {/* Column 4 */}
                       <div className="flex flex-col gap-2">
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        <button onClick={() => { handleNavigateUrl('/industry/home-appliances'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">家居家电</div>
-                        </a>
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        </button>
+                        <button onClick={() => { handleNavigateUrl('/industry/retail'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">连锁零售</div>
-                        </a>
-                        <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block">
+                        </button>
+                        <button onClick={() => { handleNavigateUrl('/industry/transportation'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
                           <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">交通工具</div>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </motion.div>
@@ -839,9 +1054,14 @@ export default function App() {
               </AnimatePresence>
             </div>
 
-            <a href="#case-studies" onClick={() => setCurrentPage('home')} className="text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors">
+            <button 
+              onClick={() => { handleNavigateUrl('/cases'); setActiveMenu(null); }} 
+              className={`text-[15px] font-medium transition-colors border-none bg-transparent cursor-pointer ${
+                currentPage === 'cases' ? 'text-[#007BC7] font-bold' : 'text-neutral-700 hover:text-[#005F96]'
+              }`}
+            >
               案例
-            </a>
+            </button>
 
             <div 
               className="relative group"
@@ -862,9 +1082,9 @@ export default function App() {
                     transition={{ duration: 0.2 }}
                     className="absolute right-0 top-full mt-1 w-[480px] bg-white border border-neutral-100 shadow-2xl rounded-2xl p-4 grid grid-cols-4 gap-2 z-50"
                   >
-                    <a href="#about-lkk" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">关于我们</a>
+                    <button onClick={() => { handleNavigateUrl('/about'); setActiveMenu(null); }} className={`p-2.5 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer w-full ${currentPage === 'about' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>关于我们</button>
                     <button onClick={() => { setIsContactModalOpen(true); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors w-full cursor-pointer">联系我们</button>
-                    <a href="#news-center" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">新闻中心</a>
+                    <button onClick={() => { handleNavigateUrl('/news'); setActiveMenu(null); }} className={`p-2.5 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer w-full ${currentPage === 'news' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>新闻中心</button>
                     <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">成功路径</a>
                   </motion.div>
                 )}
@@ -933,10 +1153,25 @@ export default function App() {
             
             <nav aria-label="手机端导航" className="grid gap-2">
               <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">业务专区</span>
-              <button onClick={() => { setCurrentPage('category'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品类创新咨询</button>
-              <a href="#professional-services" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">品牌&产品设计</a>
-              <a href="#case-studies" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">经典成功案例</a>
-              <a href="#about-lkk" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800">公司简介</a>
+              <button onClick={() => { setCurrentPage('category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品类创新咨询</button>
+              <button onClick={() => { setCurrentPage('product'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">产品创新</button>
+              <button onClick={() => { setCurrentPage('brand'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品牌创新</button>
+              <button 
+                onClick={() => { handleNavigateUrl('/cases'); setMobileMenuOpen(false); }} 
+                className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  currentPage === 'cases' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
+                }`}
+              >
+                经典成功案例
+              </button>
+              <button 
+                onClick={() => { handleNavigateUrl('/about'); setMobileMenuOpen(false); }} 
+                className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  currentPage === 'about' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
+                }`}
+              >
+                公司简介
+              </button>
             </nav>
             
             <button 
@@ -955,7 +1190,7 @@ export default function App() {
       {currentPage === 'home' ? (
         <>
           {/* 3. HERO / BIG TITLE SECTION */}
-          <section id="hero-section" className="hero-section px-[0.8px] md:px-[1.6px] py-12 md:py-20 text-center bg-radial from-neutral-50 to-white relative">
+          <section id="hero-section" className="hero-section py-12 md:py-20 text-center bg-radial from-neutral-50 to-white relative">
         <div className="hero-slogan-block max-w-4xl mx-auto hero-inner">
           <div className="flex items-center justify-center gap-3 mb-6">
             <span className="h-[1px] w-8 bg-[#007BC7]"></span>
@@ -1230,7 +1465,7 @@ export default function App() {
       </section>
 
       {/* 4. 专业服务 SECTION */}
-      <section id="professional-services" className="py-20 bg-neutral-50 px-[0.8px] md:px-[1.6px] border-y border-neutral-100">
+      <section id="professional-services" className="py-20 bg-neutral-50 border-y border-neutral-100">
         <div className="max-w-[95%] w-full mx-auto services-inner">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
@@ -1301,7 +1536,7 @@ export default function App() {
       </section>
 
       {/* 5. 成功案例 SECTION */}
-      <section id="case-studies" className="py-20 bg-neutral-50 px-[0.8px] md:px-[1.6px] border-t border-neutral-150">
+      <section id="case-studies" className="py-20 bg-neutral-50 border-t border-neutral-150">
         <div className="max-w-[95%] w-full mx-auto cases-inner">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
@@ -1398,7 +1633,7 @@ export default function App() {
       </section>
 
       {/* 6. 新闻中心 SECTION */}
-      <section id="news-center" className="py-20 bg-neutral-50 px-[0.8px] md:px-[1.6px] border-y border-neutral-100">
+      <section id="news-center" className="py-20 bg-neutral-50 border-y border-neutral-100">
         <div className="max-w-[95%] w-full mx-auto news-inner">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
@@ -1430,13 +1665,43 @@ export default function App() {
           </div>
 
           {/* Carousel Showcase of Articles */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1,
+                  delayChildren: 0.05
+                }
+              }
+            }}
+          >
             {NEWS_ARTICLES.map((article, index) => {
               const isActive = index === newsIndex;
               return (
                 <motion.div 
                   key={article.id}
-                  className={`bg-white rounded-3xl overflow-hidden border transition-all duration-300 flex flex-col justify-between ${isActive ? 'border-[#007BC7] ring-2 ring-blue-50/50 shadow-xl' : 'border-neutral-200/60 shadow-sm opacity-90'}`}
+                  variants={{
+                    hidden: { opacity: 0, y: 28, scale: 0.96 },
+                    visible: { 
+                      opacity: 1, 
+                      y: 0, 
+                      scale: 1,
+                      transition: {
+                        type: "spring",
+                        stiffness: 280,
+                        damping: 22
+                      }
+                    }
+                  }}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  onClick={() => handleNavigateUrl('/news')}
+                  className={`bg-white rounded-3xl overflow-hidden border transition-all duration-300 flex flex-col justify-between cursor-pointer group ${isActive ? 'border-[#007BC7] ring-2 ring-blue-50/50 shadow-xl' : 'border-neutral-200/60 shadow-sm opacity-90'}`}
                 >
                   <div className="h-48 relative overflow-hidden bg-neutral-100">
                     <img 
@@ -1444,7 +1709,7 @@ export default function App() {
                       alt={article.title} 
                       referrerPolicy="no-referrer"
                       loading="lazy"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute bottom-3 left-3 bg-neutral-900/80 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-semibold text-white tracking-wider">
                       LKK NEWS
@@ -1456,7 +1721,7 @@ export default function App() {
                       <span className="text-[11px] font-semibold text-neutral-400 font-mono">
                         {article.date}
                       </span>
-                      <h3 className="text-base font-bold text-neutral-800 mt-2 line-clamp-2 leading-snug group-hover:text-[#005F96]">
+                      <h3 className="text-base font-bold text-neutral-800 mt-2 line-clamp-2 leading-snug group-hover:text-[#007BC7] transition-colors">
                         {article.title}
                       </h3>
                       <p className="text-xs text-neutral-500 mt-3 line-clamp-3 leading-relaxed">
@@ -1465,90 +1730,154 @@ export default function App() {
                     </div>
 
                     <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between text-xs font-semibold">
-                      <span className={isActive ? 'text-[#007BC7]' : 'text-neutral-400'}>
+                      <span className={isActive ? 'text-[#007BC7]' : 'text-neutral-400 group-hover:text-[#007BC7] transition-colors'}>
                         阅读资讯全文
                       </span>
-                      <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'text-[#007BC7] translate-x-1' : 'text-neutral-300'}`} />
+                      <ArrowRight className={`w-4 h-4 transition-all duration-300 ${isActive ? 'text-[#007BC7] translate-x-1' : 'text-neutral-300 group-hover:text-[#007BC7] group-hover:translate-x-1'}`} />
                     </div>
                   </div>
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
 
           <div className="mt-12 flex justify-start">
-            <a href="#" className="inline-flex items-center gap-2 text-sm font-semibold text-[#007BC7] hover:text-[#005F96]/80 hover:underline">
+            <button 
+              onClick={() => handleNavigateUrl('/news')}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#007BC7] hover:text-[#005F96]/80 hover:underline border-none bg-transparent cursor-pointer p-0"
+            >
               更多详情
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </button>
           </div>
 
         </div>
       </section>
         </>
-      ) : (
+      ) : currentPage === 'cases' ? (
+        <CasesPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onSelectCase={(cs) => setSelectedCase(cs as any)}
+        />
+      ) : currentPage === 'about' ? (
+        <AboutUsPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+        />
+      ) : currentPage === 'news' ? (
+        <NewsPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+        />
+      ) : currentPage === 'category' ? (
         <CategoryConsultingPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
           onSelectCase={(cs) => setSelectedCase(cs)}
           CounterComponent={Counter}
         />
+      ) : currentPage === 'product' ? (
+        <ProductInnovationPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onSelectCase={(cs) => setSelectedCase(cs)}
+          onNavigateDetail={handleNavigateUrl}
+        />
+      ) : currentPage === 'brand' ? (
+        <BrandInnovationPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onSelectCase={(cs) => setSelectedCase(cs)}
+          onNavigateDetail={handleNavigateUrl}
+        />
+      ) : currentPage === 'industry' ? (
+        <IndustryCollectionPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onNavigateDetail={handleNavigateUrl}
+          CounterComponent={Counter}
+        />
+      ) : currentPage === 'industry-detail' ? (
+        <IndustryDetailPage 
+          industryKey={currentIndustryKey}
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onSelectCase={(cs) => setSelectedCase(cs)}
+          onNavigateParent={handleNavigateUrl}
+        />
+      ) : (
+        <ServiceDetailPage 
+          serviceKey={currentPage}
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onSelectCase={(cs) => setSelectedCase(cs)}
+          onBack={() => {
+            if (['industrial-design', 'structural-design', 'production-landing'].includes(currentPage)) {
+              setCurrentPage('product');
+            } else if (['full-case-design', 'packaging-design', 'ip-design'].includes(currentPage)) {
+              setCurrentPage('brand');
+            } else {
+              setCurrentPage('home');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
       )}
 
       {/* 8. FOOTER WITH ACCORDION & FORMS */}
-      <footer id="about-lkk" className="bg-neutral-900 text-neutral-400 pt-16 pb-8 px-[0.8px] md:px-[1.6px] relative z-10">
+      <footer 
+        id="about-lkk" 
+        className={`pt-16 pb-8 relative z-10 transition-colors duration-300 ${
+          isFooterLight 
+            ? 'bg-[#F5F5F5] text-neutral-600 border-t border-neutral-200' 
+            : 'bg-neutral-900 text-neutral-400'
+        }`}
+      >
         <div className="max-w-[95%] w-full mx-auto footer-inner">
           
           {/* Merged Consultation Area */}
-          <div className="bg-[#007BC7] rounded-3xl shadow-xl p-8 md:p-12 text-white mb-16 relative overflow-hidden">
+          <div className="rounded-3xl shadow-xl p-8 md:p-12 mb-16 relative overflow-hidden bg-[#007BC7] text-white">
             {/* Radial visual decor overlay */}
             <div className="absolute right-0 top-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12 relative z-10">
               {/* Left Column (Logo, Title, Text, Contact details) */}
-              <div className="lg:col-span-7 flex flex-col gap-6">
-                <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10 w-fit text-xs font-semibold tracking-wider text-white">
+              <div className="w-full lg:w-[56%] flex flex-col gap-6">
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full border w-fit text-xs font-semibold tracking-wider bg-white/15 text-white border-white/10">
                   <Sparkles className="w-3.5 h-3.5 text-white" />
                   洛可可官方品质保障 · 一对一专家咨询
                 </div>
 
-                <h2 className="text-2xl md:text-3xl font-extrabold leading-snug text-white text-left">
+                <h2 className="text-2xl md:text-3xl font-extrabold leading-snug text-left text-white">
                   让设计助力你的品类突围
                 </h2>
 
-                <p className="text-xs md:text-sm text-blue-100 leading-relaxed max-w-2xl text-left">
+                <p className="text-xs md:text-sm leading-relaxed max-w-2xl text-left text-blue-100">
                   洛可可是一家用咨询设计的能力，为垂直行业客户，提供产品创新价值的公司。我们坚持以用户体验为核心，致力于为企业提供行业整体创新解决方案。如需创新设计咨询，请联系专家团队。
                 </p>
 
                 {/* Footer Logo and Hotline info in the same column/row */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6 border-t border-white/15 mt-2">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6 border-t mt-2 border-white/15">
                   <LKKLogo isLight={true} />
-                  <div className="h-8 w-px bg-white/20 hidden sm:block"></div>
+                  <div className="h-8 w-px hidden sm:block bg-white/20"></div>
                   <div className="text-left">
-                    <p className="text-[10px] text-blue-200 uppercase tracking-widest font-mono">Consultation Hotline</p>
-                    <p className="text-2xl font-black text-white tracking-tight mt-0.5 font-display">400-062-3130</p>
+                    <p className="text-[10px] uppercase tracking-widest font-mono text-blue-200">Consultation Hotline</p>
+                    <p className="text-2xl font-black tracking-tight mt-0.5 font-display text-white">400-062-3130</p>
                   </div>
                 </div>
               </div>
 
               {/* Right Column (Form) */}
-              <div className="lg:col-span-5 w-full">
+              <div className="w-full lg:w-[38%] flex-shrink-0">
                 {footerFormSuccess ? (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="bg-white/10 border border-white/20 rounded-2xl p-6 text-white"
+                    className="border rounded-2xl p-6 bg-white/10 border-white/20 text-white"
                   >
                     <div className="flex items-center gap-3">
-                      <Check className="w-5 h-5 shrink-0 bg-white text-[#007BC7] rounded-full p-0.5" />
-                      <span className="font-bold text-white text-sm">预约提交成功！</span>
+                      <Check className="w-5 h-5 shrink-0 rounded-full p-0.5 bg-white text-[#007BC7]" />
+                      <span className="font-bold text-sm text-white">预约提交成功！</span>
                     </div>
-                    <p className="text-xs mt-2 text-blue-100 leading-relaxed text-left">
+                    <p className="text-xs mt-2 leading-relaxed text-left text-blue-100">
                       洛可可品类专家将在 1 小时内给您致电，为您提供免费的商业创新评估。
                     </p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleFooterSubmit} className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <input 
                         type="text" 
                         required
@@ -1556,7 +1885,7 @@ export default function App() {
                         aria-label="您的姓名"
                         value={footerForm.name}
                         onChange={(e) => setFooterForm({ ...footerForm, name: e.target.value })}
-                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white"
+                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                       />
                       <input 
                         type="tel" 
@@ -1565,12 +1894,30 @@ export default function App() {
                         aria-label="您的电话"
                         value={footerForm.phone}
                         onChange={(e) => setFooterForm({ ...footerForm, phone: e.target.value })}
-                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white"
+                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                      />
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="企业名称" 
+                        aria-label="企业名称"
+                        value={footerForm.company}
+                        onChange={(e) => setFooterForm({ ...footerForm, company: e.target.value })}
+                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                      />
+                      <input 
+                        type="text" 
+                        required
+                        placeholder="所在城市" 
+                        aria-label="所在城市"
+                        value={footerForm.city}
+                        onChange={(e) => setFooterForm({ ...footerForm, city: e.target.value })}
+                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                       />
                     </div>
                     <button 
                       type="submit"
-                      className="w-full bg-white hover:bg-[#F0F0F0] text-[#007BC7] font-bold px-8 py-3.5 rounded-xl text-sm transition-all shadow-md shrink-0 flex items-center justify-center gap-2"
+                      className="w-full bg-white hover:bg-[#F0F0F0] text-[#007BC7] font-bold px-8 py-3.5 rounded-xl text-sm transition-all shadow-md shrink-0 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       咨询我们
                       <ArrowRight className="w-4 h-4 text-[#007BC7]" />
@@ -1587,7 +1934,9 @@ export default function App() {
             {/* Left QR details */}
             <div className="col-span-full md:col-span-4 flex flex-col gap-6">
               <div className="flex items-center gap-4">
-                <div className="w-28 h-28 bg-white rounded-2xl p-3 flex items-center justify-center shadow-lg relative shrink-0 overflow-hidden">
+                <div className={`w-28 h-28 rounded-2xl p-3 flex items-center justify-center shadow-lg relative shrink-0 overflow-hidden transition-colors duration-300 ${
+                  isFooterLight ? 'bg-white border border-neutral-200/60' : 'bg-white'
+                }`}>
                   <img 
                     src="https://github.com/minaxyue-ops/MINA/releases/download/1/3.png" 
                     alt="洛可可官方企业微信二维码" 
@@ -1596,7 +1945,9 @@ export default function App() {
                   />
                 </div>
                 <div className="text-left">
-                  <h4 className="font-bold text-white text-sm">添加洛可可官方企业微信</h4>
+                  <h4 className={`font-bold text-sm transition-colors duration-300 ${
+                    isFooterLight ? 'text-neutral-800' : 'text-white'
+                  }`}>添加洛可可官方企业微信</h4>
                   <p className="text-xs text-neutral-500 leading-relaxed mt-1">
                     微信扫码添加，掌握行业爆品打造逻辑、最前沿设计趋势及精选案例拆解。
                   </p>
@@ -1609,87 +1960,101 @@ export default function App() {
 
             {/* Cases columns */}
             <div className="col-span-1 md:col-span-3 text-left">
-              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2">案例</h5>
+              <h5 className={`font-bold text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>案例</h5>
               <ul className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs">
-                <li><a href="#case-studies" className="hover:text-white transition-colors">工业装备</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">机器人</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">新能源</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">家居家电</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">智能3C</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">医疗健康</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">食品酒饮</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">连锁零售</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">美妆个护</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">文化创意</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">宠物经济</a></li>
-                <li><a href="#case-studies" className="hover:text-white transition-colors">交通工具</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>工业装备</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>机器人</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>新能源</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>家居家电</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能3C</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>医疗健康</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>食品酒饮</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>连锁零售</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>美妆个护</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>文化创意</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>宠物经济</a></li>
+                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>交通工具</a></li>
               </ul>
             </div>
 
             {/* Services columns */}
             <div className="col-span-1 md:col-span-2 text-left">
-              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2">服务</h5>
+              <h5 className={`font-bold text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>服务</h5>
               <ul className="grid gap-2 text-xs">
-                <li><a href="#professional-services" className="hover:text-white transition-colors">工业设计</a></li>
-                <li><a href="#professional-services" className="hover:text-white transition-colors">结构设计</a></li>
-                <li><a href="#professional-services" className="hover:text-white transition-colors">生产落地</a></li>
-                <li><a href="#professional-services" className="hover:text-white transition-colors">品牌全案设计</a></li>
-                <li><a href="#professional-services" className="hover:text-white transition-colors">IP设计</a></li>
-                <li><a href="#professional-services" className="hover:text-white transition-colors">包装设计</a></li>
+                <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>工业设计</a></li>
+                <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>结构设计</a></li>
+                <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>生产落地</a></li>
+                <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>品牌全案设计</a></li>
+                <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>IP设计</a></li>
+                <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>包装设计</a></li>
               </ul>
             </div>
 
             {/* Contact Columns */}
             <div className="col-span-1 md:col-span-1.5 text-left">
-              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2">联系</h5>
-              <ul className="grid gap-2 text-xs text-neutral-400">
-                <li className="hover:text-white cursor-pointer">北京·总部</li>
-                <li className="hover:text-white cursor-pointer">深圳</li>
-                <li className="hover:text-white cursor-pointer">上海</li>
-                <li className="hover:text-white cursor-pointer">苏州</li>
-                <li className="hover:text-white cursor-pointer">杭州</li>
-                <li className="hover:text-white cursor-pointer">南京</li>
-                <li className="hover:text-white cursor-pointer">成都</li>
-                <li className="hover:text-white cursor-pointer">佛山</li>
-                <li className="hover:text-white cursor-pointer">南昌</li>
+              <h5 className={`font-bold text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>联系</h5>
+              <ul className={`grid gap-2 text-xs transition-colors duration-300 ${isFooterLight ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>北京·总部</li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>深圳</li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>上海</li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>苏州</li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>杭州</li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>南京</li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>成都</li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>佛山</li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>南昌</li>
               </ul>
             </div>
 
             {/* About us columns */}
             <div className="col-span-1 md:col-span-1.5 text-left">
-              <h5 className="font-bold text-white text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2">我们</h5>
+              <h5 className={`font-bold text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>我们</h5>
               <ul className="grid gap-2 text-xs">
-                <li><a href="#about-lkk" className="hover:text-white transition-colors">公司简介</a></li>
-                <li><a href="#news-center" className="hover:text-white transition-colors">新闻中心</a></li>
-                <li><button onClick={() => setIsContactModalOpen(true)} className="hover:text-white cursor-pointer text-left focus:outline-none">联系我们</button></li>
-                <li className="hover:text-white cursor-pointer">常见问题</li>
+                <li><button onClick={() => { handleNavigateUrl('/about'); }} className={`cursor-pointer border-none bg-transparent p-0 text-left transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>公司简介</button></li>
+                <li><a href="#news-center" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>新闻中心</a></li>
+                <li><button onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer text-left focus:outline-none transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>联系我们</button></li>
+                <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>常见问题</li>
               </ul>
             </div>
 
           </div>
 
           {/* Legal bottom row */}
-          <div className="border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-500">
+          <div className={`border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-500 transition-colors duration-300 ${isFooterLight ? 'border-neutral-200' : 'border-neutral-800'}`}>
             <div>
               <p>Copyright © 北京洛可可科技有限公司 All Rights Reserved.</p>
             </div>
             
             <div className="flex items-center gap-4 flex-wrap justify-center">
-              <span className="hover:text-neutral-400 cursor-pointer">京ICP备13015144号</span>
-              <span className="hover:text-neutral-400 cursor-pointer">京公网安备11010502042139</span>
+              <span className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-neutral-700' : 'hover:text-neutral-400'}`}>京ICP备13015144号</span>
+              <span className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-neutral-700' : 'hover:text-neutral-400'}`}>京公网安备11010502042139</span>
             </div>
 
             {/* Social SVGs */}
             <div className="flex items-center gap-3">
               {/* Douyin */}
-              <div className="w-8 h-8 rounded-full bg-neutral-800 hover:bg-neutral-950 flex items-center justify-center text-neutral-400 hover:text-white transition-all cursor-pointer" title="抖音">
+              <div 
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                  isFooterLight 
+                    ? 'bg-neutral-200 hover:bg-neutral-300 text-neutral-600 hover:text-neutral-900' 
+                    : 'bg-neutral-800 hover:bg-neutral-950 text-neutral-400 hover:text-white'
+                }`} 
+                title="抖音"
+              >
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                   <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.01 1.62 4.2 1.01.85 2.29 1.32 3.61 1.4v3.52c-1.18-.02-2.34-.35-3.37-1-.38-.24-.73-.52-1.04-.85v6.52c.06 1.8-.52 3.58-1.64 4.96-1.54 2-4.14 2.92-6.57 2.3-2.48-.52-4.41-2.54-4.85-5.04-.6-3.04 1.15-6.13 4.14-6.94.75-.22 1.54-.29 2.32-.2v3.63c-.4-.08-.82-.08-1.22-.02-1.34.22-2.39 1.34-2.47 2.7-.13 1.56 1.04 2.96 2.6 3.09 1.64.2 3.19-.85 3.42-2.49.07-.32.08-.66.08-.99V0l.4-.02z"/>
                 </svg>
               </div>
 
               {/* Weibo */}
-              <div className="w-8 h-8 rounded-full bg-neutral-800 hover:bg-rose-600 flex items-center justify-center text-neutral-400 hover:text-white transition-all cursor-pointer" title="微博">
+              <div 
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                  isFooterLight 
+                    ? 'bg-neutral-200 hover:bg-rose-100 hover:text-rose-600 text-neutral-600' 
+                    : 'bg-neutral-800 hover:bg-rose-600 text-neutral-400 hover:text-white'
+                }`} 
+                title="微博"
+              >
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                   <path d="M9.73 14.77c-2.47.16-4.57-.75-4.68-2.03-.12-1.28 1.8-2.43 4.27-2.58 2.47-.16 4.58.74 4.69 2.03.11 1.28-1.81 2.42-4.28 2.58zm6.54-7.23c-.45-.48-1.11-.74-1.74-.69-.21.02-.37.2-.35.41.02.21.2.37.41.35.39-.03.79.13 1.07.42.27.29.37.7.27 1.08-.05.19.06.39.25.44.2.05.41-.06.46-.25.17-.61.02-1.28-.41-1.76zm2.46-2.55c-.94-1.04-2.38-1.61-3.78-1.51-.21.01-.37.2-.35.41.02.21.2.37.41.35 1.13-.08 2.3.38 3.06 1.22.76.84 1.07 1.99.85 3.1-.04.2.09.4.29.44.21.04.41-.09.45-.29.28-1.4-.11-2.88-1.08-3.93zM21.27 12.4c-.05-.88-.51-1.68-1.24-2.18-.72-.49-1.61-.63-2.43-.37-1.42-1.22-3.38-1.92-5.45-1.92-5.07 0-9.15 3.32-9.15 7.42 0 4.1 4.08 7.41 9.15 7.41s9.15-3.31 9.15-7.41c0-.44-.05-.88-.13-1.31.54-.42.87-.99.9-1.64zm-11.54 5c-3.74.24-6.91-1.14-7.07-3.08-.16-1.94 2.74-3.71 6.48-3.95 3.74-.24 6.91 1.14 7.07 3.08.16 1.94-2.74 3.71-6.48 3.95zm7.39-4.88c-.1-.13-.29-.16-.42-.06l-.08.06c-.13.1-.16.29-.06.42.06.08.15.11.24.11.06 0 .13-.02.18-.06.13-.1.16-.29.06-.42z"/>
                 </svg>
@@ -1697,13 +2062,21 @@ export default function App() {
 
               {/* WeChat with hover popup */}
               <div className="relative group/social cursor-pointer">
-                <div className="w-8 h-8 rounded-full bg-neutral-800 hover:bg-emerald-600 flex items-center justify-center text-neutral-400 hover:text-white transition-all">
+                <div 
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                    isFooterLight 
+                      ? 'bg-neutral-200 hover:bg-emerald-50 hover:text-emerald-600 text-neutral-600' 
+                      : 'bg-neutral-800 hover:bg-emerald-600 text-neutral-400 hover:text-white'
+                  }`}
+                >
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                     <path d="M8.53 2.1c-4.43 0-8.02 3.14-8.02 7.01 0 2.18 1.14 4.13 2.92 5.41l-.76 2.27c-.07.21.14.39.32.28l2.67-1.51c.91.31 1.89.47 2.87.47.45 0 .9-.04 1.34-.11-.32-.82-.49-1.7-.49-2.61 0-3.9 3.51-7.07 7.82-7.07.45 0 .9.04 1.34.11C25.4 4.3 20.31 2.1 15.03 2.1H8.53zm9.18 7.07c-3.77 0-6.82 2.71-6.82 6.06 0 1.88.97 3.56 2.49 4.67l-.65 1.94c-.06.18.12.33.27.24l2.27-1.29c.77.27 1.61.41 2.44.41 3.77 0 6.82-2.71 6.82-6.06.01-3.36-3.04-6.07-6.82-6.07zM5.38 6.55c.57 0 1.03.46 1.03 1.03s-.46 1.03-1.03 1.03-1.03-.46-1.03-1.03.46-1.03 1.03-1.03zm6.3 0c.57 0 1.03.46 1.03 1.03s-.46 1.03-1.03 1.03-1.03-.46-1.03-1.03.46-1.03 1.03-1.03zm3.72 10.14c.48 0 .87.39.87.87s-.39.87-.87.87-.87-.39-.87-.87.39-.87.87-.87zm5.24 0c.48 0 .87.39.87.87s-.39.87-.87.87-.87-.39-.87-.87.39-.87.87-.87z"/>
                   </svg>
                 </div>
                 {/* WeChat QR Popup tooltip */}
-                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 scale-0 group-hover/social:scale-100 transition-all duration-200 origin-bottom bg-neutral-850 p-2 rounded-lg border border-neutral-700 shadow-2xl z-20 w-28">
+                <div className={`absolute bottom-full mb-2 left-1/2 -translate-x-1/2 scale-0 group-hover/social:scale-100 transition-all duration-200 origin-bottom p-2 rounded-lg border shadow-2xl z-20 w-28 ${
+                  isFooterLight ? 'bg-white border-neutral-200' : 'bg-neutral-850 border-neutral-700'
+                }`}>
                   <div className="w-24 h-24 bg-white rounded-lg p-1 flex items-center justify-center overflow-hidden">
                     <img 
                       src="https://github.com/minaxyue-ops/MINA/releases/download/1/3.png" 
@@ -1711,7 +2084,7 @@ export default function App() {
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <p className="text-[8px] text-center text-neutral-400 mt-1.5">洛可可官方企业微信</p>
+                  <p className={`text-[8px] text-center mt-1.5 transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 font-medium' : 'text-neutral-400'}`}>洛可可官方企业微信</p>
                 </div>
               </div>
             </div>
@@ -1881,7 +2254,14 @@ export default function App() {
                 {/* Background Grid Pattern */}
                 <div className="absolute inset-0 opacity-[0.03] bg-radial from-neutral-950 to-transparent pointer-events-none"></div>
 
-                {selectedCase.id.startsWith('case-v2-') ? (
+                {selectedCase.image ? (
+                  <img 
+                    src={selectedCase.image} 
+                    alt={selectedCase.title}
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : selectedCase.id.startsWith('case-v2-') ? (
                   getCaseV2LocalImage(selectedCase.id) ? (
                     <img 
                       src={getCaseV2LocalImage(selectedCase.id) || ''} 

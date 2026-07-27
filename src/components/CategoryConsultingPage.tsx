@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, Sparkles, Plus, ArrowLeft } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { ArrowRight, Sparkles, ArrowLeft } from 'lucide-react';
+import { motion } from 'motion/react';
 import { CaseStudy } from '../types';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,15 +13,75 @@ interface CategoryConsultingPageProps {
   CounterComponent: React.FC<{ target: number }>;
 }
 
+interface ExperienceCardProps {
+  title: string;
+  imgSrc: string;
+}
+
+function ExperienceCard({ title, imgSrc }: ExperienceCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia('(hover: hover)').matches === false) return;
+    const card = cardRef.current;
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const maxTilt = 3; // 倾斜幅度减弱70%，倾斜更克制细腻
+
+    const rotateY = ((x - centerX) / centerX) * maxTilt;
+    const rotateX = -((y - centerY) / centerY) * maxTilt;
+
+    card.style.transition = 'transform 0.15s ease-out';
+    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.006)`;
+  };
+
+  const handleMouseLeave = () => {
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transition = 'transform 0.5s ease-out';
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full"
+    >
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="experience-card relative w-full aspect-[16/9.2] sm:aspect-[16/9] rounded-2xl overflow-hidden select-none cursor-pointer"
+        style={{
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.025), 0 6px 16px rgba(0, 0, 0, 0.038)',
+          transformStyle: 'preserve-3d',
+          willChange: 'transform',
+        }}
+      >
+        <img
+          src={imgSrc}
+          alt={title}
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover"
+        />
+      </div>
+    </motion.div>
+  );
+}
+
 export default function CategoryConsultingPage({
   onOpenContactModal,
   onSelectCase,
   CounterComponent,
 }: CategoryConsultingPageProps) {
-  // Accordion state
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const showcaseRef = useRef<HTMLDivElement>(null);
   const statsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,27 +89,22 @@ export default function CategoryConsultingPage({
     const statsContainer = statsContainerRef.current;
     let statsCtx: gsap.Context | null = null;
 
+    const handleWindowLoad = () => {
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener('load', handleWindowLoad);
+
     if (statsContainer) {
       statsCtx = gsap.context(() => {
         const cards = statsContainer.querySelectorAll('.stat-card');
         if (cards.length) {
-          const collapsedHeight = 72;
-          const overlap = 16;
+          const collapsedHeight = 108;
+          const overlap = 52;
 
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: statsContainer,
-              start: 'top 80px',
-              end: `+=${cards.length * 350}`,
-              scrub: true,
-              pin: true,
-              pinSpacing: true,
-            }
-          });
+          const tl = gsap.timeline({ paused: true });
 
           cards.forEach((card, i) => {
             const eyebrow = card.querySelector('.stat-eyebrow');
-            const label = card.querySelector('.stat-label');
             const details = card.querySelector('.card-details');
             const number = card.querySelector('.stat-number');
 
@@ -62,7 +117,7 @@ export default function CategoryConsultingPage({
               ease: 'none',
               duration: 1,
             }, i)
-            .to([eyebrow, label, details], {
+            .to([eyebrow, details], {
               opacity: 0,
               height: 0,
               marginTop: 0,
@@ -74,44 +129,64 @@ export default function CategoryConsultingPage({
               duration: 0.6,
             }, i)
             .to(number, {
-              fontSize: '1.75rem',
+              fontSize: '32px',
               ease: 'none',
               duration: 0.6,
             }, i);
           });
+
+          const totalDuration = tl.duration();
+
+          const pullSpacer = statsContainer.parentElement?.querySelector('.stats-bottom-pull-spacer');
+          if (pullSpacer) {
+            tl.to(pullSpacer, {
+              marginTop: () => {
+                const currentInitialHeight = statsContainer.offsetHeight;
+                const currentFoldedHeight = 348;
+                const heightDiff = Math.max(0, currentInitialHeight - currentFoldedHeight);
+                return -heightDiff;
+              },
+              ease: 'none',
+              duration: totalDuration,
+            }, 0);
+          }
+
+          const pxPerSecond = 300;
+          const scrollDistance = totalDuration * pxPerSecond;
+
+          ScrollTrigger.create({
+            trigger: statsContainer,
+            start: 'top 80px',
+            end: `+=${scrollDistance}`,
+            scrub: true,
+            pin: true,
+            pinSpacing: true,
+            animation: tl,
+          });
+
+          ScrollTrigger.refresh();
         }
       }, statsContainer);
     }
 
-    // 2. PHOTO REVEAL HOOK FOR EXPERIENCE SHOWCASE SECTION
-    const showcaseContainer = showcaseRef.current;
-    let showcaseCtx: gsap.Context | null = null;
-
-    if (showcaseContainer) {
-      showcaseCtx = gsap.context(() => {
-        const revealItems = gsap.utils.toArray('.photo-reveal-item');
-        revealItems.forEach((item: any) => {
-          gsap.fromTo(item,
-            { opacity: 0, y: 60 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 1.0,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: item,
-                start: 'top 85%',
-                toggleActions: 'play reverse play reverse',
-              }
-            }
-          );
-        });
-      }, showcaseContainer);
-    }
+    const handleImageLoad = () => {
+      ScrollTrigger.refresh();
+    };
+    const loadedImages = document.querySelectorAll('img');
+    loadedImages.forEach((img) => {
+      if (img.complete) {
+        ScrollTrigger.refresh();
+      } else {
+        img.addEventListener('load', handleImageLoad);
+      }
+    });
 
     return () => {
       if (statsCtx) statsCtx.revert();
-      if (showcaseCtx) showcaseCtx.revert();
+      window.removeEventListener('load', handleWindowLoad);
+      loadedImages.forEach((img) => {
+        img.removeEventListener('load', handleImageLoad);
+      });
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
@@ -256,7 +331,7 @@ export default function CategoryConsultingPage({
       
       {/* 1. HERO - QUANTITATIVE STATS SECTION */}
       <section id="category-hero" className="py-16 md:py-24 text-center bg-radial from-neutral-50/70 via-neutral-50/30 to-white relative overflow-hidden border-b border-neutral-100">
-        <div className="max-w-4xl mx-auto px-6 relative z-10 flex flex-col items-center">
+        <div className="max-w-4xl mx-auto px-[5%] relative z-10 flex flex-col items-center">
           
           <div className="flex items-center justify-center gap-3 mb-6">
             <span className="h-[1.5px] w-8 bg-[#007BC7]"></span>
@@ -295,121 +370,57 @@ export default function CategoryConsultingPage({
         </div>
       </section>
 
-      {/* 1.5 SCROLL-DRIVEN OVERLAPPING STATS CARDS */}
-      <section id="category-stats-scroll" className="w-full bg-[#fafafa] py-16 lg:py-24">
-        
-        {/* Section header to give context when cards are stacking */}
-        <div className="text-center mb-12 px-6">
-          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">LKK BRAND INTEGRITY</span>
-          <h3 className="text-2xl md:text-3xl font-black text-neutral-900 mt-1 font-display">
-            洛可可品牌创新实力数据
-          </h3>
-        </div>
-
-        <div className="stat-cards-section flex flex-col gap-6" ref={statsContainerRef}>
-          {/* Card 1 */}
-          <div 
-            className="stat-card stat-card-1 bg-sky-50 border border-sky-100 text-neutral-900"
-            style={{ zIndex: 10 }}
-          >
-            <span className="stat-eyebrow text-[10px] uppercase font-bold text-sky-500 tracking-wider bg-white px-2.5 py-1 rounded-full border border-sky-100/50 font-mono">
-              Since 2004
-            </span>
-            <div className="stat-card-header">
-              <span className="stat-number font-black text-[#007BC7] font-display">
+      {/* 1.5 QUANTIFIED ACHIEVEMENTS - GLASSMORPHISM CARDS SECTION */}
+      <section className="achievement-section">
+        <div className="max-w-[95%] w-full mx-auto">
+          <div className="achievement-grid">
+            {/* Card 1: 22 年行业经验积淀 */}
+            <div className="achievement-card">
+              <div className="achievement-number">
                 <CounterComponent target={22} />
-              </span>
-              <span className="stat-label font-bold text-[#005F96]">年行业深耕</span>
+              </div>
+              <div className="achievement-label">年行业经验积淀</div>
             </div>
-            <div className="card-details">
-              <h4 className="text-sm lg:text-base font-bold text-neutral-800">中国工业设计与战略咨询拓荒者</h4>
-              <p className="text-xs lg:text-[13px] text-neutral-500 mt-2 leading-relaxed max-w-2xl">
-                22年潜心探索，深度服务各领域龙头及创新品牌，沉淀出行业领先的“三品合一”战略咨询与爆品打造方法论，助力中国制造向中国品牌跃迁。
-              </p>
-            </div>
-          </div>
 
-          {/* Card 2 */}
-          <div 
-            className="stat-card stat-card-2 bg-emerald-50 border border-emerald-100 text-neutral-900"
-            style={{ zIndex: 20 }}
-          >
-            <span className="stat-eyebrow text-[10px] uppercase font-bold text-emerald-500 tracking-wider bg-white px-2.5 py-1 rounded-full border border-emerald-100/50 font-mono">
-              Design Awards
-            </span>
-            <div className="stat-card-header">
-              <span className="stat-number font-black text-emerald-600 font-display flex items-baseline">
-                <CounterComponent target={600} /><span className="text-2xl font-light -translate-y-0.5 ml-0.5">+</span>
-              </span>
-              <span className="stat-label font-bold text-emerald-800">创意设计大奖</span>
+            {/* Card 2: 600+ 专业奖项认证 */}
+            <div className="achievement-card">
+              <div className="achievement-number">
+                <CounterComponent target={600} />+
+              </div>
+              <div className="achievement-label">专业奖项认证</div>
             </div>
-            <div className="card-details">
-              <h4 className="text-sm lg:text-base font-bold text-neutral-800">荣获红点、iF、IDEA等国际顶尖大奖</h4>
-              <p className="text-xs lg:text-[13px] text-neutral-500 mt-2 leading-relaxed max-w-2xl">
-                揽获德国红点奖、德国iF设计奖、美国IDEA、日本G-Mark等国内外重量级设计大奖超600项。我们用国际一流水准的创意美学，为每一个战略新品类构筑起坚实的心智护城河。
-              </p>
-            </div>
-          </div>
 
-          {/* Card 3 */}
-          <div 
-            className="stat-card stat-card-3 bg-amber-50 border border-amber-100 text-neutral-900"
-            style={{ zIndex: 30 }}
-          >
-            <span className="stat-eyebrow text-[10px] uppercase font-bold text-amber-500 tracking-wider bg-white px-2.5 py-1 rounded-full border border-amber-100/50 font-mono">
-              Trusted Clients
-            </span>
-            <div className="stat-card-header">
-              <span className="stat-number font-black text-amber-600 font-display flex items-baseline">
-                <CounterComponent target={1000} /><span className="text-2xl font-light -translate-y-0.5 ml-0.5">+</span>
-              </span>
-              <span className="stat-label font-bold text-amber-800">品牌客户挚信</span>
+            {/* Card 3: 1000+ 行业头部客户认可 */}
+            <div className="achievement-card">
+              <div className="achievement-number">
+                <CounterComponent target={1000} />+
+              </div>
+              <div className="achievement-label">行业头部客户认可</div>
             </div>
-            <div className="card-details">
-              <h4 className="text-sm lg:text-base font-bold text-neutral-800">500强与高增长新锐品牌的一致选择</h4>
-              <p className="text-xs lg:text-[13px] text-neutral-500 mt-2 leading-relaxed max-w-2xl">
-                服务涵盖世界500强企业、国内头部大型企业（如海尔、美的、茅台、西门子、奥迪等），以及众多新锐爆品赛道开创者，共同见证品类爆品从0到1、从1到100的卓越跃升。
-              </p>
-            </div>
-          </div>
 
-          {/* Card 4 */}
-          <div 
-            className="stat-card stat-card-4 bg-neutral-900 border border-neutral-800 text-white"
-            style={{ zIndex: 40 }}
-          >
-            <span className="stat-eyebrow text-[10px] uppercase font-bold text-[#007BC7] tracking-wider bg-neutral-800 px-2.5 py-1 rounded-full border border-neutral-700 font-mono">
-              Market Success
-            </span>
-            <div className="stat-card-header">
-              <span className="stat-number font-black text-[#007BC7] font-display flex items-baseline">
-                <CounterComponent target={10000} /><span className="text-2xl font-light -translate-y-0.5 ml-0.5">+</span>
-              </span>
-              <span className="stat-label font-bold text-neutral-200">成功上市产品</span>
-            </div>
-            <div className="card-details">
-              <h4 className="text-sm lg:text-base font-bold text-neutral-100">强大的供应链护航与极致的落地量产</h4>
-              <p className="text-xs lg:text-[13px] text-neutral-400 mt-2 leading-relaxed max-w-2xl">
-                我们不仅定位品类与设计产品，更能深度链接全球柔性制造供应链网络，打通打样、开模、材料测试到量产交货全闭环。真正做到“咨询战略即爆品，方案出炉即量产”。
-              </p>
+            {/* Card 4: 10000+ 产品成功落地 */}
+            <div className="achievement-card">
+              <div className="achievement-number">
+                <CounterComponent target={10000} />+
+              </div>
+              <div className="achievement-label">产品成功落地</div>
             </div>
           </div>
         </div>
-
       </section>
 
       {/* 2. SERVICES - THREE CARD SERVICE AREA */}
-      <section id="category-services" className="py-20 bg-neutral-50 px-6 border-b border-neutral-100">
+      <section id="category-services" className="py-20 bg-[#F0F0F0]/50 border-b border-[#E5E5E5]">
         <div className="max-w-[95%] w-full mx-auto relative z-10">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Expertise</span>
-              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
+              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-[#1a1a1a] mt-2 font-display">
                 <span className="char char-black">专</span><span className="char char-black">业</span><span className="char char-black">服</span><span className="char char-black">务</span>
               </h2>
             </div>
-            <p className="text-sm text-neutral-500 max-w-md mt-4 md:mt-0 leading-relaxed">
+            <p className="text-sm text-[#4D4D4D] max-w-md mt-4 md:mt-0 leading-relaxed">
               我们依托于核心的“战略定位+整合研发设计”闭环服务能力，提供从品类、产品、到品牌的高爆发全案咨询。
             </p>
           </div>
@@ -419,7 +430,7 @@ export default function CategoryConsultingPage({
             {/* Card 1 */}
             <motion.div 
               whileHover={{ y: -8 }}
-              className="group bg-white rounded-3xl overflow-hidden border border-neutral-150 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
+              className="group bg-white rounded-3xl overflow-hidden border border-[#E5E5E5] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
             >
               <div className="h-64 relative overflow-hidden bg-neutral-100">
                 <img 
@@ -430,29 +441,29 @@ export default function CategoryConsultingPage({
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/30 to-transparent"></div>
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-neutral-800 px-3 py-1 rounded-full border border-neutral-200 uppercase tracking-wider font-mono">
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1a1a1a] px-3 py-1 rounded-full border border-[#E5E5E5] uppercase tracking-wider font-mono">
                   Category Consulting
                 </div>
               </div>
               <div className="p-8 flex-grow flex flex-col justify-between">
                 <div>
-                  <h3 className="text-xl font-bold text-neutral-900 group-hover:text-[#005F96] transition-colors mb-4">
+                  <h3 className="text-xl font-semibold text-[#1a1a1a] group-hover:text-[#005F96] transition-colors mb-4 font-display">
                     品类咨询
                   </h3>
                   <ul className="grid gap-2.5">
                     {['品类竞争咨询', '品类机会咨询', '品类定义咨询', '品类商业化咨询'].map((b, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-neutral-500">
+                      <li key={i} className="flex items-center gap-2 text-sm text-[#4D4D4D]">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]"></span>
                         {b}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center justify-between">
-                  <span className="text-xs text-neutral-500 font-semibold uppercase tracking-wider group-hover:text-[#005F96] transition-colors">
+                <div className="mt-8 pt-6 border-t border-[#E5E5E5] flex items-center justify-between">
+                  <span className="text-xs text-[#8C8C8C] font-semibold uppercase tracking-wider group-hover:text-[#005F96] transition-colors">
                     立即对接
                   </span>
-                  <div className="w-10 h-10 rounded-full bg-neutral-50 group-hover:bg-[#005F96] flex items-center justify-center text-neutral-500 group-hover:text-white transition-all transform group-hover:rotate-45">
+                  <div className="w-10 h-10 rounded-full bg-neutral-50 group-hover:bg-[#005F96] flex items-center justify-center text-[#8C8C8C] group-hover:text-white transition-all transform group-hover:rotate-45">
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -462,7 +473,7 @@ export default function CategoryConsultingPage({
             {/* Card 2 */}
             <motion.div 
               whileHover={{ y: -8 }}
-              className="group bg-white rounded-3xl overflow-hidden border border-neutral-150 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
+              className="group bg-white rounded-3xl overflow-hidden border border-[#E5E5E5] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
             >
               <div className="h-64 relative overflow-hidden bg-neutral-100">
                 <img 
@@ -473,29 +484,29 @@ export default function CategoryConsultingPage({
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/30 to-transparent"></div>
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-neutral-800 px-3 py-1 rounded-full border border-neutral-200 uppercase tracking-wider font-mono">
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1a1a1a] px-3 py-1 rounded-full border border-[#E5E5E5] uppercase tracking-wider font-mono">
                   Product Consulting
                 </div>
               </div>
               <div className="p-8 flex-grow flex flex-col justify-between">
                 <div>
-                  <h3 className="text-xl font-bold text-neutral-900 group-hover:text-[#005F96] transition-colors mb-4">
+                  <h3 className="text-xl font-semibold text-[#1a1a1a] group-hover:text-[#005F96] transition-colors mb-4 font-display">
                     产品咨询
                   </h3>
                   <ul className="grid gap-2.5">
                     {['产品定义咨询', '产品线规划咨询', '产品家族化咨询'].map((b, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-neutral-500">
+                      <li key={i} className="flex items-center gap-2 text-sm text-[#4D4D4D]">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]"></span>
                         {b}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center justify-between">
-                  <span className="text-xs text-neutral-500 font-semibold uppercase tracking-wider group-hover:text-[#005F96] transition-colors">
+                <div className="mt-8 pt-6 border-t border-[#E5E5E5] flex items-center justify-between">
+                  <span className="text-xs text-[#8C8C8C] font-semibold uppercase tracking-wider group-hover:text-[#005F96] transition-colors">
                     立即对接
                   </span>
-                  <div className="w-10 h-10 rounded-full bg-neutral-50 group-hover:bg-[#005F96] flex items-center justify-center text-neutral-500 group-hover:text-white transition-all transform group-hover:rotate-45">
+                  <div className="w-10 h-10 rounded-full bg-neutral-50 group-hover:bg-[#005F96] flex items-center justify-center text-[#8C8C8C] group-hover:text-white transition-all transform group-hover:rotate-45">
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -505,7 +516,7 @@ export default function CategoryConsultingPage({
             {/* Card 3 */}
             <motion.div 
               whileHover={{ y: -8 }}
-              className="group bg-white rounded-3xl overflow-hidden border border-neutral-150 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
+              className="group bg-white rounded-3xl overflow-hidden border border-[#E5E5E5] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
             >
               <div className="h-64 relative overflow-hidden bg-neutral-100">
                 <img 
@@ -516,29 +527,29 @@ export default function CategoryConsultingPage({
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/30 to-transparent"></div>
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-neutral-800 px-3 py-1 rounded-full border border-neutral-200 uppercase tracking-wider font-mono">
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1a1a1a] px-3 py-1 rounded-full border border-[#E5E5E5] uppercase tracking-wider font-mono">
                   Brand Consulting
                 </div>
               </div>
               <div className="p-8 flex-grow flex flex-col justify-between">
                 <div>
-                  <h3 className="text-xl font-bold text-neutral-900 group-hover:text-[#005F96] transition-colors mb-4">
+                  <h3 className="text-xl font-semibold text-[#1a1a1a] group-hover:text-[#005F96] transition-colors mb-4 font-display">
                     品牌咨询
                   </h3>
                   <ul className="grid gap-2.5">
                     {['品牌定位咨询', '品牌话语咨询', '品牌营销咨询'].map((b, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-neutral-500">
+                      <li key={i} className="flex items-center gap-2 text-sm text-[#4D4D4D]">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]"></span>
                         {b}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center justify-between">
-                  <span className="text-xs text-neutral-500 font-semibold uppercase tracking-wider group-hover:text-[#005F96] transition-colors">
+                <div className="mt-8 pt-6 border-t border-[#E5E5E5] flex items-center justify-between">
+                  <span className="text-xs text-[#8C8C8C] font-semibold uppercase tracking-wider group-hover:text-[#005F96] transition-colors">
                     立即对接
                   </span>
-                  <div className="w-10 h-10 rounded-full bg-neutral-50 group-hover:bg-[#005F96] flex items-center justify-center text-neutral-500 group-hover:text-white transition-all transform group-hover:rotate-45">
+                  <div className="w-10 h-10 rounded-full bg-neutral-50 group-hover:bg-[#005F96] flex items-center justify-center text-[#8C8C8C] group-hover:text-white transition-all transform group-hover:rotate-45">
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
@@ -549,324 +560,55 @@ export default function CategoryConsultingPage({
         </div>
       </section>
 
-      {/* 洛可可实战中不断总结的经验板块 - EXPERIENCE SHOWCASE */}
-      {/* 洛可可实战中不断总结的经验板块 - EXPERIENCE SHOWCASE */}
-      <section 
-        id="experience-showcase" 
-        ref={showcaseRef}
-        className="py-24 bg-neutral-950 text-white border-b border-neutral-800"
-      >
-        <div className="max-w-[95%] w-full mx-auto px-6 mb-20 text-center">
-          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">LKK PRACTICE EXPERIENCE</span>
-          <h2 className="text-3xl md:text-5xl font-black text-white mt-2 font-display">
-            洛可可实战中不断总结的经验
-          </h2>
-          <p className="text-sm text-neutral-400 mt-4 max-w-xl mx-auto leading-relaxed">
-            22年深耕品类创新，沉淀出系统化的战略咨询原理与方法论，帮助客户定义品类，直达爆品。
-          </p>
-        </div>
 
-        <div className="photo-reveal-group max-w-[85%] w-full mx-auto flex flex-col gap-32">
-          
-          {/* Panel 1: 品类创新解决方案 */}
-          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
-            {/* Left Photo Reveal Item */}
-            <div className="photo-reveal-item w-full md:w-1/2 aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative border border-neutral-800 shrink-0">
-              <img 
-                src="/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg" 
-                alt="品类创新解决方案" 
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-left">
-                <span className="text-xs font-bold text-sky-400 uppercase tracking-wider font-mono">PART 01</span>
-                <h3 className="text-xl font-bold text-white mt-1">品类创新解决方案</h3>
-              </div>
-            </div>
 
-            {/* Right Content */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center text-left">
-              <span className="text-[#007BC7] text-xs font-bold uppercase tracking-[0.25em] mb-3 block font-mono">
-                洛可可为客户提供的价值
-              </span>
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-8 font-display tracking-tight">
-                品类创新解决方案
-              </h3>
-              
-              <div className="grid grid-cols-1 gap-4 w-full">
-                {/* Card 1 */}
-                <div className="bg-neutral-900/60 border border-neutral-800/60 p-5 rounded-2xl flex items-center gap-4 hover:border-[#007BC7]/40 transition-all">
-                  <div className="w-8 h-8 rounded-full bg-[#007BC7]/10 text-[#007BC7] flex items-center justify-center font-bold text-xs shrink-0">01</div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">为中小企业</h4>
-                    <p className="text-xs text-neutral-400 mt-0.5">在竞争内卷中寻找创新增长机会</p>
-                  </div>
-                </div>
-
-                {/* Card 2 */}
-                <div className="bg-neutral-900/60 border border-neutral-800/60 p-5 rounded-2xl flex items-center gap-4 hover:border-[#007BC7]/40 transition-all">
-                  <div className="w-8 h-8 rounded-full bg-[#007BC7]/10 text-[#007BC7] flex items-center justify-center font-bold text-xs shrink-0">02</div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">为大型企业</h4>
-                    <p className="text-xs text-neutral-400 mt-0.5">探索第二增长曲线</p>
-                  </div>
-                </div>
-
-                {/* Card 3 */}
-                <div className="bg-neutral-900/60 border border-neutral-800/60 p-5 rounded-2xl flex items-center gap-4 hover:border-[#007BC7]/40 transition-all">
-                  <div className="w-8 h-8 rounded-full bg-[#007BC7]/10 text-[#007BC7] flex items-center justify-center font-bold text-xs shrink-0">03</div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">为技术型企业</h4>
-                    <p className="text-xs text-neutral-400 mt-0.5">提供新品类商品化解决方案</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* 3.5 EXPERIENCE SHOWCASE - VERTICAL STACK WITH 3D TILT */}
+      <section id="category-insights" className="py-20 bg-[#F0F0F0]/40 w-full border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto relative z-10">
+          {/* Section Header */}
+          <div className="text-center mb-12 lg:mb-16">
+            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+              LKK PRACTICAL INSIGHTS
+            </span>
+            <h2 className="section-title scroll-reveal-heading text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+              洛可可实战中不断总结的经验
+            </h2>
           </div>
 
-          {/* Panel 2: 三品合一原理 */}
-          <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
-            {/* Right Photo Reveal Item */}
-            <div className="photo-reveal-item w-full md:w-1/2 aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative border border-neutral-800 shrink-0">
-              <img 
-                src="/src/assets/images/lkk_humanoid_robot_1783302961282.jpg" 
-                alt="三品合一原理" 
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-left">
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider font-mono">PART 02</span>
-                <h3 className="text-xl font-bold text-white mt-1">三品合一原理</h3>
-              </div>
-            </div>
-
-            {/* Left Content with SVG Diagram */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center text-left">
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-[0.2em] font-mono mb-2">Core Theory</span>
-              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight font-display mb-3">
-                三品合一
-              </h3>
-              <p className="text-md text-[#007BC7] font-semibold mb-4">
-                是构建品类创新增长的原理
-              </p>
-              <p className="text-xs text-neutral-400 leading-relaxed mb-6">
-                洛可可三品合一将品类定位（找准赛道）、产品创新（极致工业设计与结构堆叠）和品牌创新（打造心智超级符号）进行有机融合，从源头降低企业的战略决策和执行磨损成本。
-              </p>
-
-              {/* Triangle Diagram Container */}
-              <div className="relative w-full max-w-[360px] aspect-[4/3] bg-neutral-900/50 p-4 rounded-3xl border border-neutral-800/60 select-none">
-                {/* SVG Connections */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 300">
-                  {/* Outer lines */}
-                  <line x1="200" y1="45" x2="65" y2="245" stroke="#007BC7" strokeWidth="2" strokeDasharray="5 5" />
-                  <line x1="200" y1="45" x2="335" y2="245" stroke="#007BC7" strokeWidth="2" strokeDasharray="5 5" />
-                  <line x1="65" y1="245" x2="335" y2="245" stroke="#007BC7" strokeWidth="2" strokeDasharray="5 5" />
-                  
-                  {/* Center lines */}
-                  <line x1="200" y1="45" x2="200" y2="160" stroke="#007BC7" strokeWidth="1.5" />
-                  <line x1="65" y1="245" x2="200" y2="160" stroke="#007BC7" strokeWidth="1.5" />
-                  <line x1="335" y1="245" x2="200" y2="160" stroke="#007BC7" strokeWidth="1.5" />
-                </svg>
-
-                {/* Top Node */}
-                <div className="absolute top-[45px] left-[200px] -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-neutral-900 border border-[#007BC7] rounded-full flex flex-col items-center justify-center shadow-md">
-                  <span className="text-[#007BC7] font-black text-xs">品类</span>
-                  <span className="text-[8px] text-neutral-400 font-mono tracking-wider">CATEGORY</span>
-                </div>
-
-                {/* Bottom Left Node */}
-                <div className="absolute top-[245px] left-[65px] -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-neutral-900 border border-[#007BC7] rounded-full flex flex-col items-center justify-center shadow-md">
-                  <span className="text-[#007BC7] font-black text-xs">产品</span>
-                  <span className="text-[8px] text-neutral-400 font-mono tracking-wider">PRODUCT</span>
-                </div>
-
-                {/* Bottom Right Node */}
-                <div className="absolute top-[245px] left-[335px] -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-neutral-900 border border-[#007BC7] rounded-full flex flex-col items-center justify-center shadow-md">
-                  <span className="text-[#007BC7] font-black text-xs">品牌</span>
-                  <span className="text-[8px] text-neutral-400 font-mono tracking-wider">BRAND</span>
-                </div>
-
-                {/* Center Node */}
-                <div className="absolute top-[160px] left-[200px] -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-neutral-800 border border-[#007BC7] rounded-full flex flex-col items-center justify-center shadow-lg ring-4 ring-[#007BC7]/10">
-                  <span className="text-white font-bold text-xs mb-0.5">用户欲求</span>
-                  <span className="text-[8px] text-neutral-400 font-mono tracking-wider uppercase">DESIRE</span>
-                </div>
-
-                {/* Labels */}
-                <div className="absolute top-[135px] left-[110px] -translate-x-1/2 -translate-y-1/2 bg-neutral-800 border border-neutral-700 text-[10px] font-bold text-neutral-300 px-1.5 py-0.5 rounded shadow-sm">
-                  方案
-                </div>
-                <div className="absolute top-[135px] left-[290px] -translate-x-1/2 -translate-y-1/2 bg-neutral-800 border border-neutral-700 text-[10px] font-bold text-neutral-300 px-1.5 py-0.5 rounded shadow-sm">
-                  价值
-                </div>
-                <div className="absolute top-[260px] left-[200px] -translate-x-1/2 -translate-y-1/2 bg-neutral-800 border border-neutral-700 text-[10px] font-bold text-neutral-300 px-2 py-0.5 rounded shadow-sm">
-                  价值交易
-                </div>
-              </div>
-            </div>
+          {/* Vertical Stack of Experience Cards */}
+          <div className="flex flex-col gap-10 md:gap-12">
+            <ExperienceCard
+              title="品类创新解决方案"
+              imgSrc="https://github.com/minaxyue-ops/MINA/releases/download/1/6a2b8143e8473.png"
+            />
+            <ExperienceCard
+              title="三品合一价值金三角"
+              imgSrc="https://github.com/minaxyue-ops/MINA/releases/download/1/6a2b814def24e.png"
+            />
+            <ExperienceCard
+              title="认知行商业落地方法"
+              imgSrc="https://github.com/minaxyue-ops/MINA/releases/download/1/6a38f79e8d827.png"
+            />
+            <ExperienceCard
+              title="爆品价值与营销杠杆"
+              imgSrc="https://github.com/minaxyue-ops/MINA/releases/download/1/6a38f7a93ef1d.png"
+            />
           </div>
-
-          {/* Panel 3: 认知行价值框架 */}
-          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
-            {/* Left Photo Reveal Item */}
-            <div className="photo-reveal-item w-full md:w-1/2 aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative border border-neutral-800 shrink-0">
-              <img 
-                src="/src/assets/images/lkk_coffee_mockup_1783302972120.jpg" 
-                alt="认知行价值框架" 
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-left">
-                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider font-mono">PART 03</span>
-                <h3 className="text-xl font-bold text-white mt-1">认知行价值框架</h3>
-              </div>
-            </div>
-
-            {/* Right Content */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center text-left">
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-[0.2em] font-mono mb-2">Methodology</span>
-              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight font-display mb-6">
-                品类创新方法论——认知行价值框架
-              </h3>
-
-              {/* Process Flow */}
-              <div className="flex items-center gap-3 mb-6 bg-neutral-900/40 p-4 rounded-2xl border border-neutral-800/50 w-full max-w-[400px]">
-                <div className="flex flex-col items-center bg-[#007BC7]/20 border border-[#007BC7]/40 px-3 py-1 rounded-xl">
-                  <span className="text-sm font-black text-[#007BC7]">认</span>
-                  <span className="text-[8px] text-neutral-400 uppercase font-mono">Identify</span>
-                </div>
-                <span className="text-neutral-600">→</span>
-                <div className="flex flex-col items-center bg-[#007BC7]/20 border border-[#007BC7]/40 px-3 py-1 rounded-xl">
-                  <span className="text-sm font-black text-[#007BC7]">知</span>
-                  <span className="text-[8px] text-neutral-400 uppercase font-mono">Know</span>
-                </div>
-                <span className="text-neutral-600">→</span>
-                <div className="flex flex-col items-center bg-[#007BC7]/20 border border-[#007BC7]/40 px-3 py-1 rounded-xl">
-                  <span className="text-sm font-black text-[#007BC7]">行</span>
-                  <span className="text-[8px] text-neutral-400 uppercase font-mono">Action</span>
-                </div>
-                <span className="text-neutral-600">→</span>
-                <div className="flex flex-col items-center bg-[#007BC7] px-4 py-1 rounded-xl shadow-md">
-                  <span className="text-sm font-black text-white">价值</span>
-                  <span className="text-[8px] text-white/80 uppercase font-mono">Value</span>
-                </div>
-              </div>
-
-              {/* Diagrams Grid */}
-              <div className="grid grid-cols-2 gap-4 w-full max-w-[440px]">
-                <div className="bg-neutral-900/50 p-4 rounded-2xl border border-neutral-800/60 flex flex-col items-center">
-                  <span className="text-[10px] font-bold text-neutral-400 mb-2">业务取舍：三圆维恩图</span>
-                  <div className="relative w-40 h-36 scale-90 select-none">
-                    <div className="absolute top-1 left-2 w-20 h-20 rounded-full bg-[#007BC7]/15 border border-[#007BC7]/30 flex flex-col items-center justify-center">
-                      <span className="text-[#007BC7] font-black text-[10px]">想做</span>
-                    </div>
-                    <div className="absolute top-1 right-2 w-20 h-20 rounded-full bg-neutral-800 border border-neutral-700 flex flex-col items-center justify-center">
-                      <span className="text-neutral-300 font-black text-[10px]">可做</span>
-                    </div>
-                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-[#007BC7]/5 border border-[#007BC7]/15 flex flex-col items-center justify-center">
-                      <span className="text-neutral-400 font-black text-[10px]">能做</span>
-                    </div>
-                    <div className="absolute top-[45px] left-1/2 -translate-x-1/2 bg-white text-neutral-950 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full shadow-md z-10">
-                      该做
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-neutral-900/50 p-4 rounded-2xl border border-neutral-800/60 flex flex-col items-center">
-                  <span className="text-[10px] font-bold text-neutral-400 mb-2">三品体系联动</span>
-                  <div className="relative w-40 h-36 scale-[0.8] select-none">
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 200 160">
-                      <line x1="100" y1="20" x2="30" y2="130" stroke="#007BC7" strokeWidth="1.5" strokeDasharray="3 3" />
-                      <line x1="100" y1="20" x2="170" y2="130" stroke="#007BC7" strokeWidth="1.5" strokeDasharray="3 3" />
-                      <line x1="30" y1="130" x2="170" y2="130" stroke="#007BC7" strokeWidth="1.5" strokeDasharray="3 3" />
-                    </svg>
-                    <div className="absolute top-[20px] left-[100px] -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-neutral-900 border border-[#007BC7] rounded-full flex items-center justify-center">
-                      <span className="text-[#007BC7] font-bold text-[8px]">品类</span>
-                    </div>
-                    <div className="absolute top-[130px] left-[30px] -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-neutral-900 border border-[#007BC7] rounded-full flex items-center justify-center">
-                      <span className="text-[#007BC7] font-bold text-[8px]">产品</span>
-                    </div>
-                    <div className="absolute top-[130px] left-[170px] -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-neutral-900 border border-[#007BC7] rounded-full flex items-center justify-center">
-                      <span className="text-[#007BC7] font-bold text-[8px]">品牌</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Panel 4: 爆品价值循环 + 品牌营销杠杆 */}
-          <div className="flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
-            {/* Right Photo Reveal Item */}
-            <div className="photo-reveal-item w-full md:w-1/2 aspect-[16/10] md:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative border border-neutral-800 shrink-0">
-              <img 
-                src="/src/assets/images/lkk_hero_banner_1783412912488.jpg" 
-                alt="爆品价值循环" 
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover scale-105 hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-left">
-                <span className="text-xs font-bold text-[#007BC7] uppercase tracking-wider font-mono">PART 04</span>
-                <h3 className="text-xl font-bold text-white mt-1">爆品价值与营销杠杆</h3>
-              </div>
-            </div>
-
-            {/* Left Content */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center text-left">
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-[0.2em] font-mono mb-2">Growth Engine</span>
-              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight font-display mb-6">
-                爆品价值循环 + 品牌营销杠杆
-              </h3>
-
-              <div className="grid grid-cols-1 gap-4 w-full max-w-[440px]">
-                {/* Value Cycle Diagram Card */}
-                <div className="bg-neutral-900/50 p-5 rounded-2xl border border-neutral-800/60">
-                  <span className="text-[10px] font-bold text-neutral-400 mb-3 block uppercase tracking-wider">五维爆品价值循环</span>
-                  <div className="flex flex-wrap gap-2">
-                    {['废品', '作品', '制品', '商品', '用品'].map((lbl, idx) => (
-                      <div key={idx} className="bg-neutral-800 border border-neutral-700 px-2.5 py-1 rounded-lg flex flex-col items-center">
-                        <span className="text-[10px] font-bold text-white">{lbl}</span>
-                        <span className="text-[7px] text-neutral-400 font-mono">VALUE</span>
-                      </div>
-                    ))}
-                    <div className="bg-[#007BC7] px-2.5 py-1 rounded-lg flex flex-col items-center shadow-md">
-                      <span className="text-[10px] font-bold text-white">爆品价值</span>
-                      <span className="text-[7px] text-white/80 font-mono">CORE</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Lever Diagram Card */}
-                <div className="bg-neutral-900/50 p-5 rounded-2xl border border-neutral-800/60">
-                  <span className="text-[10px] font-bold text-neutral-400 mb-2 block uppercase tracking-wider">品牌营销杠杆示意</span>
-                  <div className="flex items-center justify-between bg-neutral-800/80 p-3 rounded-xl border border-neutral-700/50">
-                    <span className="text-xs font-bold text-white">品牌营销杠杆 (撬动心智距离)</span>
-                    <span className="text-[10px] font-bold text-white bg-[#007BC7] px-2.5 py-0.5 rounded-full shadow-sm">极致定位</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </section>
 
       {/* 3. CASES - GRID WORK REUSING HOMEPAGE DESIGN SYSTEM (3 COLUMNS x 2 ROWS) - RENAME TO 案例锦集 */}
-      <section id="category-cases" className="py-20 bg-neutral-50 px-6 border-b border-neutral-100">
+      <section id="category-cases" className="py-20 bg-white border-b border-[#E5E5E5]">
         <div className="max-w-[95%] w-full mx-auto relative z-10">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Portfolios</span>
-              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
+              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-[#1a1a1a] mt-2 font-display">
                 <span className="char char-black">案</span><span className="char char-black">例</span><span className="char char-black">锦</span><span className="char char-black">集</span>
               </h2>
             </div>
-            <p className="text-sm text-neutral-500 max-w-sm mt-4 md:mt-0">
+            <p className="text-sm text-[#4D4D4D] max-w-sm mt-4 md:mt-0">
               洛可可战略咨询助力以下领军企业，成功实现颠覆性品类战略突围与超级爆品打造。
             </p>
           </div>
@@ -876,10 +618,10 @@ export default function CategoryConsultingPage({
               const v2Data = getCaseV2Data(cs);
               const imgSource = getCaseImage(cs);
               return (
-                <button 
+                <a 
                   key={cs.id}
-                  onClick={() => onSelectCase(cs)}
-                  className="case-card-v2 block relative text-left w-full outline-none select-none overflow-hidden"
+                  href={`/cases/${cs.id}`}
+                  className="case-card-v2 block relative text-left w-full outline-none select-none overflow-hidden text-decoration-none"
                 >
                   {imgSource ? (
                     <img 
@@ -903,9 +645,18 @@ export default function CategoryConsultingPage({
                   <div className="case-summary-v2">
                     <div className="case-brand-label">{v2Data.brand}</div>
                     
-                    <div className="case-detail-arrow">
+                    <button 
+                      type="button"
+                      className="case-detail-arrow cursor-pointer border-none"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onSelectCase(cs);
+                      }}
+                      aria-label="查看案例简介"
+                    >
                       <span>案例简介</span><span>↗</span>
-                    </div>
+                    </button>
                     
                     <div className="case-bottom-block">
                       <div className="case-divider">-</div>
@@ -913,7 +664,7 @@ export default function CategoryConsultingPage({
                       <div className="case-desc">{v2Data.desc}</div>
                     </div>
                   </div>
-                </button>
+                </a>
               );
             })}
           </div>
@@ -921,80 +672,62 @@ export default function CategoryConsultingPage({
         </div>
       </section>
 
-      {/* 4. FAQ - NEW CORE ACCORDION SECTION */}
+      {/* 4. FAQ - SUCCESS PATH SECTION */}
       <section 
         id="category-faq" 
-        className="py-20 bg-white w-full overflow-hidden"
+        className="py-20 bg-white w-full overflow-hidden border-b border-[#E5E5E5]"
       >
         {/* Title Area - Centered */}
-        <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 relative z-10 mb-16">
+        <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 relative z-10 mb-12">
           <div className="text-center">
             <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">FAQ</span>
-            <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
+            <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-[#1a1a1a] mt-2 font-display">
               <span className="char char-black">成</span><span className="char char-black">功</span><span className="char char-black">路</span><span className="char char-black">径</span>
             </h2>
-            <p className="text-sm text-neutral-400 mt-3 max-w-xl mx-auto leading-relaxed">
+            <p className="text-sm text-[#8C8C8C] mt-3 max-w-xl mx-auto leading-relaxed">
               关于洛可可“三品合一”战略咨询与爆品落地全流程，解答您关心的一切核心诉求。
             </p>
           </div>
         </div>
 
         {/* Full-width List Container */}
-        <div className="flex flex-col border-t border-neutral-150 w-full">
-          {faqItems.map((item, index) => {
-            const isOpen = openIndex === index;
-            return (
-              <div 
-                key={index} 
-                className="w-full border-b border-[#E5E5E5] relative overflow-hidden group"
-              >
-                {/* Sliding background overlay from left to right */}
-                <div 
-                  className="absolute inset-0 bg-[#007bc7] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] z-0 pointer-events-none"
-                  style={{
-                    clipPath: isOpen 
-                      ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' 
-                      : 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)'
-                  }}
-                />
-
-                {/* Centered item content */}
-                <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 py-6 flex flex-col text-left relative z-10">
-                  {/* Question header */}
-                  <button 
-                    onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="flex items-center justify-between gap-6 text-left w-full group py-1 relative z-10 outline-none"
-                  >
-                    <span className={`text-[15px] font-bold font-sans transition-colors duration-500 ${isOpen ? 'text-white' : 'text-[#1A1A1A] group-hover:text-[#007BC7]'}`}>
-                      {item.q}
-                    </span>
-                    <div 
-                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-500 ${isOpen ? 'bg-white/20 text-white rotate-45 shadow-sm' : 'bg-neutral-50 text-neutral-400 group-hover:bg-[#E5F2FA] group-hover:text-[#007BC7]'}`}
-                    >
-                      <Plus className="w-4 h-4 stroke-[2.5]" />
-                    </div>
-                  </button>
-
-                  {/* Answer slide transitions */}
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.35, ease: "easeInOut" }}
-                        className="overflow-hidden"
-                      >
-                        <p className={`text-xs leading-relaxed pt-4 pb-1 text-left font-normal max-w-4xl text-balance transition-colors duration-500 ${isOpen ? 'text-neutral-100' : 'text-[#4D4D4D]'}`}>
-                          {item.a}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+        <div className="flex flex-col border-t border-[#E5E5E5] w-full">
+          {faqItems.map((item, index) => (
+            <div 
+              key={index} 
+              className="w-full border-b border-[#E5E5E5]"
+            >
+              {/* Centered item content */}
+              <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 py-6 flex flex-col text-left group">
+                <h4 className="text-[16px] font-semibold text-[#1a1a1a] group-hover:text-[#007BC7] transition-colors duration-300">
+                  {item.q}
+                </h4>
+                <p className="mt-2 text-[14px] text-[#4D4D4D] leading-[1.6]">
+                  {item.a}
+                </p>
               </div>
-            );
-          })}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. CLIENTS - SERVICE CLIENTS SECTION */}
+      <section id="category-clients" className="py-20 md:py-24 bg-white w-full border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto relative z-10 text-center">
+          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+            OUR CLIENTS
+          </span>
+          <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] mb-12 font-display">
+            服务客户
+          </h2>
+          <div className="w-full rounded-3xl overflow-hidden shadow-sm border border-[#E5E5E5] bg-[#F0F0F0]">
+            <img 
+              src="https://github.com/minaxyue-ops/MINA/releases/download/1/fuwukehu1.jpg" 
+              alt="服务客户" 
+              referrerPolicy="no-referrer"
+              className="w-full h-auto object-cover block"
+            />
+          </div>
         </div>
       </section>
 

@@ -187,6 +187,14 @@ body {
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.case-card-v2:hover,
+.case-card-v2.is-active {
+  box-shadow: 0 18px 40px 6px rgba(0, 0, 0, 0.18), 0 8px 18px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
 }
 .case-card-v2 img {
   width: 100%;
@@ -706,116 +714,222 @@ body {
 
 /* --- Scroll-driven Collapsing Cards --- */
 
-:root {
-  --expanded-h: 280px;
-  --folded-h: 88px;
-  --fold-distance: 3vh;
-  --num-size-expanded: 72px;
-  --num-size-folded: 28px;
-  --label-size-expanded: 1.125rem;
-  --label-size-folded: 0.875rem;
-  --padding-expanded: 2rem;
-  --padding-folded: 1.125rem;
-}
-
-@media (max-width: 1023px) {
-  :root {
-    --expanded-h: 220px;
-    --folded-h: 64px;
-    --fold-distance: 2vh;
-    --num-size-expanded: 44px;
-    --num-size-folded: 22px;
-    --label-size-expanded: 0.95rem;
-    --label-size-folded: 0.75rem;
-    --padding-expanded: 1.25rem;
-    --padding-folded: 0.75rem;
-  }
-}
-
-.stats-scroll-container {
+.stat-card {
   position: relative !important;
-  background-color: #fafafa;
-  width: 100%;
-  padding-bottom: 3rem;
-  box-sizing: border-box;
-}
-
-.stat-runway {
-  position: relative !important;
-  display: block;
-  width: 100%;
-  height: calc(var(--expanded-h) + var(--fold-distance) - (var(--expanded-h) - var(--folded-h) + var(--fold-distance)) * var(--progress, 0)) !important;
-}
-
-.stack-card {
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: calc(100% - 2rem);
-  max-width: 56rem; /* max-w-4xl */
-  margin: 0 auto;
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  transition: box-shadow 0.3s ease;
-  overflow: hidden;
-  box-sizing: border-box;
-  
-  /* Interpolate height and padding directly based on --progress */
-  height: calc(var(--expanded-h) - (var(--expanded-h) - var(--folded-h)) * var(--progress, 0)) !important;
-  padding: calc(var(--padding-expanded) - (var(--padding-expanded) - var(--padding-folded)) * var(--progress, 0)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  width: calc(100% - 2rem) !important;
+  max-width: 56rem !important; /* max-w-4xl */
+  margin: 0 auto !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  padding: 3rem 2.5rem !important; /* 48px top/bottom, 40px left/right */
 }
 
 @media (max-width: 639px) {
-  .stack-card {
-    width: calc(100% - 1rem);
+  .stat-card {
+    width: calc(100% - 1rem) !important;
+    padding: 2.25rem 1.5rem !important; /* more compact padding on mobile */
   }
 }
 
-.stack-card:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+.stat-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
 }
 
-.stat-card-header {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: baseline;
-  width: 100%;
-  gap: 0.5rem;
-  transition: none !important;
+.stat-row {
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 20px !important;
+  width: 100% !important;
 }
 
 .stat-number {
-  font-size: calc(var(--num-size-expanded) - (var(--num-size-expanded) - var(--num-size-folded)) * var(--progress, 0)) !important;
-  font-weight: 900;
-  line-height: 1;
-  min-width: max-content;
-  flex-basis: calc(100% * (1 - var(--progress, 0))) !important;
-  transition: none !important;
+  font-size: clamp(48px, 6vw, 96px); /* No !important so GSAP can animate the font-size smoothly */
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
 }
 
 .stat-label {
-  font-size: calc(var(--label-size-expanded) - (var(--label-size-expanded) - var(--label-size-folded)) * var(--progress, 0)) !important;
-  font-weight: 700;
-  transition: none !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  opacity: 0.85 !important;
+  line-height: 1.2 !important;
 }
 
 .stat-eyebrow {
   position: absolute !important;
-  top: calc(var(--padding-expanded) - (var(--padding-expanded) - var(--padding-folded)) * var(--progress, 0)) !important;
-  right: calc(var(--padding-expanded) - (var(--padding-expanded) - var(--padding-folded)) * var(--progress, 0)) !important;
-  font-size: calc(10px - (10px - 8px) * var(--progress, 0)) !important;
-  padding: calc(0.25rem - (0.25rem - 0.125rem) * var(--progress, 0)) calc(0.625rem - (0.625rem - 0.375rem) * var(--progress, 0)) !important;
-  transition: none !important;
+  top: 1.5rem !important;
+  right: 1.5rem !important;
+  font-size: 10px !important;
+  padding: 0.25rem 0.625rem !important;
 }
 
 .card-details {
-  opacity: calc(1 - var(--progress, 0)) !important;
-  max-height: calc(180px * (1 - var(--progress, 0))) !important;
-  margin-top: calc(1.5rem * (1 - var(--progress, 0))) !important;
-  transform: translateY(calc(-12px * var(--progress, 0))) !important;
-  transition: none !important;
   overflow: hidden !important;
+}
+
+/* 4 groups background color & text color gradient */
+.stat-card-1, .stat-card:nth-child(1) {
+  background: #E5F2FA !important;
+  border: 1px solid rgba(0, 95, 150, 0.15) !important;
+}
+.stat-card-1 .stat-number,
+.stat-card-1 .stat-label,
+.stat-card:nth-child(1) .stat-number,
+.stat-card:nth-child(1) .stat-label {
+  color: #005F96 !important;
+}
+
+.stat-card-2, .stat-card:nth-child(2) {
+  background: #B3D9EE !important;
+  border: 1px solid rgba(26, 26, 26, 0.1) !important;
+}
+.stat-card-2 .stat-number,
+.stat-card-2 .stat-label,
+.stat-card:nth-child(2) .stat-number,
+.stat-card:nth-child(2) .stat-label {
+  color: #1A1A1A !important;
+}
+
+.stat-card-3, .stat-card:nth-child(3) {
+  background: #007BC7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.stat-card-3 .stat-number,
+.stat-card-3 .stat-label,
+.stat-card:nth-child(3) .stat-number,
+.stat-card:nth-child(3) .stat-label {
+  color: #FFFFFF !important;
+}
+
+.stat-card-4, .stat-card:nth-child(4) {
+  background: #005F96 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.stat-card-4 .stat-number,
+.stat-card-4 .stat-label,
+.stat-card:nth-child(4) .stat-number,
+.stat-card:nth-child(4) .stat-label {
+  color: #FFFFFF !important;
+}
+
+/* Eyebrow styling overrides */
+.stat-card-1 .stat-eyebrow {
+  color: #005F96 !important;
+  background-color: rgba(0, 95, 150, 0.08) !important;
+  border: 1px solid rgba(0, 95, 150, 0.15) !important;
+  border-radius: 9999px !important;
+  font-family: monospace !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+}
+.stat-card-2 .stat-eyebrow {
+  color: #1A1A1A !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 9999px !important;
+  font-family: monospace !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+}
+.stat-card-3 .stat-eyebrow {
+  color: #FFFFFF !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 9999px !important;
+  font-family: monospace !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+}
+.stat-card-4 .stat-eyebrow {
+  color: #FFFFFF !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 9999px !important;
+  font-family: monospace !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+}
+
+/* Achievements Glassmorphism Cards Section */
+.achievement-section {
+  background: linear-gradient(135deg, #E8F0FF 0%, #F5F5F5 100%);
+  padding: 48px 0;
+}
+
+.achievement-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.achievement-card {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 14px;
+  padding: 32px 32px;
+  gap: 8px;
+  box-shadow:
+    0 6px 18px rgba(0, 123, 199, 0.05),
+    0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.achievement-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 24px rgba(0, 123, 199, 0.08),
+    0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.achievement-number {
+  font-size: clamp(34px, 2.8vw, 44px);
+  font-weight: 700;
+  color: #1A1A1A;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.achievement-label {
+  font-size: 16px;
+  color: #4D4D4D;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .achievement-section {
+    padding: 32px 0;
+  }
+}
+
+/* Experience Cards 3D Elevation (Shadow strengthened by +50%) */
+.experience-card {
+  border-radius: 16px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.025),
+    0 6px 16px rgba(0, 0, 0, 0.038);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 
