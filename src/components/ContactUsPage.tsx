@@ -171,6 +171,55 @@ const CITY_TO_PROVINCE: Record<string, string> = {
   '南昌': '江西省',
 };
 
+// Complete 34 provincial administrative regions matching GeoJSON
+const ALL_PROVINCE_NAMES = [
+  '北京市', '天津市', '河北省', '山西省', '内蒙古自治区',
+  '辽宁省', '吉林省', '黑龙江省', '上海市', '江苏省',
+  '浙江省', '安徽省', '福建省', '江西省', '山东省',
+  '河南省', '湖北省', '湖南省', '广东省', '广西壮族自治区',
+  '海南省', '重庆市', '四川省', '贵州省', '云南省',
+  '西藏自治区', '陕西省', '甘肃省', '青海省', '宁夏回族自治区',
+  '新疆维吾尔自治区', '台湾省', '香港特别行政区', '澳门特别行政区'
+];
+
+// Province center coordinates for close-up zoom & pan focus
+const PROVINCE_CENTERS: Record<string, [number, number]> = {
+  '北京市': [116.4074, 40.2],
+  '广东省': [113.8, 23.2],
+  '上海市': [121.4737, 31.2],
+  '江苏省': [119.8, 32.2],
+  '浙江省': [120.2, 29.3],
+  '四川省': [103.8, 30.5],
+  '江西省': [115.8, 27.8],
+  '天津市': [117.2, 39.1],
+  '河北省': [114.5, 38.0],
+  '山西省': [112.5, 37.8],
+  '内蒙古自治区': [111.7, 40.8],
+  '辽宁省': [123.4, 41.8],
+  '吉林省': [125.3, 43.8],
+  '黑龙江省': [126.6, 45.7],
+  '安徽省': [117.2, 31.8],
+  '福建省': [119.3, 26.0],
+  '山东省': [117.0, 36.6],
+  '河南省': [113.6, 34.7],
+  '湖北省': [114.3, 30.5],
+  '湖南省': [112.9, 28.1],
+  '广西壮族自治区': [108.3, 22.8],
+  '海南省': [110.3, 20.0],
+  '重庆市': [106.5, 29.5],
+  '贵州省': [106.7, 26.5],
+  '云南省': [102.8, 24.8],
+  '西藏自治区': [91.1, 29.6],
+  '陕西省': [108.9, 34.2],
+  '甘肃省': [103.8, 36.0],
+  '青海省': [101.7, 36.6],
+  '宁夏回族自治区': [106.2, 38.4],
+  '新疆维吾尔自治区': [87.6, 43.8],
+  '台湾省': [121.0, 23.8],
+  '香港特别行政区': [114.2, 22.3],
+  '澳门特别行政区': [113.5, 22.2]
+};
+
 const cityRegionMap: Record<string, string[]> = {
   '北京•总部': ['辽宁省', '吉林省', '黑龙江省', '天津市', '河北省'],
   '成都': ['陕西省', '甘肃省', '宁夏回族自治区', '青海省', '新疆维吾尔自治区', '西藏自治区', '云南省', '贵州省', '重庆市', '广西壮族自治区'],
@@ -516,25 +565,67 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
 
     const chart = chartInstanceRef.current;
 
-    // Determine line data and single highlighted province based on activeOfficeId
+    // Determine line data, highlighted province, center, zoom, and regions
     let linesData: any[] = [];
     let highlightedProvince: string | null = null;
+    let targetCenter: [number, number] = [104.2, 36.2];
+    let targetZoom: number = 1.0914;
+    const selectedCity = OFFICES_DATA.find((c) => c.id === activeOfficeId);
 
-    if (activeOfficeId === 'all') {
+    if (activeOfficeId === 'all' || !selectedCity) {
       OFFICES_DATA.forEach((city) => {
         linesData = linesData.concat(generateLinesForCity(city.name, city.coords));
       });
+      targetCenter = [104.2, 36.2];
+      targetZoom = 1.0914;
     } else {
-      const selectedCity = OFFICES_DATA.find((c) => c.id === activeOfficeId);
-      if (selectedCity) {
-        linesData = generateLinesForCity(selectedCity.name, selectedCity.coords);
-        // Requirement 3: Only highlight the SINGLE province where the office itself is located
-        highlightedProvince = CITY_TO_PROVINCE[selectedCity.name] || null;
+      linesData = generateLinesForCity(selectedCity.name, selectedCity.coords);
+      highlightedProvince = CITY_TO_PROVINCE[selectedCity.name] || null;
+      if (highlightedProvince && PROVINCE_CENTERS[highlightedProvince]) {
+        targetCenter = PROVINCE_CENTERS[highlightedProvince];
+      } else {
+        targetCenter = selectedCity.coords;
       }
+      // Tailored zoom levels according to city/region scale
+      if (selectedCity.id === 'beijing') targetZoom = 2.0;
+      else if (selectedCity.id === 'shenzhen' || selectedCity.id === 'foshan') targetZoom = 2.2;
+      else if (selectedCity.id === 'shanghai' || selectedCity.id === 'suzhou' || selectedCity.id === 'hangzhou' || selectedCity.id === 'nanjing') targetZoom = 2.3;
+      else if (selectedCity.id === 'chengdu') targetZoom = 2.0;
+      else if (selectedCity.id === 'nanchang') targetZoom = 2.3;
+      else targetZoom = 2.1;
     }
+
+    // Highlight selected province with distinct area color and border, no shadow
+    const provinceRegions = ALL_PROVINCE_NAMES.map((name) => {
+      if (name === highlightedProvince) {
+        return {
+          name,
+          itemStyle: {
+            areaColor: '#84A9D6',     // 加深 8% 后的选中高亮省份颜色
+            borderColor: '#0071B8',   // 加深 8% 后的边界色
+            borderWidth: 2.5,
+            shadowBlur: 0,
+            shadowOffsetY: 0,
+          },
+        };
+      }
+      return {
+        name,
+        itemStyle: {
+          areaColor: '#B4BCC8',       // 加深 8% 后的陆地填充色
+          borderColor: '#0071B8',     // 加深 8% 后的边界色
+          borderWidth: 1,
+          shadowBlur: 0,
+          shadowOffsetY: 0,
+        },
+      };
+    });
 
     const option: any = {
       backgroundColor: 'transparent',
+      animation: true,
+      animationDurationUpdate: 800,
+      animationEasingUpdate: 'cubicOut',
       tooltip: {
         show: true,
         trigger: 'item',
@@ -557,35 +648,29 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
         id: 'chinaGeo',
         map: 'china',
         roam: false,
-        zoom: 1.0914,
-        layoutCenter: ['38%', '46%'],
+        animation: true,
+        animationDurationUpdate: 800,
+        animationEasingUpdate: 'cubicOut',
+        zoom: targetZoom,
+        center: targetCenter,
+        layoutCenter: ['38%', '48%'], // 地图稍向左平移，消除左侧视觉空白且确保边缘不被遮挡
         layoutSize: '92%',
-        center: [104.2, 36.2],
         itemStyle: {
-          areaColor: '#C4CCD9',      // 陆地填充色，浅银灰
-          borderColor: '#007BC7',    // 边界发光色，用主色蓝
-          borderWidth: 1.5,
-          shadowColor: 'rgba(0, 123, 199, 0.4)',
-          shadowBlur: 8,              // 边界发光模糊效果
+          areaColor: '#B4BCC8',      // 陆地填充色，加深 8% 后的银灰调
+          borderColor: '#0071B8',    // 边界发光色，加深 8% 后的深蓝
+          borderWidth: 1,
+          shadowBlur: 0,
+          shadowOffsetY: 0,
         },
         emphasis: {
           itemStyle: {
-            areaColor: '#A8C8E8',
+            areaColor: '#9BBDDE',    // 悬浮加深 8% 后的高亮色
           },
           label: {
             show: false,
           },
         },
-        regions: highlightedProvince ? [
-          {
-            name: highlightedProvince,
-            itemStyle: {
-              areaColor: '#A8C8E8',
-              borderColor: '#007BC7',
-              borderWidth: 2,
-            },
-          },
-        ] : [],
+        regions: provinceRegions,
       },
       series: [
         {
@@ -595,19 +680,45 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
           silent: true,
           effect: {
             show: true,
-            period: 4,
-            trailLength: 0.3,
-            symbol: 'circle',
-            symbolSize: 3,
-            color: 'rgba(0, 123, 199, 0.85)',
+            period: 3.2,
+            trailLength: 0.35,
+            symbol: 'path://M -4.5,0 C -4.5,-2.5 4.5,-2.5 4.5,0 C 4.5,4.5 1.8,12 0,16 C -1.8,12 -4.5,4.5 -4.5,0 Z', // 形状：末端(头部0,0)圆粗，始端(尾部0,16)尖细
+            symbolSize: [3.5, 7], // 动态发射粒子缩小
+            color: '#FFFFFF',
           },
           lineStyle: {
-            color: 'rgba(0, 123, 199, 0.45)', // 连线颜色加深，确保在浅色背景上可见
-            width: 1,
-            opacity: 0.7,
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              { offset: 0, color: 'rgba(255, 255, 255, 1.0)' },   // 始端 (公司区) 不透明度 100%
+              { offset: 1, color: 'rgba(255, 255, 255, 0.08)' }, // 末端 (辐射区) 不透明度 8%
+            ]),
+            width: 1.2,
             curveness: 0.3,
           },
           data: linesData,
+        },
+        {
+          id: 'selectedOfficeRipple',
+          type: 'effectScatter',
+          coordinateSystem: 'geo',
+          rippleEffect: {
+            period: 3,
+            scale: 4,
+            brushType: 'stroke',
+          },
+          showEffectOn: 'render',
+          itemStyle: {
+            color: '#FFFFFF',
+            shadowBlur: 14,
+            shadowColor: 'rgba(255, 255, 255, 0.95)',
+          },
+          data: selectedCity ? [
+            {
+              name: selectedCity.name,
+              value: [...selectedCity.coords, 100],
+              officeId: selectedCity.id,
+            }
+          ] : [],
+          zlevel: 3,
         },
         {
           id: 'cityMarkers',
@@ -621,9 +732,11 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
               value: [...o.coords, isSelected ? 100 : 50],
               officeId: o.id,
               itemStyle: {
-                color: isSelected ? '#007BC7' : '#0284C7',
-                shadowBlur: isSelected ? 12 : 4,
-                shadowColor: isSelected ? 'rgba(0, 123, 199, 0.6)' : 'rgba(0, 123, 199, 0.3)',
+                color: '#FFFFFF', // 公司位置点改为白色
+                shadowBlur: isSelected ? 14 : 6,
+                shadowColor: isSelected ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 123, 199, 0.4)',
+                borderColor: isSelected ? '#007BC7' : 'rgba(0, 123, 199, 0.3)',
+                borderWidth: isSelected ? 2 : 1,
               },
               label: {
                 show: true,
@@ -631,10 +744,10 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
                 color: '#1A1A1A',
                 fontWeight: 700,
                 fontSize: isSelected ? 13 : 12,
-                backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)',
+                backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.88)',
                 borderColor: isSelected ? '#007BC7' : 'rgba(0, 123, 199, 0.3)',
-                borderWidth: 1,
-                padding: [3, 8],
+                borderWidth: isSelected ? 1.5 : 1,
+                padding: [4, 9],
                 borderRadius: 4,
                 position: 'top',
               },
@@ -645,7 +758,7 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
           },
           emphasis: {
             itemStyle: {
-              color: '#007BC7',
+              color: '#FFFFFF',
             },
           },
         },
@@ -653,7 +766,7 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
     };
 
     try {
-      chart.setOption(option, true);
+      chart.setOption(option, { notMerge: false, lazyUpdate: false });
     } catch (err) {
       console.warn('Map render failed:', err);
     }
@@ -704,6 +817,8 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
 
           {/* Map + Office Details Floating Stage */}
           <div className="map-3d-wrapper rounded-3xl border border-neutral-200/80 shadow-2xl relative overflow-hidden flex flex-col justify-center">
+            {/* Top-Left Sunlight Rays Layer above Canvas (auto-weakened when zoomed) */}
+            <div className={`map-sunlight-overlay ${activeOfficeId !== 'all' ? 'is-zoomed' : ''}`} />
             
             {/* Top Floating Filter Bar (10 Cities Selection Pills) */}
             <div className="absolute top-4 left-4 right-4 z-20 pointer-events-auto bg-white/40 backdrop-blur-md p-2 rounded-2xl border border-white/60 shadow-sm">
@@ -746,7 +861,7 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
             </div>
 
             {/* China Map Canvas Stage */}
-            <div className="map-3d-stage">
+            <div className="map-3d-stage map-radiation-pulse">
               <div 
                 ref={chartRef} 
                 className="map-3d-canvas"

@@ -31,6 +31,7 @@ import { NewsPage } from './components/NewsPage';
 import { ContactUsPage } from './components/ContactUsPage';
 import { SuccessPathPage } from './components/SuccessPathPage';
 import { ScrollSectionTitle } from './components/ScrollSectionTitle';
+import CaseDetailPage from './components/CaseDetailPage';
 import { 
   SERVICE_CATEGORIES, 
   NEWS_ARTICLES, 
@@ -174,6 +175,7 @@ type PageType =
   | 'packaging-design' 
   | 'ip-design'
   | 'cases'
+  | 'case-detail'
   | 'about'
   | 'news'
   | 'contact'
@@ -189,6 +191,8 @@ export default function App() {
       setCurrentPage('about');
     } else if (url === '/contact' || url === '/contact-us' || url === '#contact') {
       setCurrentPage('contact');
+    } else if (url === '/case-detail' || url.startsWith('/case-detail') || url === '/cases/yuexianhuo') {
+      setCurrentPage('case-detail');
     } else if (url === '/cases' || url === '/case-studies' || url.startsWith('/cases')) {
       setCurrentPage('cases');
     } else if (url === '/news' || url === '/news-center' || url.startsWith('/news') || url === '#news-center') {
@@ -1755,6 +1759,15 @@ export default function App() {
           onOpenContactModal={() => setIsContactModalOpen(true)}
           onSelectCase={(cs) => setSelectedCase(cs as any)}
         />
+      ) : currentPage === 'case-detail' ? (
+        <CaseDetailPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onNavigate={handleNavigateUrl}
+          onSelectRelatedCase={(id) => {
+            setCurrentPage('case-detail');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
       ) : currentPage === 'about' ? (
         <AboutUsPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
@@ -2365,8 +2378,12 @@ export default function App() {
                     获取同款爆品孵化方案
                   </button>
                   <button 
-                    onClick={() => setSelectedCase(null)}
-                    className="bg-white hover:bg-[#E5F2FA] text-[#007BC7] border border-[#007BC7] font-bold px-4 py-2.5 rounded-xl text-xs transition-all"
+                    onClick={() => {
+                      setSelectedCase(null);
+                      setCurrentPage('case-detail');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="bg-white hover:bg-[#E5F2FA] text-[#007BC7] border border-[#007BC7] font-bold px-4 py-2.5 rounded-xl text-xs transition-all cursor-pointer"
                   >
                     查看详情
                   </button>

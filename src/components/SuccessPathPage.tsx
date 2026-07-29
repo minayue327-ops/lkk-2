@@ -180,7 +180,7 @@ export const SuccessPathPage: React.FC<SuccessPathPageProps> = () => {
     : faqList.filter(item => item.cat === activeCategory);
 
   return (
-    <div className="w-full bg-white text-neutral-900 min-h-screen pt-20">
+    <div className="w-full bg-white text-neutral-900 min-h-screen">
       
       {/* 1. BREADCRUMB & PAGE HEADER (参照案例页 slogan 排版设计规范) */}
       <div className="bg-neutral-50/70 border-b border-neutral-100 py-10 md:py-14">
