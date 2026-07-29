@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { 
   ArrowRight, 
   ChevronRight, 
@@ -861,12 +862,12 @@ export default function IndustryDetailPage({
         }
       `}</style>
 
-      {/* 一、顶部面包屑导航 + 二、Banner首屏 */}
-      <section className="py-12 md:py-20 bg-radial from-neutral-50/70 via-neutral-50/30 to-white relative overflow-hidden border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] mx-auto px-4 relative z-10">
+      {/* 1. HERO / FIRST SCREEN SECTION (完全照搬品类创新咨询页首屏实现) */}
+      <section className="py-16 md:py-24 text-center bg-radial from-neutral-50/70 via-neutral-50/30 to-white relative overflow-hidden border-b border-neutral-100">
+        <div className="max-w-4xl mx-auto px-[5%] relative z-10 flex flex-col items-center">
           
-          {/* 面包屑导航 */}
-          <div className="flex items-center gap-2 text-xs text-[#8C8C8C] mb-8 font-mono">
+          {/* Breadcrumbs */}
+          <div className="flex items-center justify-center gap-2 text-xs text-[#8C8C8C] mb-6 font-mono">
             <button 
               onClick={() => onNavigateParent && onNavigateParent('/')}
               className="hover:text-[#007BC7] transition-colors cursor-pointer border-none bg-transparent p-0"
@@ -884,73 +885,57 @@ export default function IndustryDetailPage({
             <span className="text-[#007BC7] font-bold">{data.title}</span>
           </div>
 
-          {/* Banner 左右双栏 Layout (复用工业设计页首屏布局) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            
-            {/* 左侧：行业实拍/概念图 + 标题/副标题叠加 (占 6 列) */}
-            <div className="lg:col-span-6 relative rounded-2xl overflow-hidden shadow-lg aspect-[4/3] lg:aspect-auto min-h-[340px] group bg-neutral-900">
-              <img 
-                src={data.image} 
-                alt={data.title}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent flex flex-col justify-end p-8 md:p-10 text-white">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="h-[2px] w-6 bg-[#007BC7]"></span>
-                  <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
-                    {data.englishTitle}
-                  </span>
-                </div>
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white font-display tracking-tight leading-tight">
-                  {data.title}
-                </h1>
-                <p className="text-base md:text-lg font-bold text-[#007BC7] mt-2">
-                  {data.slogan}
-                </p>
-              </div>
-            </div>
-
-            {/* 右侧：4组标准数据卡片 + 描述文案 + 联系我们 (占 6 列) */}
-            <div className="lg:col-span-6 flex flex-col justify-between bg-white p-6 md:p-8 rounded-2xl border border-[#E5E5E5] shadow-sm">
-              <div>
-                {/* 4组标准量化数据 (2x2 Grid) */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  {data.metrics.map((m, idx) => (
-                    <div key={idx} className="bg-[#F8F9FA] p-4 md:p-5 rounded-xl border border-[#E9ECEF] text-center">
-                      <div className="text-2xl md:text-3xl font-black text-[#007BC7] font-display mb-1">
-                        {m.value}
-                      </div>
-                      <div className="text-xs md:text-sm font-medium text-[#495057]">
-                        {m.label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* 描述文案 */}
-                <p className="text-sm md:text-base text-[#4D4D4D] leading-relaxed text-balance">
-                  {data.description}
-                </p>
-              </div>
-
-              {/* 联系链接按钮 */}
-              <div className="pt-6 mt-6 border-t border-[#E5E5E5] flex items-center justify-between">
-                <span className="text-xs text-[#8C8C8C] font-mono">
-                  资深行业专家 1V1 深度对接
-                </span>
-                <button 
-                  onClick={onOpenContactModal}
-                  className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-7 py-3 rounded-full text-sm transition-all duration-300 shadow-md flex items-center gap-2 cursor-pointer border-none"
-                >
-                  联系我们
-                  <ArrowRight className="w-4 h-4 text-white" />
-                </button>
-              </div>
-            </div>
-
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="h-[1.5px] w-8 bg-[#007BC7]"></span>
+            <span className="text-[12px] tracking-[0.3em] font-bold text-[#007BC7] font-mono">
+              {data.englishTitle}
+            </span>
+            <span className="h-[1.5px] w-8 bg-[#007BC7]"></span>
           </div>
 
+          <motion.h1 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-5xl lg:text-[76px] font-black tracking-tight text-neutral-900 leading-[1.1] font-display"
+          >
+            <span className="text-[#007BC7]">{data.title}</span>
+          </motion.h1>
+
+          <p className="text-xs md:text-sm font-semibold tracking-[0.2em] text-[#007BC7] uppercase mt-4 font-mono">
+            {data.slogan}
+          </p>
+
+          <p className="text-sm md:text-base text-neutral-500 max-w-3xl mt-8 leading-[1.8] font-normal text-center text-balance">
+            {data.description}
+          </p>
+
+          <div className="mt-8 flex flex-col items-center gap-2">
+            <button 
+              onClick={onOpenContactModal}
+              className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-md flex items-center gap-2 cursor-pointer border-none"
+            >
+              联系我们
+              <ArrowRight className="w-4 h-4 text-white" />
+            </button>
+            <span className="text-[11px] text-[#8C8C8C] text-center font-mono mt-1">
+              资深行业专家 1V1 深度对接
+            </span>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Glassmorphism Metrics Grid Section */}
+      <section className="achievement-section">
+        <div className="max-w-[95%] w-full mx-auto">
+          <div className="achievement-grid">
+            {data.metrics.map((m, idx) => (
+              <div key={idx} className="achievement-card">
+                <div className="achievement-number">{m.value}</div>
+                <div className="achievement-label">{m.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -714,12 +714,12 @@ export default function ServiceDetailPage({
         }
       `}</style>
 
-      {/* 1. BREADCRUMB & HERO HEADER (首屏保持不动) */}
-      <section className="py-12 md:py-20 bg-radial from-neutral-50/70 via-neutral-50/30 to-white relative overflow-hidden border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] mx-auto px-4 relative z-10">
+      {/* 1. HERO / FIRST SCREEN SECTION (完全照搬品类创新咨询页首屏实现) */}
+      <section className="py-16 md:py-24 text-center bg-radial from-neutral-50/70 via-neutral-50/30 to-white relative overflow-hidden border-b border-neutral-100">
+        <div className="max-w-4xl mx-auto px-[5%] relative z-10 flex flex-col items-center">
           
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-2 text-xs text-[#8C8C8C] mb-8 font-mono">
+          <div className="flex items-center justify-center gap-2 text-xs text-[#8C8C8C] mb-6 font-mono">
             <button 
               onClick={() => onNavigateParent && onNavigateParent('/')}
               className="hover:text-[#007BC7] transition-colors cursor-pointer border-none bg-transparent p-0"
@@ -737,53 +737,57 @@ export default function ServiceDetailPage({
             <span className="text-[#007BC7] font-bold">{data.title}</span>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="h-[1.5px] w-6 bg-[#007BC7]"></span>
-                <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
-                  {data.englishTitle}
-                </span>
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#1a1a1a] leading-tight font-display mb-4">
-                {data.title}
-              </h1>
-              <p className="text-lg md:text-xl font-bold text-[#007BC7] mb-6">
-                {data.slogan}
-              </p>
-              <p className="text-sm md:text-base text-[#4D4D4D] leading-relaxed text-balance">
-                {data.description}
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3 min-w-[200px]">
-              <button 
-                onClick={onOpenContactModal}
-                className="w-full bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer border-none"
-              >
-                咨询此项服务
-                <ArrowRight className="w-4 h-4 text-white" />
-              </button>
-              <span className="text-[11px] text-[#8C8C8C] text-center font-mono">
-                资深行业专家 1V1 深度对接
-              </span>
-            </div>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="h-[1.5px] w-8 bg-[#007BC7]"></span>
+            <span className="text-[12px] tracking-[0.3em] font-bold text-[#007BC7] font-mono">
+              {data.englishTitle}
+            </span>
+            <span className="h-[1.5px] w-8 bg-[#007BC7]"></span>
           </div>
 
-          {/* Key Metrics Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 pt-10 border-t border-[#E5E5E5]">
+          <motion.h1 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-5xl lg:text-[76px] font-black tracking-tight text-neutral-900 leading-[1.1] font-display"
+          >
+            <span className="text-[#007BC7]">{data.title}</span>
+          </motion.h1>
+
+          <p className="text-xs md:text-sm font-semibold tracking-[0.2em] text-[#007BC7] uppercase mt-4 font-mono">
+            {data.slogan}
+          </p>
+
+          <p className="text-sm md:text-base text-neutral-500 max-w-3xl mt-8 leading-[1.8] font-normal text-center text-balance">
+            {data.description}
+          </p>
+
+          <div className="mt-8 flex flex-col items-center gap-2">
+            <button 
+              onClick={onOpenContactModal}
+              className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-md flex items-center gap-2 cursor-pointer border-none"
+            >
+              咨询此项服务
+              <ArrowRight className="w-4 h-4 text-white" />
+            </button>
+            <span className="text-[11px] text-[#8C8C8C] text-center font-mono mt-1">
+              资深行业专家 1V1 深度对接
+            </span>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Key Metrics Glassmorphism Section */}
+      <section className="achievement-section">
+        <div className="max-w-[95%] w-full mx-auto">
+          <div className="achievement-grid">
             {data.metrics.map((m, idx) => (
-              <div key={idx} className="bg-[#F0F0F0]/50 p-5 rounded-2xl border border-[#E5E5E5] text-center">
-                <div className="text-2xl md:text-3xl font-black text-[#007BC7] font-display mb-1">
-                  {m.value}
-                </div>
-                <div className="text-xs font-medium text-[#4D4D4D]">
-                  {m.label}
-                </div>
+              <div key={idx} className="achievement-card">
+                <div className="achievement-number">{m.value}</div>
+                <div className="achievement-label">{m.label}</div>
               </div>
             ))}
           </div>
-
         </div>
       </section>
 

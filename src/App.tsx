@@ -28,6 +28,9 @@ import IndustryDetailPage from './components/IndustryDetailPage';
 import { CasesPage } from './components/CasesPage';
 import { AboutUsPage } from './components/AboutUsPage';
 import { NewsPage } from './components/NewsPage';
+import { ContactUsPage } from './components/ContactUsPage';
+import { SuccessPathPage } from './components/SuccessPathPage';
+import { ScrollSectionTitle } from './components/ScrollSectionTitle';
 import { 
   SERVICE_CATEGORIES, 
   NEWS_ARTICLES, 
@@ -172,7 +175,9 @@ type PageType =
   | 'ip-design'
   | 'cases'
   | 'about'
-  | 'news';
+  | 'news'
+  | 'contact'
+  | 'success-path';
 
 export default function App() {
   // Current page state
@@ -182,10 +187,14 @@ export default function App() {
   const handleNavigateUrl = (url: string) => {
     if (url === '/about' || url === '/about-us' || url === '#about-lkk') {
       setCurrentPage('about');
+    } else if (url === '/contact' || url === '/contact-us' || url === '#contact') {
+      setCurrentPage('contact');
     } else if (url === '/cases' || url === '/case-studies' || url.startsWith('/cases')) {
       setCurrentPage('cases');
     } else if (url === '/news' || url === '/news-center' || url.startsWith('/news') || url === '#news-center') {
       setCurrentPage('news');
+    } else if (url === '/success-path' || url === '/success' || url === '#success-path') {
+      setCurrentPage('success-path');
     } else if (url === '/product-innovation/industrial-design') {
       setCurrentPage('industrial-design');
     } else if (url === '/product-innovation/structural-design') {
@@ -1083,9 +1092,9 @@ export default function App() {
                     className="absolute right-0 top-full mt-1 w-[480px] bg-white border border-neutral-100 shadow-2xl rounded-2xl p-4 grid grid-cols-4 gap-2 z-50"
                   >
                     <button onClick={() => { handleNavigateUrl('/about'); setActiveMenu(null); }} className={`p-2.5 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer w-full ${currentPage === 'about' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>关于我们</button>
-                    <button onClick={() => { setIsContactModalOpen(true); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors w-full cursor-pointer">联系我们</button>
+                    <button onClick={() => { handleNavigateUrl('/contact'); setActiveMenu(null); }} className={`p-2.5 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer w-full ${currentPage === 'contact' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>联系我们</button>
                     <button onClick={() => { handleNavigateUrl('/news'); setActiveMenu(null); }} className={`p-2.5 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer w-full ${currentPage === 'news' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>新闻中心</button>
-                    <a href="#case-studies" onClick={() => { setCurrentPage('home'); setActiveMenu(null); }} className="p-2.5 hover:bg-neutral-50 rounded-xl block text-center text-sm font-medium text-neutral-800 hover:text-[#005F96] transition-colors">成功路径</a>
+                    <button onClick={() => { handleNavigateUrl('/success-path'); setActiveMenu(null); }} className={`p-2.5 rounded-xl block text-center text-sm font-medium transition-colors border-none bg-transparent cursor-pointer w-full ${currentPage === 'success-path' ? 'text-[#007BC7] font-bold bg-blue-50' : 'text-neutral-800 hover:text-[#005F96] hover:bg-neutral-50'}`}>成功路径</button>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -1468,17 +1477,12 @@ export default function App() {
       <section id="professional-services" className="py-20 bg-neutral-50 border-y border-neutral-100">
         <div className="max-w-[95%] w-full mx-auto services-inner">
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Expertise</span>
-              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
-                <span className="char char-black">专</span><span className="char char-black">业</span><span className="char char-black">服</span><span className="char char-black">务</span>
-              </h2>
-            </div>
-            <p className="text-sm text-neutral-500 max-w-md mt-4 md:mt-0 leading-relaxed">
-              我们依托于独树一帜的“战略咨询 + 整合设计”体系，面向未来进行多维度商业创新设计服务。
-            </p>
-          </div>
+          <ScrollSectionTitle 
+            badge="Expertise"
+            title="专业服务"
+            subtitle="我们依托于独树一帜的“战略咨询 + 整合设计”体系，面向未来进行多维度商业创新设计服务。"
+            align="between"
+          />
 
           {/* Three column Service Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -1539,17 +1543,12 @@ export default function App() {
       <section id="case-studies" className="py-20 bg-neutral-50 border-t border-neutral-150">
         <div className="max-w-[95%] w-full mx-auto cases-inner">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Portfolios</span>
-              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
-                <span className="char char-black">成</span><span className="char char-black">功</span><span className="char char-black">案</span><span className="char char-black">例</span>
-              </h2>
-            </div>
-            <p className="text-sm text-neutral-500 max-w-sm mt-4 md:mt-0">
-              洛可可已服务超过数千个品牌客户，荣获多项国际工业设计大奖。
-            </p>
-          </div>
+          <ScrollSectionTitle 
+            badge="Portfolios"
+            title="成功案例"
+            subtitle="洛可可已服务超过数千个品牌客户，荣获多项国际工业设计大奖。"
+            align="between"
+          />
 
           {/* Cases grid V2 */}
           <div className="case-grid-v2">
@@ -1636,33 +1635,30 @@ export default function App() {
       <section id="news-center" className="py-20 bg-neutral-50 border-y border-neutral-100">
         <div className="max-w-[95%] w-full mx-auto news-inner">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Company News</span>
-              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-neutral-900 mt-2 font-display">
-                <span className="char char-black">新</span><span className="char char-black">闻</span><span className="char char-black">中</span><span className="char char-black">心</span>
-              </h2>
-              <p className="text-xs text-neutral-400 mt-2 max-w-lg leading-relaxed">
-                了解我们的成长足迹，掌握行业新鲜资讯，一站式解锁公司最新动态，读懂我们的价值理念。
-              </p>
-            </div>
-            
-            {/* Slide Arrows */}
-            <div className="flex items-center gap-2 mt-6 md:mt-0">
-              <button 
-                onClick={() => setNewsIndex((prev) => (prev - 1 + NEWS_ARTICLES.length) % NEWS_ARTICLES.length)}
-                className="w-11 h-11 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 flex items-center justify-center text-neutral-600 transition-all shadow-sm active:scale-95"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button 
-                onClick={() => setNewsIndex((prev) => (prev + 1) % NEWS_ARTICLES.length)}
-                className="w-11 h-11 rounded-full bg-[#1a1a1a] hover:bg-[#007BC7] flex items-center justify-center text-white transition-all shadow-md active:scale-95"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+          <ScrollSectionTitle 
+            badge="Company News"
+            title="新闻中心"
+            subtitle="了解我们的成长足迹，掌握行业新鲜资讯，一站式解锁公司最新动态，读懂我们的价值理念。"
+            align="between"
+            rightElement={
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setNewsIndex((prev) => (prev - 1 + NEWS_ARTICLES.length) % NEWS_ARTICLES.length)}
+                  className="w-11 h-11 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 flex items-center justify-center text-neutral-600 transition-all shadow-sm active:scale-95"
+                  aria-label="Previous News"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => setNewsIndex((prev) => (prev + 1) % NEWS_ARTICLES.length)}
+                  className="w-11 h-11 rounded-full bg-[#1a1a1a] hover:bg-[#007BC7] flex items-center justify-center text-white transition-all shadow-md active:scale-95"
+                  aria-label="Next News"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            }
+          />
 
           {/* Carousel Showcase of Articles */}
           <motion.div 
@@ -1767,6 +1763,14 @@ export default function App() {
         <NewsPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
         />
+      ) : currentPage === 'contact' ? (
+        <ContactUsPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+        />
+      ) : currentPage === 'success-path' ? (
+        <SuccessPathPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+        />
       ) : currentPage === 'category' ? (
         <CategoryConsultingPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
@@ -1836,7 +1840,6 @@ export default function App() {
               {/* Left Column (Logo, Title, Text, Contact details) */}
               <div className="w-full lg:w-[56%] flex flex-col gap-6">
                 <div className="flex items-center gap-2 px-3 py-1 rounded-full border w-fit text-xs font-semibold tracking-wider bg-white/15 text-white border-white/10">
-                  <Sparkles className="w-3.5 h-3.5 text-white" />
                   洛可可官方品质保障 · 一对一专家咨询
                 </div>
 
@@ -2122,7 +2125,6 @@ export default function App() {
 
               <div className="mb-6">
                 <div className="flex items-center gap-2 text-[#007BC7] text-xs font-bold uppercase tracking-wider font-mono">
-                  <Sparkles className="w-4 h-4" />
                   Design & Consulting Proposal
                 </div>
                 <h3 className="text-2xl font-bold text-neutral-900 mt-1">洛可可创新咨询与设计预约</h3>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, Plus, Minus } from 'lucide-react';
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { CaseStudy } from '../types';
 import { gsap } from 'gsap';
@@ -42,23 +42,6 @@ export default function ProductInnovationPage({
   onSelectCase,
   onNavigateDetail,
 }: ProductInnovationPageProps) {
-  // Expansion state for the "More Cases" for each of the three sections
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    'industrial-design': false,
-    'structural-design': false,
-    'supply-chain': false,
-  });
-
-  const toggleSection = (id: string) => {
-    setExpandedSections((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 350);
-      return next;
-    });
-  };
-
   const sections: SectionData[] = [
     {
       id: 'industrial-design',
@@ -280,6 +263,23 @@ export default function ProductInnovationPage({
         .theme-light .section-text-link:hover {
           color: #005F96 !important;
         }
+        .section-text-link-secondary {
+          font-size: 15px;
+          font-weight: 600;
+          transition: color 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          color: #4D4D4D !important;
+        }
+        .theme-dark .section-text-link-secondary,
+        .theme-light .section-text-link-secondary {
+          color: #4D4D4D !important;
+        }
+        .theme-dark .section-text-link-secondary:hover,
+        .theme-light .section-text-link-secondary:hover {
+          color: #007BC7 !important;
+        }
 
         /* 一大两小网格 CSS */
         .case-grid {
@@ -408,7 +408,7 @@ export default function ProductInnovationPage({
           >
             <span className="text-[#007BC7]">产品创新</span>
             <span className="text-neutral-900"> · </span>
-            <span className="text-[#1a1a1a]">爆品研发</span>
+            <span className="text-[#1a1a1a]">爆品打造</span>
           </motion.h1>
 
           <p className="text-xs md:text-sm font-semibold tracking-[0.3em] text-neutral-400 uppercase mt-4 font-mono">
@@ -434,7 +434,6 @@ export default function ProductInnovationPage({
 
       {/* 2. THE THREE SECTIONS WITH STATIC 1-LARGE + 2-SMALL GRID */}
       {sections.map((sect, sectIdx) => {
-        const isExpanded = expandedSections[sect.id];
         const isDark = false;
         const [cMain, cSub1, cSub2] = sect.mainCases;
         
@@ -455,17 +454,31 @@ export default function ProductInnovationPage({
                   <div className="section-text-line" />
                   <p>{sect.description}</p>
                   
-                  <button 
-                    onClick={() => {
-                      if (onNavigateDetail) {
-                        onNavigateDetail(sect.detailUrl);
-                      }
-                    }}
-                    className="section-text-link group border-none bg-transparent p-0 cursor-pointer"
-                  >
-                    了解详情
-                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </button>
+                  <div className="flex items-center gap-6 flex-wrap">
+                    <button 
+                      onClick={() => {
+                        if (onNavigateDetail) {
+                          onNavigateDetail(sect.detailUrl);
+                        }
+                      }}
+                      className="section-text-link group border-none bg-transparent p-0 cursor-pointer"
+                    >
+                      了解详情
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+
+                    <button 
+                      onClick={() => {
+                        if (onNavigateDetail) {
+                          onNavigateDetail(sect.detailUrl);
+                        }
+                      }}
+                      className="section-text-link-secondary group border-none bg-transparent p-0 cursor-pointer"
+                    >
+                      更多案例
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Right Side: Static 1-Large + 2-Small Grid */}
@@ -603,79 +616,6 @@ export default function ProductInnovationPage({
                 </div>
               </div>
             </section>
-
-            {/* Expandable "More Cases" list placed directly below the pinned showcase section */}
-            <div className="py-12 border-b border-[#E5E5E5] bg-white text-[#1a1a1a] transition-colors relative z-10">
-              <div className="max-w-[95%] w-full mx-auto flex flex-col items-center">
-                <button
-                  onClick={() => toggleSection(sect.id)}
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[#E5E5E5] bg-white hover:bg-[#F0F0F0] text-[#4D4D4D] text-sm font-semibold transition-colors shadow-sm focus:outline-none cursor-pointer"
-                >
-                  {isExpanded ? (
-                    <>
-                      <span>收起案例</span>
-                      <Minus className="w-3.5 h-3.5 text-[#8C8C8C]" />
-                    </>
-                  ) : (
-                    <>
-                      <span>更多案例</span>
-                      <Plus className="w-3.5 h-3.5 text-[#007BC7]" />
-                    </>
-                  )}
-                </button>
-
-                {/* Expanded list block */}
-                <div 
-                  className="w-full overflow-hidden transition-all duration-500 ease-in-out"
-                  style={{ 
-                    maxHeight: isExpanded ? '600px' : '0px', 
-                    opacity: isExpanded ? 1 : 0,
-                    marginTop: isExpanded ? '32px' : '0px'
-                  }}
-                >
-                  <div className="w-full rounded-3xl border bg-[#F0F0F0]/50 border-[#E5E5E5] p-6 md:p-8 shadow-inner grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {sect.secondaryCases.map((sc, sIdx) => (
-                      <div 
-                        key={sc.id}
-                        className="group/sec flex flex-col justify-between p-5 border rounded-xl transition-all text-left bg-white hover:bg-[#007BC7]/5 border-[#E5E5E5] hover:border-[#007BC7]/30"
-                      >
-                        <div>
-                          <div className="flex items-center gap-1.5 mb-2.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]"></span>
-                            <span className="text-[10px] font-mono tracking-wider font-bold uppercase text-[#8C8C8C]">
-                              SECONDARY CASE 0{sIdx + 1}
-                            </span>
-                          </div>
-                          <h5 className="text-sm font-bold leading-snug transition-colors group-hover/sec:text-[#007BC7] text-[#1a1a1a]">
-                            {sc.title}
-                          </h5>
-                        </div>
-                        
-                        <div className="flex items-center justify-between mt-5 pt-3.5 border-t border-[#E5E5E5]">
-                          <div className="flex gap-1">
-                            {sc.tags.map((st, stIdx) => (
-                              <span 
-                                key={stIdx} 
-                                className="text-[9px] px-2 py-0.5 rounded-full bg-[#F0F0F0] text-[#4D4D4D]"
-                              >
-                                {st}
-                              </span>
-                            ))}
-                          </div>
-                          
-                          <button 
-                            onClick={() => handleCaseClick(sc.id, sc.title)}
-                            className="w-7 h-7 rounded-full flex items-center justify-center transition-all cursor-pointer bg-white hover:bg-[#007BC7] text-[#8C8C8C] hover:text-white border border-[#E5E5E5] hover:border-[#007BC7]"
-                          >
-                            <ArrowRight className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
           </React.Fragment>
         );
       })}

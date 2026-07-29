@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { ArrowRight, Sparkles, Building2, Trophy, ShieldCheck, Users, Milestone, Image, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Building2, Trophy, ShieldCheck, Users, Milestone, Image, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { ScrollSectionTitle } from './ScrollSectionTitle';
 
 interface AboutUsPageProps {
   onOpenContactModal: () => void;
@@ -454,15 +455,12 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onOpenContactModal }) 
 
         {/* 2. CORE TEAM SECTION */}
         <section id="core-team">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-neutral-200/80 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">CORE LEADERSHIP</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">核心团队</h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md">
-              汇聚资深创新专家、工业设计大师与商业策略顾问，为客户提供专业的全闭环创新力支撑。
-            </p>
-          </div>
+          <ScrollSectionTitle 
+            badge="CORE LEADERSHIP"
+            title="核心团队"
+            subtitle="汇聚资深创新专家、工业设计大师与商业策略顾问，为客户提供专业的全闭环创新力支撑。"
+            align="between"
+          />
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
             {teamMembers.map((member, idx) => (
@@ -473,15 +471,12 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onOpenContactModal }) 
 
         {/* 3. DEVELOPMENT HISTORY SECTION */}
         <section id="history">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-neutral-200/80 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">MILESTONES & HISTORY</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">发展历史</h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md">
-              从2004到2025，二十一年坚守与创新，见证洛可可创造好产品的每一个里程碑。
-            </p>
-          </div>
+          <ScrollSectionTitle 
+            badge="MILESTONES & HISTORY"
+            title="发展历史"
+            subtitle="从2004到2025，二十一年坚守与创新，见证洛可可创造好产品的每一个里程碑。"
+            align="between"
+          />
 
           {/* Timeline Nav Container with Left/Right Scroll Arrows */}
           <div className="timeline-nav flex items-center gap-3 w-full my-2">
@@ -589,15 +584,12 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onOpenContactModal }) 
 
         {/* 4. COMPANY ENVIRONMENT SECTION */}
         <section id="environment">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-neutral-200/80 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">WORKSPACE & ENVIRONMENT</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">公司环境</h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md">
-              开放、包容、充满创造力的办公生态，激发源源不断的创新灵感。
-            </p>
-          </div>
+          <ScrollSectionTitle 
+            badge="WORKSPACE & ENVIRONMENT"
+            title="公司环境"
+            subtitle="开放、包容、充满创造力的办公生态，激发源源不断的创新灵感。"
+            align="between"
+          />
 
           {/* Single Image Banner with Strict 16:9 Aspect Ratio */}
           <div className="w-full aspect-[16/9] rounded-[8px] bg-[#F5F5F5] border border-neutral-200/60 flex flex-col items-center justify-center text-neutral-400 p-6 overflow-hidden">

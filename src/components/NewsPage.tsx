@@ -3,7 +3,6 @@ import {
   ArrowRight, 
   ChevronLeft, 
   ChevronRight, 
-  Tag, 
   Calendar, 
   Sparkles, 
   X,
@@ -220,13 +219,6 @@ export const NEWS_DATABASE: NewsArticleItem[] = [
 ];
 
 export const NewsPage: React.FC<NewsPageProps> = () => {
-  // Category state
-  const [activeCategory, setActiveCategory] = useState<string>('全部');
-
-  // Filter change loading progress bar state
-  const [isFilterLoading, setIsFilterLoading] = useState<boolean>(false);
-  const [loadingKey, setLoadingKey] = useState<number>(0);
-
   // Pagination state (6 items per page)
   const pageSize = 6;
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -234,13 +226,8 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
   // Detail Modal state
   const [selectedArticle, setSelectedArticle] = useState<NewsArticleItem | null>(null);
 
-  // Filtered Articles
-  const filteredArticles = useMemo(() => {
-    if (activeCategory === '全部') {
-      return NEWS_DATABASE;
-    }
-    return NEWS_DATABASE.filter(item => item.category === activeCategory);
-  }, [activeCategory]);
+  // Articles list (Directly show all articles without filtering)
+  const filteredArticles = NEWS_DATABASE;
 
   // Total pages
   const totalPages = Math.ceil(filteredArticles.length / pageSize) || 1;
@@ -250,14 +237,6 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
     const start = (currentPage - 1) * pageSize;
     return filteredArticles.slice(start, start + pageSize);
   }, [filteredArticles, currentPage]);
-
-  const handleCategoryChange = (cat: string) => {
-    if (cat === activeCategory) return;
-    setActiveCategory(cat);
-    setCurrentPage(1);
-    setIsFilterLoading(true);
-    setLoadingKey(prev => prev + 1);
-  };
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
@@ -272,133 +251,34 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
   return (
     <div className="w-full bg-white text-neutral-900 min-h-screen pt-20">
       
-      {/* 1. BANNER — Single Image Banner with 16:9 Aspect Ratio Standard Image Specification */}
-      <section className="pt-6 pb-8 md:pb-12 bg-white">
+      {/* 1. BREADCRUMB & PAGE HEADER (参照案例页 slogan 排版设计规范) */}
+      <div className="bg-neutral-50/70 border-b border-neutral-100 py-10 md:py-14">
         <div className="max-w-[95%] w-full mx-auto">
-          <div className="w-full aspect-[16/9] rounded-2xl md:rounded-3xl bg-[#F5F5F5] border border-neutral-200/60 overflow-hidden relative flex flex-col justify-between p-6 md:p-12 group shadow-sm">
-            {/* Background Image / Pattern overlay if real asset is provided, else elegant placeholder design */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-neutral-900/70 via-neutral-900/30 to-transparent z-10"></div>
-            
-            <img 
-              src="/src/assets/images/news_1.jpg" 
-              alt="洛可可新闻中心"
-              referrerPolicy="no-referrer"
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-              onError={(e) => {
-                // If image fails, fallback gracefully to #F5F5F5 color block
-                (e.target as HTMLElement).style.display = 'none';
-              }}
-            />
+          {/* Breadcrumbs */}
+          <div className="flex items-center gap-2 text-xs text-neutral-500 mb-4 font-mono">
+            <a href="/" className="hover:text-[#007BC7] transition-colors">首页</a>
+            <span>/</span>
+            <span className="text-neutral-900 font-semibold">新闻中心</span>
+          </div>
 
-            {/* Banner Top Badge */}
-            <div className="relative z-20 flex items-center justify-between">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-mono font-semibold tracking-wider uppercase">
-                <Sparkles className="w-3.5 h-3.5 text-white" />
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
                 LKK NEWS CENTER
-              </div>
-              <span className="text-white/80 font-mono text-xs hidden md:inline-block">
-                洞察行业趋势 · 解锁设计动态
               </span>
-            </div>
-
-            {/* Banner Main Title */}
-            <div className="relative z-20 max-w-2xl mt-auto">
-              <span className="text-[#007BC7] bg-white font-bold text-xs md:text-sm px-3 py-1 rounded-md uppercase tracking-widest font-mono inline-block mb-3">
+              <h1 className="text-3xl md:text-5xl font-extrabold text-neutral-900 mt-2 tracking-tight font-display">
                 新闻中心
-              </span>
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight font-display drop-shadow-md">
-                探索洛可可成长足迹与设计洞察
               </h1>
-              <p className="text-xs sm:text-sm md:text-base text-neutral-200 mt-2 sm:mt-3 leading-relaxed max-w-xl line-clamp-2">
-                汇聚洛可可最新企业动态、获奖荣誉、媒体报道与行业趋势分析，一站式读懂创新的商业价值。
+              <p className="text-xs md:text-sm font-semibold tracking-wider text-[#007BC7] uppercase mt-2 font-mono">
+                探索洛可可成长足迹与设计洞察
               </p>
             </div>
+            <p className="text-sm text-neutral-500 max-w-xl leading-relaxed">
+              汇聚洛可可最新企业动态、获奖荣誉、媒体报道与行业趋势分析，一站式读懂创新的商业价值。
+            </p>
           </div>
         </div>
-      </section>
-
-      {/* 2. CATEGORY TAGS ROW — 横向分类标签导航 */}
-      <section className="relative py-4 bg-white border-y border-neutral-100 sticky top-16 z-30 bg-white/95 backdrop-blur-md">
-        <div className="max-w-[95%] w-full mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          
-          {/* Left Decorative Label Icon */}
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="w-7 h-7 rounded-lg bg-blue-50 text-[#007BC7] flex items-center justify-center">
-              <Tag className="w-4 h-4 stroke-[2.2]" />
-            </div>
-            <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider font-mono">
-              新闻分类
-            </span>
-          </div>
-
-          {/* Right Horizontal Tags List (Segmented Pill Container with Motion Layout Slider) */}
-          <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none justify-start md:justify-end bg-neutral-100/70 p-1.5 rounded-full border border-neutral-200/50">
-            {NEWS_CATEGORIES.map((cat) => {
-              const isActive = activeCategory === cat;
-              const count = cat === '全部' ? NEWS_DATABASE.length : NEWS_DATABASE.filter(i => i.category === cat).length;
-
-              return (
-                <motion.button
-                  key={cat}
-                  onClick={() => handleCategoryChange(cat)}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={`relative px-4 py-2 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap cursor-pointer select-none transition-colors duration-200 flex items-center gap-1.5 z-10 ${
-                    isActive
-                      ? 'text-white'
-                      : 'text-[#8C8C8C] hover:text-[#4D4D4D]'
-                  }`}
-                >
-                  {/* Active Animated Background Pill */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeCategoryPill"
-                      className="absolute inset-0 bg-[#007BC7] rounded-full shadow-md shadow-blue-500/25 -z-10"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-
-                  <span>{cat}</span>
-
-                  {/* Category Count Badge */}
-                  <span
-                    className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold transition-colors ${
-                      isActive
-                        ? 'bg-white/20 text-white'
-                        : 'bg-neutral-200/80 text-neutral-500'
-                    }`}
-                  >
-                    {count}
-                  </span>
-                </motion.button>
-              );
-            })}
-          </div>
-
-        </div>
-
-        {/* Gradient Flow Loading Progress Bar — Click Feedback Indicator */}
-        <AnimatePresence>
-          {isFilterLoading && (
-            <div className="absolute bottom-0 left-0 w-full h-[2.5px] overflow-hidden z-40 pointer-events-none">
-              <motion.div
-                key={loadingKey}
-                initial={{ width: '0%', opacity: 1 }}
-                animate={{ 
-                  width: ['0%', '75%', '100%'],
-                  opacity: [1, 1, 0]
-                }}
-                transition={{ 
-                  width: { duration: 0.42, ease: [0.16, 1, 0.3, 1] },
-                  opacity: { duration: 0.22, delay: 0.35 }
-                }}
-                onAnimationComplete={() => setIsFilterLoading(false)}
-                className="h-full bg-gradient-to-r from-cyan-400 via-[#007BC7] via-sky-400 to-indigo-500 shadow-[0_0_12px_rgba(0,123,199,0.9)]"
-              />
-            </div>
-          )}
-        </AnimatePresence>
-      </section>
+      </div>
 
       {/* 3. NEWS LIST — 视觉与交互完全照搬首页"新闻中心"板块 */}
       <section id="news-list-section" className="py-12 md:py-16 bg-neutral-50/60 min-h-[600px]">
@@ -408,10 +288,10 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-neutral-200/60 gap-4">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
-                {activeCategory === '全部' ? 'ALL ARTICLES' : activeCategory}
+                ALL ARTICLES
               </span>
               <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">
-                {activeCategory === '全部' ? '全部新闻动态' : `${activeCategory}列表`}
+                全部新闻动态
               </h2>
             </div>
             <span className="text-xs text-[#8C8C8C] font-mono">
@@ -423,7 +303,7 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
           <AnimatePresence mode="wait">
             {paginatedArticles.length > 0 ? (
               <motion.div 
-                key={`${activeCategory}-${currentPage}`}
+                key={currentPage}
                 initial="hidden"
                 animate="visible"
                 exit={{ opacity: 0, y: -12, transition: { duration: 0.15 } }}

@@ -66,18 +66,89 @@ body {
   outline-offset: 2px !important;
 }
 
-/* Section Title Scroll Reveal (Bidirectional and slow) */
-.section-title.scroll-reveal-heading .char {
-  color: #D9D9D9 !important;
-  transition: color 0.7s ease !important; /* Slow down transition */
+/* Section Title Scroll Reveal (Bidirectional and slow 0.7s transition) */
+.section-title .char,
+.scroll-reveal-heading .char,
+.scroll-title-char {
   display: inline-block;
+  transition: color 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-.section-title.scroll-reveal-heading .char.is-revealed {
-  color: #1A1A1A !important;
+.section-title .char,
+.scroll-reveal-heading .char {
+  color: #C2C2C2;
+  opacity: 0.35;
 }
 
-/* Slogan Page Load Cascading Fade In */
+.section-title .char.is-revealed,
+.scroll-reveal-heading .char.is-revealed {
+  color: #1A1A1A;
+  opacity: 1;
+}
+
+/* 3D Map Wrapper with CSS perspective transform & Light Tech theme */
+.map-3d-wrapper {
+  background: radial-gradient(ellipse at center, #F0F4F9 0%, #D8DEE8 100%);
+  perspective: 1400px; /* 透视距离 */
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  min-height: 650px;
+}
+.map-3d-stage {
+  transform: perspective(1400px) rotateX(28deg) rotateY(10deg); /* 减小倾斜角度，保持北方板块比例适中 */
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+  width: 100%;
+  height: 100%;
+}
+.map-3d-canvas {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 20px 50px rgba(0, 123, 199, 0.25)); /* 发光投影，营造悬浮感 */
+}
+.map-3d-wrapper:hover .map-3d-stage {
+  transform: perspective(1400px) rotateX(24deg) rotateY(8deg);
+}
+
+/* Floating Frosted Glass Info Panel (Opacity reduced by 30%) */
+.office-info-panel {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  z-index: 30;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .office-info-panel-wrapper {
+    position: absolute;
+    top: 72px; /* Filter bar bottom edge spacing */
+    bottom: 20px; /* Container bottom edge spacing */
+    right: 3.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 30;
+    pointer-events: none;
+  }
+  .office-info-panel {
+    pointer-events: auto;
+    width: 390px;
+    max-height: 100%;
+    overflow-y: auto;
+    margin: auto 0;
+  }
+}
+
 .hero-title {
   font-weight: 700;
   letter-spacing: 0.08em;

@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import { ScrollSectionTitle } from './ScrollSectionTitle';
 
 interface IndustryItem {
   id: string;
   name: string;
+  desc: string;
   image: string;
   detailUrl: string;
 }
@@ -13,72 +15,84 @@ const INDUSTRIES: IndustryItem[] = [
   {
     id: 'industrial-equipment',
     name: '工业装备',
+    desc: '智能装备产业升级的设计伙伴，助力企业打造高端制造与人机工程新标杆',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/aisidun.jpg',
     detailUrl: '/industry/industrial-equipment'
   },
   {
     id: 'robotics',
     name: '机器人',
+    desc: '人机协同与具身智能形态创新，重塑未来服务与工业机器人作业体验',
     image: '/src/assets/images/lkk_humanoid_robot_1783302961282.jpg',
     detailUrl: '/industry/robotics'
   },
   {
     id: 'new-energy',
     name: '新能源',
+    desc: '绿色能源与智慧储能体验重塑，打造零碳时代高辨识度标志性产品',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.39.png',
     detailUrl: '/industry/new-energy'
   },
   {
     id: 'home-appliances',
     name: '家居家电',
+    desc: '品质生活与智能家电体验升级，让人机交互与空间美学和谐共融',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/xiaozhi.jpg',
     detailUrl: '/industry/home-appliances'
   },
   {
     id: 'smart-3c',
     name: '智能3C',
+    desc: '数码科技与智能硬件爆品打造，引领消费电子潮流与极致体验',
     image: '/src/assets/images/lkk_coffee_mockup_1783302972120.jpg',
     detailUrl: '/industry/smart-3c'
   },
   {
     id: 'healthcare',
     name: '医疗健康',
+    desc: '高端医疗器械与人性化健康设计，精准赋能诊疗流程与关怀体验',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui.jpg',
     detailUrl: '/industry/healthcare'
   },
   {
     id: 'food-beverage',
     name: '食品酒饮',
+    desc: '新零售食品与差异化包装创新，以高颜值与情绪价值驱动爆品突破',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif',
     detailUrl: '/industry/food-beverage'
   },
   {
     id: 'retail',
     name: '连锁零售',
+    desc: '品牌商业空间与新零售体验设计，赋能线下场景转化与品牌资产沉淀',
     image: '/src/assets/images/case_jingkelong.jpg',
     detailUrl: '/industry/retail'
   },
   {
     id: 'beauty-personal-care',
     name: '美妆个护',
+    desc: '高颜值个护美学与品牌视觉升级，打造深受年轻一代喜爱的时尚单品',
     image: '/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg',
     detailUrl: '/industry/beauty-personal-care'
   },
   {
     id: 'cultural-creative',
     name: '文化创意',
+    desc: '超级IP文创与文化遗产活化，连接传统文化与现代消费新生活方式',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/gugong.jpg',
     detailUrl: '/industry/cultural-creative'
   },
   {
     id: 'pet-economy',
     name: '宠物经济',
+    desc: '精细化养宠与人宠友好智能用品，倡导人宠共生的精致生活美学',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png',
     detailUrl: '/industry/pet-economy'
   },
   {
     id: 'transportation',
     name: '交通工具',
+    desc: '智慧出行与未来交通载具设计，探索前沿造型与座舱感知新维度',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png',
     detailUrl: '/industry/transportation'
   }
@@ -205,22 +219,41 @@ export default function IndustryCollectionPage({
         .industry-card-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.15) 45%, transparent 100%);
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.15) 45%, transparent 100%);
           pointer-events: none;
           z-index: 1;
         }
 
-        .industry-card-label {
+        .industry-card-text {
           position: absolute;
-          left: 18px;
-          bottom: 18px;
-          color: #FFFFFF;
-          font-size: 19px;
-          font-weight: 700;
-          letter-spacing: 0.5px;
-          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+          left: 20px;
+          bottom: 20px;
+          right: 20px;
           z-index: 2;
+          text-align: left;
+          pointer-events: none;
+        }
+
+        .industry-card-title {
+          font-size: 26px;
+          font-weight: 700;
+          color: #FFFFFF;
+          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+          margin-bottom: 10px;
+          line-height: 1.25;
           font-family: var(--font-display, inherit);
+        }
+
+        .industry-card-desc {
+          font-size: 16px;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 0.85);
+          line-height: 1.5;
+          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
         /* 阶段二：右上角"撕角"/扇形蓝色色块 (#007BC7) */
@@ -354,14 +387,12 @@ export default function IndustryCollectionPage({
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-[95%] w-full mx-auto">
           
-          <div className="mb-10 text-left">
-            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-              INDUSTRY DOMAINS
-            </span>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-[#1A1A1A] font-display">
-              12大垂直行业赛道
-            </h2>
-          </div>
+          <ScrollSectionTitle 
+            badge="INDUSTRY DOMAINS"
+            title="十二大垂直行业赛道"
+            subtitle="深耕12大垂直工业与商业领域，提供从品类策略到软硬件研发落地的全栈式解决方案。"
+            align="left"
+          />
 
           <div className="industry-grid">
             {INDUSTRIES.map((ind) => (
@@ -388,8 +419,11 @@ export default function IndustryCollectionPage({
                   </svg>
                 </div>
 
-                {/* 默认底栏文字标签 */}
-                <span className="industry-card-label">{ind.name}</span>
+                {/* 底部两行文字信息：标题 + 简述 */}
+                <div className="industry-card-text">
+                  <div className="industry-card-title">{ind.name}</div>
+                  <div className="industry-card-desc">{ind.desc}</div>
+                </div>
               </a>
             ))}
           </div>

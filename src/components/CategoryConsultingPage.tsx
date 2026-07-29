@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, Sparkles, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 import { CaseStudy } from '../types';
 import { gsap } from 'gsap';
