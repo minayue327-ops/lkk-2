@@ -741,7 +741,7 @@ export default function App() {
     : CASE_STUDIES_V2;
 
   return (
-    <div className="relative min-h-screen bg-white text-neutral-800 selection:bg-[#007BC7] selection:text-white font-sans overflow-x-hidden">
+    <div className="relative min-h-screen bg-white text-neutral-800 selection:bg-[#007BC7] selection:text-white font-sans overflow-x-clip">
       
       {/* SITE HEADER WRAPPER */}
       <div className="site-header">
@@ -1280,10 +1280,10 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* 2. Four Quantitative Stats with Larger, Bolder Numbers, evenly distributed inside a CSS Grid */}
+                  {/* 2. Four Quantitative Stats with Bolder Numbers, evenly distributed inside a CSS Grid */}
                   <div className="stats-section my-auto py-2 w-full px-2 md:px-8">
                     <div className="stat-item">
-                      <div className="stat-number stat-number-large">
+                      <div className="stat-number">
                         <Counter target={600} /><span className="text-white font-light ml-0.5">+</span>
                       </div>
                       <div className="stat-label">
