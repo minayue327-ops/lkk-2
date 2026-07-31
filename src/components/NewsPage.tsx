@@ -27,6 +27,8 @@ export interface NewsArticleItem {
 
 interface NewsPageProps {
   onOpenContactModal?: () => void;
+  onSelectArticle?: (id: string) => void;
+  onNavigate?: (url: string) => void;
 }
 
 const NEWS_CATEGORIES = ['全部', '公司动态', '媒体报道', '行业资讯', '品牌事件', '获奖喜讯'];
@@ -218,7 +220,10 @@ export const NEWS_DATABASE: NewsArticleItem[] = [
   }
 ];
 
-export const NewsPage: React.FC<NewsPageProps> = () => {
+export const NewsPage: React.FC<NewsPageProps> = ({ onSelectArticle, onNavigate }) => {
+  // Category state
+  const [selectedCategory, setSelectedCategory] = useState<string>('全部');
+
   // Pagination state (6 items per page)
   const pageSize = 6;
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -226,8 +231,11 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
   // Detail Modal state
   const [selectedArticle, setSelectedArticle] = useState<NewsArticleItem | null>(null);
 
-  // Articles list (Directly show all articles without filtering)
-  const filteredArticles = NEWS_DATABASE;
+  // Articles list
+  const filteredArticles = useMemo(() => {
+    if (selectedCategory === '全部') return NEWS_DATABASE;
+    return NEWS_DATABASE.filter((a) => a.category === selectedCategory);
+  }, [selectedCategory]);
 
   // Total pages
   const totalPages = Math.ceil(filteredArticles.length / pageSize) || 1;
@@ -245,6 +253,16 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
     const listElement = document.getElementById('news-list-section');
     if (listElement) {
       listElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleCardClick = (article: NewsArticleItem) => {
+    if (onSelectArticle) {
+      onSelectArticle(article.id);
+    } else if (onNavigate) {
+      onNavigate(`/news-detail/${article.id}`);
+    } else {
+      setSelectedArticle(article);
     }
   };
 
@@ -284,26 +302,11 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
       <section id="news-list-section" className="py-12 md:py-16 bg-neutral-50/60 min-h-[600px]">
         <div className="max-w-[95%] w-full mx-auto">
           
-          {/* List Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-neutral-200/60 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
-                ALL ARTICLES
-              </span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">
-                全部新闻动态
-              </h2>
-            </div>
-            <span className="text-xs text-[#8C8C8C] font-mono">
-              共计 <strong className="text-neutral-800">{filteredArticles.length}</strong> 条资讯记录
-            </span>
-          </div>
-
-          {/* News Cards Grid (Desktop 3-4 cols, Tablet 2 cols, Mobile 1 col, 24px gap) */}
+          {/* News Cards Grid */}
           <AnimatePresence mode="wait">
             {paginatedArticles.length > 0 ? (
               <motion.div 
-                key={currentPage}
+                key={`${selectedCategory}-${currentPage}`}
                 initial="hidden"
                 animate="visible"
                 exit={{ opacity: 0, y: -12, transition: { duration: 0.15 } }}
@@ -336,7 +339,7 @@ export const NewsPage: React.FC<NewsPageProps> = () => {
                       }
                     }}
                     whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                    onClick={() => setSelectedArticle(article)}
+                    onClick={() => handleCardClick(article)}
                     className="bg-white rounded-3xl overflow-hidden border border-neutral-200/60 shadow-sm hover:shadow-xl hover:border-[#007BC7] transition-all duration-300 flex flex-col justify-between group cursor-pointer"
                   >
                   {/* Card Cover Image (Aspect ratio & crop copied from Home Page) */}

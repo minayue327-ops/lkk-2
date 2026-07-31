@@ -942,13 +942,18 @@ export default function IndustryDetailPage({
       {/* 三、服务分类——完全照搬"工业设计"分页视觉设计与交互 */}
       <section className="py-16 md:py-20 bg-white border-b border-[#E5E5E5]">
         <div className="max-w-[95%] mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-              SERVICE CATEGORIES
-            </span>
-            <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-              服务分类
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                SERVICE CATEGORIES
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                服务分类
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              聚焦垂直领域的特定技术场景与用户体验需求，提供针对性的全闭环解决方案。
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
@@ -977,13 +982,18 @@ export default function IndustryDetailPage({
       {/* 四、案例锦集——照搬首页成功案例灰度悬停网格 (名称保持"案例锦集") */}
       <section className="py-16 md:py-24 bg-white border-b border-[#E5E5E5]">
         <div className="max-w-[95%] mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-              CASE COLLECTION
-            </span>
-            <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-              案例锦集
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                CASE COLLECTION
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                案例锦集
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              甄选垂直行业代表性爆品案例，展现行业创新与设计落地的商业成果。
+            </p>
           </div>
 
           <div className="case-grid-v2">

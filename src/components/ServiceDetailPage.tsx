@@ -794,13 +794,18 @@ export default function ServiceDetailPage({
       {/* 2. 一、服务分类——图标+标题横向并排 */}
       <section className="py-16 md:py-20 bg-white border-b border-[#E5E5E5]">
         <div className="max-w-[95%] mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-              SERVICE CATEGORIES
-            </span>
-            <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-              服务分类
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                SERVICE CATEGORIES
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                服务分类
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              覆盖从外观体验、结构工程到高精度的模具开发与柔性供应链全流程托管闭环。
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
@@ -827,13 +832,18 @@ export default function ServiceDetailPage({
       {/* 3. 二、服务流程——重新设计（视觉与交互整体升级） */}
       <section className="py-16 md:py-24 bg-[#F0F0F0]/40 border-b border-[#E5E5E5] overflow-hidden">
         <div className="max-w-[95%] mx-auto relative">
-          <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-              SERVICE PROCESS
-            </span>
-            <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-              服务流程
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                SERVICE PROCESS
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                服务流程
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              严谨的标准化创新交付闭环，从敏捷需求匹配、样机研发到规模化量产全程把控。
+            </p>
           </div>
 
           {/* 贯穿4个步骤的动态连接进度线 (桌面端) */}
@@ -920,13 +930,18 @@ export default function ServiceDetailPage({
       {/* 4. 三、案例锦集——复用首页"成功案例"（呈现方式二：灰度悬停，板块名称保持"案例锦集"） */}
       <section className="py-16 md:py-20 bg-white border-b border-[#E5E5E5]">
         <div className="max-w-[95%] mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-              CASE COLLECTION
-            </span>
-            <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-              案例锦集
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                CASE COLLECTION
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                案例锦集
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              甄选细分赛道代表性爆品案例，展现工业美学与研发落地的深度结合。
+            </p>
           </div>
 
           <div className="case-grid-v2">
@@ -979,13 +994,20 @@ export default function ServiceDetailPage({
 
       {/* 5. 四、服务客户——复用产品创新页/品类创新页"服务客户"板块 */}
       <section className="py-20 md:py-24 bg-white w-full border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto relative z-10 text-center">
-          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-            OUR CLIENTS
-          </span>
-          <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] mb-12 font-display">
-            服务客户
-          </h2>
+        <div className="max-w-[95%] w-full mx-auto relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                OUR CLIENTS
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                服务客户
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              洛可可已服务超过数千个品牌客户，荣获多项国际工业设计大奖，打造诸多行业标杆与爆品。
+            </p>
+          </div>
           <div className="w-full rounded-3xl overflow-hidden shadow-sm border border-[#E5E5E5] bg-[#F0F0F0]">
             <img 
               src="https://github.com/minaxyue-ops/MINA/releases/download/1/fuwukehu1.jpg" 

@@ -237,7 +237,7 @@ body {
   }
   .office-info-panel {
     pointer-events: auto;
-    width: 390px;
+    width: 422px;
     max-height: 100%;
     overflow-y: auto;
     margin: auto 0;
@@ -632,14 +632,14 @@ body {
 }
 
 
-/* Stats Section and Items Grid with CSS Grid hierarchy layout */
+/* Stats Section and Items Grid with equal CSS Grid layout */
 .stats-section {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr; /* 第一组字号更大，分配更宽的列；后三组字号缩小，列宽相应收窄 */
-  gap: 20px; /* 间距整体收紧，按缩小后的实际尺寸精准匹配 */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   padding: 0 24px;
   width: 100%;
-  align-items: end; /* 底部对齐 */
+  align-items: end;
 }
 .stat-item {
   background: none !important;
@@ -657,23 +657,15 @@ body {
   min-width: 0;
   overflow: hidden; /* 防止数字溢出挤压相邻模块 */
 }
-.stat-number {
-  font-size: clamp(26px, 3.1vw, 47px);
-  font-weight: 900;
+.stat-number,
+.stat-number-large {
+  font-size: clamp(12px, 1.25vw, 18px);
+  font-weight: 800;
   color: #FFFFFF;
   line-height: 1;
   white-space: nowrap;
   font-family: var(--font-sans);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-.stat-item:first-child .stat-number {
-  font-size: clamp(40px, 4.6vw, 70px); /* 第一组主体字号放大10% */
-}
-.stat-item:not(:first-child) .stat-number {
-  font-size: clamp(26px, 3.1vw, 47px); /* 后三组字号同步放大10% */
-}
-.stat-number-large {
-  font-size: clamp(40px, 4.6vw, 70px);
 }
 .stat-label {
   font-size: clamp(10px, 0.85vw, 12px);
@@ -1096,14 +1088,33 @@ body {
   }
 }
 
-/* Experience Cards 3D Elevation (Shadow strengthened by +50%) */
+/* Experience Cards Elevation */
 .experience-card {
   border-radius: 16px;
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.025),
     0 6px 16px rgba(0, 0, 0, 0.038);
-  transform-style: preserve-3d;
-  will-change: transform;
 }
 
-
+/* Achievement Gallery Grid */
+.achievement-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+}
+@media (min-width: 640px) {
+  .achievement-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.achievement-gallery-item {
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #F5F5F5;
+}
+.achievement-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

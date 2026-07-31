@@ -19,51 +19,12 @@ interface ExperienceCardProps {
 }
 
 function ExperienceCard({ title, imgSrc }: ExperienceCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.matchMedia('(hover: hover)').matches === false) return;
-    const card = cardRef.current;
-    if (!card) return;
-
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const maxTilt = 3; // 倾斜幅度减弱70%，倾斜更克制细腻
-
-    const rotateY = ((x - centerX) / centerX) * maxTilt;
-    const rotateX = -((y - centerY) / centerY) * maxTilt;
-
-    card.style.transition = 'transform 0.15s ease-out';
-    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.006)`;
-  };
-
-  const handleMouseLeave = () => {
-    const card = cardRef.current;
-    if (!card) return;
-    card.style.transition = 'transform 0.5s ease-out';
-    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-  };
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full"
-    >
+    <div className="w-full">
       <div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="experience-card relative w-full aspect-[16/9.2] sm:aspect-[16/9] rounded-2xl overflow-hidden select-none cursor-pointer"
+        className="experience-card relative w-full aspect-[16/9.2] sm:aspect-[16/9] rounded-2xl overflow-hidden select-none"
         style={{
           boxShadow: '0 2px 6px rgba(0, 0, 0, 0.025), 0 6px 16px rgba(0, 0, 0, 0.038)',
-          transformStyle: 'preserve-3d',
-          willChange: 'transform',
         }}
       >
         <img
@@ -73,7 +34,7 @@ function ExperienceCard({ title, imgSrc }: ExperienceCardProps) {
           className="w-full h-full object-cover"
         />
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -413,14 +374,14 @@ export default function CategoryConsultingPage({
       <section id="category-services" className="py-20 bg-[#F0F0F0]/50 border-b border-[#E5E5E5]">
         <div className="max-w-[95%] w-full mx-auto relative z-10">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
             <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Expertise</span>
-              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-[#1a1a1a] mt-2 font-display">
-                <span className="char char-black">专</span><span className="char char-black">业</span><span className="char char-black">服</span><span className="char char-black">务</span>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">Expertise</span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                专业服务
               </h2>
             </div>
-            <p className="text-sm text-[#4D4D4D] max-w-md mt-4 md:mt-0 leading-relaxed">
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
               我们依托于核心的“战略定位+整合研发设计”闭环服务能力，提供从品类、产品、到品牌的高爆发全案咨询。
             </p>
           </div>
@@ -566,13 +527,18 @@ export default function CategoryConsultingPage({
       <section id="category-insights" className="py-20 bg-[#F0F0F0]/40 w-full border-b border-[#E5E5E5]">
         <div className="max-w-[95%] w-full mx-auto relative z-10">
           {/* Section Header */}
-          <div className="text-center mb-12 lg:mb-16">
-            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-              LKK PRACTICAL INSIGHTS
-            </span>
-            <h2 className="section-title scroll-reveal-heading text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-              洛可可实战中不断总结的经验
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                LKK PRACTICAL INSIGHTS
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                实战经验
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              基于二十一年的商业实战与设计创新积淀，系统梳理从品类定位到爆品落地的核心底层逻辑。
+            </p>
           </div>
 
           {/* Vertical Stack of Experience Cards */}
@@ -601,14 +567,14 @@ export default function CategoryConsultingPage({
       <section id="category-cases" className="py-20 bg-white border-b border-[#E5E5E5]">
         <div className="max-w-[95%] w-full mx-auto relative z-10">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
             <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">Portfolios</span>
-              <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-[#1a1a1a] mt-2 font-display">
-                <span className="char char-black">案</span><span className="char char-black">例</span><span className="char char-black">锦</span><span className="char char-black">集</span>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">PORTFOLIOS</span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                案例锦集
               </h2>
             </div>
-            <p className="text-sm text-[#4D4D4D] max-w-sm mt-4 md:mt-0">
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
               洛可可战略咨询助力以下领军企业，成功实现颠覆性品类战略突围与超级爆品打造。
             </p>
           </div>
@@ -677,14 +643,16 @@ export default function CategoryConsultingPage({
         id="category-faq" 
         className="py-20 bg-white w-full overflow-hidden border-b border-[#E5E5E5]"
       >
-        {/* Title Area - Centered */}
-        <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 relative z-10 mb-12">
-          <div className="text-center">
-            <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">FAQ</span>
-            <h2 className="section-title scroll-reveal-heading text-3xl font-extrabold tracking-tight text-[#1a1a1a] mt-2 font-display">
-              <span className="char char-black">成</span><span className="char char-black">功</span><span className="char char-black">路</span><span className="char char-black">径</span>
-            </h2>
-            <p className="text-sm text-[#8C8C8C] mt-3 max-w-xl mx-auto leading-relaxed">
+        {/* Title Area - Left aligned */}
+        <div className="max-w-[95%] w-full mx-auto relative z-10 mb-10 md:mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">FAQ</span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                成功路径
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
               关于洛可可“三品合一”战略咨询与爆品落地全流程，解答您关心的一切核心诉求。
             </p>
           </div>
@@ -713,13 +681,20 @@ export default function CategoryConsultingPage({
 
       {/* 5. CLIENTS - SERVICE CLIENTS SECTION */}
       <section id="category-clients" className="py-20 md:py-24 bg-white w-full border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto relative z-10 text-center">
-          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-            OUR CLIENTS
-          </span>
-          <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] mb-12 font-display">
-            服务客户
-          </h2>
+        <div className="max-w-[95%] w-full mx-auto relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                OUR CLIENTS
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                服务客户
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              洛可可已服务超过数千个品牌客户，荣获多项国际工业设计大奖，打造诸多行业标杆与爆品。
+            </p>
+          </div>
           <div className="w-full rounded-3xl overflow-hidden shadow-sm border border-[#E5E5E5] bg-[#F0F0F0]">
             <img 
               src="https://github.com/minaxyue-ops/MINA/releases/download/1/fuwukehu1.jpg" 

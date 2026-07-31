@@ -235,17 +235,29 @@ export default function IndustryCollectionPage({
         }
 
         .industry-card-title {
-          font-size: 26px;
+          font-size: 52px;
           font-weight: 700;
           color: #FFFFFF;
-          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
           margin-bottom: 10px;
-          line-height: 1.25;
+          line-height: 1.15;
           font-family: var(--font-display, inherit);
         }
 
+        @media (max-width: 1280px) {
+          .industry-card-title {
+            font-size: 42px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .industry-card-title {
+            font-size: 32px;
+          }
+        }
+
         .industry-card-desc {
-          font-size: 16px;
+          font-size: 21px;
           font-weight: 400;
           color: rgba(255, 255, 255, 0.85);
           line-height: 1.5;
@@ -254,6 +266,18 @@ export default function IndustryCollectionPage({
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+        }
+
+        @media (max-width: 1280px) {
+          .industry-card-desc {
+            font-size: 18px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .industry-card-desc {
+            font-size: 16px;
+          }
         }
 
         /* 阶段二：右上角"撕角"/扇形蓝色色块 (#007BC7) */

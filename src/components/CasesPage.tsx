@@ -151,8 +151,8 @@ export const CasesPage: React.FC<CasesPageProps> = ({ onSelectCase }) => {
         </div>
       </div>
 
-      {/* 2. STICKY DYNAMIC SEARCH & MULTI-DIMENSIONAL PILL FILTER BAR */}
-      <div className="relative sticky top-[73px] z-30 bg-white/95 backdrop-blur-md border-b border-neutral-200/80 shadow-sm py-4 transition-all">
+      {/* 2. DYNAMIC SEARCH & MULTI-DIMENSIONAL PILL FILTER BAR */}
+      <div className="relative bg-white border-b border-neutral-200/80 py-4 transition-all">
         <div className="max-w-[95%] w-full mx-auto space-y-4">
           
           {/* Search Input Row with Outer Glow & Clear Button */}

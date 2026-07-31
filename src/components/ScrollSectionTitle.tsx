@@ -15,7 +15,6 @@ export const ScrollSectionTitle: React.FC<ScrollSectionTitleProps> = ({
   title,
   subtitle,
   dark = false,
-  align = 'left',
   className = '',
   rightElement
 }) => {
@@ -54,13 +53,9 @@ export const ScrollSectionTitle: React.FC<ScrollSectionTitleProps> = ({
   return (
     <div 
       ref={containerRef} 
-      className={`scroll-section-header mb-10 md:mb-12 ${
-        align === 'center' ? 'text-center max-w-2xl mx-auto' : ''
-      } ${
-        align === 'between' ? 'flex flex-col md:flex-row md:items-end justify-between gap-4' : ''
-      } ${className}`}
+      className={`scroll-section-header mb-10 md:mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-8 text-left ${className}`}
     >
-      <div className={align === 'between' ? 'max-w-2xl' : ''}>
+      <div className="shrink-0">
         {badge && (
           <span 
             className={`text-xs font-bold uppercase tracking-widest font-mono block mb-2 transition-colors duration-700 ${
@@ -90,21 +85,25 @@ export const ScrollSectionTitle: React.FC<ScrollSectionTitleProps> = ({
             </span>
           ))}
         </h2>
-
-        {subtitle && (
-          <p 
-            className={`text-sm md:text-base mt-3 leading-relaxed transition-all duration-700 ${
-              dark ? 'text-neutral-400' : 'text-neutral-500'
-            } ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-1'}`}
-          >
-            {subtitle}
-          </p>
-        )}
       </div>
 
-      {rightElement && (
-        <div className="shrink-0 mt-4 md:mt-0">
-          {rightElement}
+      {(subtitle || rightElement) && (
+        <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 shrink-0 max-w-full md:max-w-md lg:max-w-lg">
+          {subtitle && (
+            <p 
+              className={`text-xs md:text-sm leading-relaxed transition-all duration-700 font-normal ${
+                dark ? 'text-neutral-400' : 'text-neutral-500'
+              } ${isRevealed ? 'opacity-100 translate-y-0' : 'opacity-40 translate-y-1'}`}
+            >
+              {subtitle}
+            </p>
+          )}
+
+          {rightElement && (
+            <div className="shrink-0 ml-auto sm:ml-0">
+              {rightElement}
+            </div>
+          )}
         </div>
       )}
     </div>

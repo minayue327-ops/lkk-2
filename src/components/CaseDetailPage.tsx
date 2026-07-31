@@ -121,59 +121,22 @@ export default function CaseDetailPage({
   return (
     <div className="w-full bg-white text-neutral-900 min-h-screen">
       
-      {/* 三（上）、案例标题 + Slogan (去除了 Banner，且项目资料信息已移至下方内容区) */}
-      <div className="bg-neutral-50/70 border-b border-neutral-100 py-8 md:py-12">
-        <div className="max-w-[95%] w-full mx-auto">
-          {/* 面包屑导航 */}
-          <div className="flex items-center gap-2 text-xs text-neutral-500 mb-4 font-mono">
-            <button 
-              onClick={() => onNavigate('/home')} 
-              className="hover:text-[#007BC7] transition-colors bg-transparent border-none p-0 cursor-pointer"
-            >
-              首页
-            </button>
-            <span>/</span>
-            <button 
-              onClick={() => onNavigate('/cases')} 
-              className="hover:text-[#007BC7] transition-colors bg-transparent border-none p-0 cursor-pointer"
-            >
-              精选案例
-            </button>
-            <span>/</span>
-            <span className="text-neutral-900 font-semibold">案例详情</span>
-          </div>
-
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="h-[1.5px] w-6 bg-[#007BC7]"></span>
-                <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
-                  CASE STUDY · 案例详情
-                </span>
-              </div>
-              <h1 className="text-3xl md:text-5xl font-extrabold text-[#1A1A1A] tracking-tight font-display">
-                悦鲜活年轻化产品包装创新咨询设计
-              </h1>
-              {/* 一句话 Slogan（照搬品类创新咨询页Slogan排版） */}
-              <p className="text-xs md:text-sm font-semibold tracking-wider text-[#007BC7] uppercase mt-3 font-mono">
-                打造差异化视觉识别，助力新品牌抢占年轻消费市场
-              </p>
-            </div>
-
-            <p className="text-sm text-neutral-500 max-w-xl leading-relaxed">
-              基于洛可可“三品合一”品类创新战略，为君乐宝旗下“悦鲜活”品牌提供全新的年轻化包装与品牌视觉重构方案。通过0.09s黄金保鲜视觉叙事与锁鲜瓶型结构创新，帮助悦鲜活迅速打入年轻一代白领圈层，实现了销量与品牌的双重突破。
-            </p>
-          </div>
-        </div>
+      {/* 三（上）、Hero 区域（尺寸不变，替换为 Hero Banner 大图） */}
+      <div className="bg-neutral-100 border-b border-neutral-200/80 w-full overflow-hidden flex items-center justify-center relative min-h-[140px] md:min-h-[180px] max-h-[320px]">
+        <img 
+          src="/src/assets/images/case_yuexianhuo.jpg" 
+          alt="悦鲜活案例 Hero Banner" 
+          className="w-full h-full min-h-[140px] md:min-h-[180px] max-h-[320px] object-cover object-center"
+        />
       </div>
 
-      {/* 四 + 五、主内容区域：左侧筛选与相关案例栏（纯CSS sticky悬浮固定） + 右侧案例详情分节内容（项目资料信息为右侧第1块） */}
+      {/* 四 + 五、主内容区域：左侧筛选与相关案例栏（纯CSS sticky悬浮固定，宽度收窄20%） + 右侧案例详情分节内容（项目资料信息为右侧第1块，宽度增加） */}
       <div className="max-w-[95%] w-full mx-auto pt-6 md:pt-8 pb-12 md:pb-16">
         <div className="anli-content-container relative grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
           
-          {/* 四、左侧筛选与相关案例栏——纯CSS position: sticky + 组内可滑动 (anli-content-left) */}
-          <aside className="lg:col-span-4 w-full relative">
-            <div className="anli-content-left space-y-6 bg-white p-6 rounded-2xl border border-neutral-200/60 shadow-xs lg:sticky lg:top-[20px] z-10 lg:max-h-[calc(100vh-40px)] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-neutral-200 hover:[&::-webkit-scrollbar-thumb]:bg-neutral-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+          {/* 四、左侧筛选与相关案例栏——纯CSS position: sticky + 组内可滑动 (anli-content-left，收窄至 col-span-3) */}
+          <aside className="lg:col-span-3 w-full relative">
+            <div className="anli-content-left space-y-6 bg-white p-4 sm:p-5 rounded-2xl border border-neutral-200/60 shadow-xs lg:sticky lg:top-[20px] z-10 lg:max-h-[calc(100vh-40px)] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-neutral-200 hover:[&::-webkit-scrollbar-thumb]:bg-neutral-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
               <div>
                 <h3 className="text-base font-bold text-[#1A1A1A] mb-4 font-display flex items-center justify-between">
                   <span>探索相关案例</span>
@@ -187,8 +150,8 @@ export default function CaseDetailPage({
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="搜索案例名称或关键词..."
-                    className="w-full pl-10 pr-4 py-2 bg-neutral-50/80 focus:bg-white text-sm text-[#1A1A1A] placeholder-neutral-400 rounded-xl border border-[#E5E5E5] focus:border-[#007BC7] focus:shadow-[0_0_0_3px_rgba(0,123,199,0.12)] outline-none transition-all duration-200"
+                    placeholder="搜索案例..."
+                    className="w-full pl-10 pr-3 py-2 bg-neutral-50/80 focus:bg-white text-xs sm:text-sm text-[#1A1A1A] placeholder-neutral-400 rounded-xl border border-[#E5E5E5] focus:border-[#007BC7] focus:shadow-[0_0_0_3px_rgba(0,123,199,0.12)] outline-none transition-all duration-200"
                   />
                 </div>
 
@@ -196,10 +159,10 @@ export default function CaseDetailPage({
                 <div className="space-y-4 mb-6">
                   {/* 第一组：垂直行业 */}
                   <div>
-                    <div className="text-[13px] text-[#8C8C8C] font-medium mb-2">
+                    <div className="text-[12px] text-[#8C8C8C] font-medium mb-2">
                       垂直行业：
                     </div>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-1 sm:gap-1.5">
                       {INDUSTRY_TAGS.map((tag) => {
                         const isActive = activeIndustryTag === tag;
                         return (
@@ -209,7 +172,7 @@ export default function CaseDetailPage({
                               setActiveIndustryTag(tag);
                               if (tag !== '全部') setActiveCategoryTag('全部');
                             }}
-                            className={`px-2.5 py-1 rounded-full text-xs font-medium shrink-0 transition-all cursor-pointer border-none ${
+                            className={`px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium shrink-0 transition-all cursor-pointer border-none ${
                               isActive
                                 ? 'bg-[#E8F0FF] text-[#007BC7] font-semibold'
                                 : 'bg-[#F5F5F5] text-[#8C8C8C] hover:text-neutral-700 hover:bg-neutral-200/60'
@@ -224,10 +187,10 @@ export default function CaseDetailPage({
 
                   {/* 第二组：产品分类 */}
                   <div>
-                    <div className="text-[13px] text-[#8C8C8C] font-medium mb-2">
+                    <div className="text-[12px] text-[#8C8C8C] font-medium mb-2">
                       产品分类：
                     </div>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-1 sm:gap-1.5">
                       {CATEGORY_TAGS.map((tag) => {
                         const isActive = activeCategoryTag === tag;
                         return (
@@ -237,7 +200,7 @@ export default function CaseDetailPage({
                               setActiveCategoryTag(tag);
                               if (tag !== '全部') setActiveIndustryTag('全部');
                             }}
-                            className={`px-2.5 py-1 rounded-full text-xs font-medium shrink-0 transition-all cursor-pointer border-none ${
+                            className={`px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium shrink-0 transition-all cursor-pointer border-none ${
                               isActive
                                 ? 'bg-[#E8F0FF] text-[#007BC7] font-semibold'
                                 : 'bg-[#F5F5F5] text-[#8C8C8C] hover:text-neutral-700 hover:bg-neutral-200/60'
@@ -265,20 +228,20 @@ export default function CaseDetailPage({
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }
                       }}
-                      className="py-4 group cursor-pointer text-left block"
+                      className="py-3.5 group cursor-pointer text-left block"
                     >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[11px] font-bold text-[#007BC7] bg-blue-50 px-2 py-0.5 rounded font-mono">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-bold text-[#007BC7] bg-blue-50 px-1.5 py-0.5 rounded font-mono">
                           洛可可设计
                         </span>
-                        <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-[#007BC7] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                        <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#007BC7] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
                       </div>
 
-                      <h4 className="text-[16px] font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors duration-200 leading-snug line-clamp-1">
+                      <h4 className="text-[15px] font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors duration-200 leading-snug line-clamp-1">
                         {item.title}
                       </h4>
 
-                      <p className="text-[14px] text-[#4D4D4D] mt-1 line-clamp-1 leading-relaxed">
+                      <p className="text-[13px] text-[#4D4D4D] mt-0.5 line-clamp-1 leading-relaxed">
                         {item.description}
                       </p>
                     </div>
@@ -293,45 +256,52 @@ export default function CaseDetailPage({
             </div>
           </aside>
 
-          {/* 五、案例详情内容（anli-content-right）—— 第1个板块为“项目资料信息” */}
-          <main className="anli-content-right lg:col-span-8 space-y-12 md:space-y-16">
+          {/* 五、案例详情内容（anli-content-right，扩宽至 col-span-9）—— 第1个板块为“项目资料信息” */}
+          <main className="anli-content-right lg:col-span-9 space-y-12 md:space-y-16">
             
-            {/* 【板块 0】项目资料信息 (现已作为右侧内容区第1块，与左侧筛选栏处于同一行并排) */}
-            <section className="bg-[#007BC7] text-white rounded-2xl p-6 md:p-8 border border-[#0066A6] shadow-md">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-                {/* 左侧键值对列表 (字段名 text-white/80，内容 text-white，间距 16px) */}
-                <div className="md:col-span-7 space-y-4 text-left">
-                  <h3 className="text-lg font-bold text-white font-display mb-4 border-b border-white/20 pb-3 flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-white"></span>
+            {/* 【板块 0】项目资料信息 (采用偏蓝冷灰调底色 bg-[#F0F4F8] 与纯白标题卡片，既雅致又不影响各类品牌色) */}
+            <section className="bg-[#F0F4F8] text-[#1E293B] rounded-2xl p-6 md:p-8 border border-[#D6E2ED] shadow-xs">
+              {/* 顶部粗体背景高亮卡片：Hero 主标题 (居中对齐，字号 36px/48px/60px，高质感深藏青/暗灰) */}
+              <div className="mb-6 p-5 md:p-7 rounded-xl bg-white border border-[#D6E2ED] shadow-xs text-center">
+                <h1 className="text-[36px] sm:text-[48px] lg:text-[60px] font-black text-[#0F172A] leading-tight tracking-tight font-display text-center">
+                  悦鲜活年轻化产品包装创新咨询设计
+                </h1>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-stretch">
+                {/* 左侧键值对列表 (字段名 text-[#64748B]，内容 text-[#0F172A]，间距 16px) */}
+                <div className="md:col-span-7 space-y-4 text-left flex flex-col justify-center">
+                  <h3 className="text-lg font-bold text-[#0F172A] font-display mb-3 border-b border-[#CBD5E1] pb-3 flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#0284C7]"></span>
                     项目资料信息
                   </h3>
 
                   <div className="space-y-[16px]">
                     <div className="flex items-start text-sm">
-                      <span className="text-white/80 w-24 shrink-0 font-medium">品牌名称</span>
-                      <span className="text-white font-semibold">君乐宝 · 悦鲜活 (YueXianHuo)</span>
+                      <span className="text-[#64748B] w-24 shrink-0 font-medium">品牌名称</span>
+                      <span className="text-[#0F172A] font-semibold">君乐宝 · 悦鲜活 (YueXianHuo)</span>
                     </div>
 
                     <div className="flex items-start text-sm">
-                      <span className="text-white/80 w-24 shrink-0 font-medium">所属行业</span>
-                      <span className="text-white font-semibold">食品酒饮 / 高端快消乳品</span>
+                      <span className="text-[#64748B] w-24 shrink-0 font-medium">所属行业</span>
+                      <span className="text-[#0F172A] font-semibold">食品酒饮 / 高端快消乳品</span>
                     </div>
 
                     <div className="flex items-start text-sm">
-                      <span className="text-white/80 w-24 shrink-0 font-medium">咨询服务</span>
-                      <span className="text-white font-semibold">三品合一类创新咨询 / 0-1爆品打造</span>
+                      <span className="text-[#64748B] w-24 shrink-0 font-medium">咨询服务</span>
+                      <span className="text-[#0F172A] font-semibold">三品合一类创新咨询 / 0-1爆品打造</span>
                     </div>
 
                     <div className="flex items-start text-sm">
-                      <span className="text-white/80 w-24 shrink-0 font-medium">设计服务</span>
-                      <span className="text-white font-semibold">瓶型结构设计 / 品牌视觉重构 / 包装创新</span>
+                      <span className="text-[#64748B] w-24 shrink-0 font-medium">设计服务</span>
+                      <span className="text-[#0F172A] font-semibold">瓶型结构设计 / 品牌视觉重构 / 包装创新</span>
                     </div>
                   </div>
                 </div>
 
-                {/* 右侧产品配图 (圆角 8px，不拉伸) */}
-                <div className="md:col-span-5 flex justify-center">
-                  <div className="w-full aspect-[4/3] rounded-[8px] overflow-hidden bg-white/10 border border-white/20 shadow-xs">
+                {/* 右侧产品配图 (高度自适应匹配) */}
+                <div className="md:col-span-5 flex items-stretch">
+                  <div className="w-full h-full min-h-[200px] max-h-[320px] rounded-[8px] overflow-hidden bg-white border border-[#D6E2ED] shadow-xs flex items-center justify-center">
                     <img 
                       src="https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif" 
                       alt="悦鲜活项目产品特征配图"
@@ -570,48 +540,47 @@ export default function CaseDetailPage({
               </div>
             </section>
 
-            {/* 板块 5: 成果展示 (样式 6: 纯图两张并排 / 网格并排) */}
+            {/* 板块 5: 成果展示 (单图垂直纵向并列方式，图片比例统一为 16:9) */}
             <section className="space-y-6 text-left">
               <ScrollSectionTitle 
                 badge="ACHIEVEMENTS GALLERY"
                 title="成果展示"
               />
 
-              {/* 样式 6: 纯图两张并排 (网格排列，圆角 8px，间距 20px) */}
-              <div className="content-block-6 grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
-                <div className="w-full aspect-[4/3] rounded-[8px] overflow-hidden bg-neutral-100 border border-neutral-200/60 shadow-xs">
+              <div className="space-y-6 pt-2">
+                <div className="w-full aspect-[16/9] rounded-2xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
                   <img 
                     src="/src/assets/images/case_yuexianhuo.jpg" 
                     alt="成果展示 1"
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover hover:scale-[1.02] transition-transform duration-300"
+                    className="w-full h-full object-cover hover:scale-[1.01] transition-transform duration-300 block"
                   />
                 </div>
 
-                <div className="w-full aspect-[4/3] rounded-[8px] overflow-hidden bg-neutral-100 border border-neutral-200/60 shadow-xs">
+                <div className="w-full aspect-[16/9] rounded-2xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
                   <img 
                     src="https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif" 
                     alt="成果展示 2"
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover hover:scale-[1.02] transition-transform duration-300"
+                    className="w-full h-full object-cover hover:scale-[1.01] transition-transform duration-300 block"
                   />
                 </div>
 
-                <div className="w-full aspect-[4/3] rounded-[8px] overflow-hidden bg-neutral-100 border border-neutral-200/60 shadow-xs">
+                <div className="w-full aspect-[16/9] rounded-2xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
                   <img 
                     src="https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png" 
                     alt="成果展示 3"
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover hover:scale-[1.02] transition-transform duration-300"
+                    className="w-full h-full object-cover hover:scale-[1.01] transition-transform duration-300 block"
                   />
                 </div>
 
-                <div className="w-full aspect-[4/3] rounded-[8px] overflow-hidden bg-neutral-100 border border-neutral-200/60 shadow-xs">
+                <div className="w-full aspect-[16/9] rounded-2xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
                   <img 
                     src="https://github.com/minaxyue-ops/MINA/releases/download/1/image.35.png" 
                     alt="成果展示 4"
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover hover:scale-[1.02] transition-transform duration-300"
+                    className="w-full h-full object-cover hover:scale-[1.01] transition-transform duration-300 block"
                   />
                 </div>
               </div>

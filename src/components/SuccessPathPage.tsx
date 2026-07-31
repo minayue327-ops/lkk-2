@@ -213,8 +213,8 @@ export const SuccessPathPage: React.FC<SuccessPathPageProps> = () => {
       {/* 2. FAQ / 问答板块 —— 包含专属分类筛选栏，内容为单列展示 */}
       <section id="success-path-faq" className="py-8 md:py-12 bg-white w-full border-b border-[#E5E5E5]">
         
-        {/* 属于 FAQ 板块的分类筛选栏 —— 左侧 FAQ分类 label 已移除，增加平滑交互与计数 */}
-        <div className="max-w-[95%] w-full mx-auto mb-8 py-3 px-4 bg-white/95 border-b border-neutral-200/60 sticky top-20 z-30 shadow-xs backdrop-blur-md rounded-xl">
+        {/* 属于 FAQ 板块的分类筛选栏 —— 取消悬浮固定 */}
+        <div className="max-w-[95%] w-full mx-auto mb-8 py-3 px-4 bg-white border-b border-neutral-200/60 rounded-xl">
           <div className="flex items-center justify-start md:justify-center gap-2 sm:gap-3 md:gap-4 overflow-x-auto no-scrollbar py-1">
             {categories.map((cat) => {
               const isActive = activeCategory === cat;

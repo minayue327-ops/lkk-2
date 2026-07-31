@@ -160,14 +160,14 @@ const QualificationsCarousel: React.FC = () => {
   return (
     <section id="qualifications">
       {/* Header controls */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-neutral-200/80 gap-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-neutral-200/80 gap-4">
         <div>
           <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">CERTIFICATIONS & ACCREDITATIONS</span>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">荣誉资质</h2>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-neutral-900 mt-1 font-display">荣誉资质</h2>
         </div>
         <div className="flex items-center gap-4">
           <p className="text-xs md:text-sm text-neutral-500 max-w-md hidden sm:block">
-            权威认证与行业认可，坚实构建高标准服务体系。
+            洛可可获得的国家级认证资质与行业权威机构授予的荣誉表彰。
           </p>
           <div className="flex items-center gap-2">
             <button
@@ -609,7 +609,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onOpenContactModal }) 
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono mb-2 block">
                 MISSION & VALUES
               </span>
-              <h2 className="text-[clamp(28px,3vw,44px)] font-bold text-[#1A1A1A] leading-tight mb-4 font-display">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-neutral-900 mt-1 mb-4 font-display">
                 企业文化
               </h2>
               <p className="text-[15px] text-[#4D4D4D] leading-[1.7] mb-6">
@@ -644,7 +644,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({ onOpenContactModal }) 
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-neutral-200/80 gap-4">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">AWARD-WINNING DESIGN</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">创新公司</h2>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-neutral-900 mt-1 font-display">创新公司</h2>
             </div>
             <p className="text-xs md:text-sm text-neutral-500 max-w-md">
               国际顶尖设计大奖满贯得主，用实力与荣誉定义好产品的标准。

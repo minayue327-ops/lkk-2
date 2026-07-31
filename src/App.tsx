@@ -28,6 +28,7 @@ import IndustryDetailPage from './components/IndustryDetailPage';
 import { CasesPage } from './components/CasesPage';
 import { AboutUsPage } from './components/AboutUsPage';
 import { NewsPage } from './components/NewsPage';
+import { NewsDetailPage } from './components/NewsDetailPage';
 import { ContactUsPage } from './components/ContactUsPage';
 import { SuccessPathPage } from './components/SuccessPathPage';
 import { ScrollSectionTitle } from './components/ScrollSectionTitle';
@@ -178,6 +179,7 @@ type PageType =
   | 'case-detail'
   | 'about'
   | 'news'
+  | 'news-detail'
   | 'contact'
   | 'success-path';
 
@@ -185,6 +187,7 @@ export default function App() {
   // Current page state
   const [currentPage, setCurrentPage] = useState<PageType>('home');
   const [currentIndustryKey, setCurrentIndustryKey] = useState<string>('industrial-equipment');
+  const [currentNewsId, setCurrentNewsId] = useState<string>('news-1');
 
   const handleNavigateUrl = (url: string) => {
     if (url === '/about' || url === '/about-us' || url === '#about-lkk') {
@@ -195,6 +198,13 @@ export default function App() {
       setCurrentPage('case-detail');
     } else if (url === '/cases' || url === '/case-studies' || url.startsWith('/cases')) {
       setCurrentPage('cases');
+    } else if (url.startsWith('/news-detail') || url.startsWith('/news/')) {
+      const parts = url.split('/');
+      const id = parts[parts.length - 1];
+      if (id && id !== 'news-detail' && id !== 'news') {
+        setCurrentNewsId(id);
+      }
+      setCurrentPage('news-detail');
     } else if (url === '/news' || url === '/news-center' || url.startsWith('/news') || url === '#news-center') {
       setCurrentPage('news');
     } else if (url === '/success-path' || url === '/success' || url === '#success-path') {
@@ -1775,10 +1785,23 @@ export default function App() {
       ) : currentPage === 'news' ? (
         <NewsPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
+          onSelectArticle={(id) => {
+            setCurrentNewsId(id);
+            setCurrentPage('news-detail');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onNavigate={handleNavigateUrl}
+        />
+      ) : currentPage === 'news-detail' ? (
+        <NewsDetailPage 
+          articleId={currentNewsId}
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onNavigate={handleNavigateUrl}
         />
       ) : currentPage === 'contact' ? (
         <ContactUsPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
+          onNavigate={handleNavigateUrl}
         />
       ) : currentPage === 'success-path' ? (
         <SuccessPathPage 

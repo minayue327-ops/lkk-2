@@ -37,6 +37,7 @@ interface OfficeInfo {
   address: string;
   desc: string;
   tag: string;
+  image?: string;
 }
 
 interface JobPosition {
@@ -52,6 +53,7 @@ interface JobPosition {
 
 interface ContactUsPageProps {
   onOpenContactModal?: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 // 9 Cities Official Office Data
@@ -66,7 +68,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '北京市朝阳区来广营西路5号望京诚盈中心3号楼',
     desc: '集团战略决策中心、AI设计实验室与品牌创新事业集群所在地。',
-    tag: '集团总部 · 创新策源地'
+    tag: '集团总部 · 创新策源地',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'shenzhen',
@@ -77,7 +80,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '深圳市福田区深业上城CEEC10层',
     desc: '深度依托大湾区电子信息与智能硬件产业链，打造全球硬件爆款。',
-    tag: '华南创新中心 · 硬件基地'
+    tag: '华南创新中心 · 硬件基地',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'shanghai',
@@ -88,7 +92,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '上海市黄浦区局门路457号八号桥四期408室',
     desc: '立足华东时尚与新消费高地，赋能全球品牌年轻化与品类突破。',
-    tag: '华东创新中心 · 品牌设计'
+    tag: '华东创新中心 · 品牌设计',
+    image: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'suzhou',
@@ -99,7 +104,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '江苏省苏州市工业园区酝慧路168号星洲大厦8楼',
     desc: '聚焦高端制造、医疗器械与精密仪器领域的深度研发与工业设计。',
-    tag: '医疗与高端制造创新中心'
+    tag: '医疗与高端制造创新中心',
+    image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'hangzhou',
@@ -110,7 +116,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '浙江省杭州市余杭区仓前街道梦想小镇创业大街26幢',
     desc: '紧密联动数字经济与电商智造，驱动新零售与智能生活终端升级。',
-    tag: '数字电商与生活创新中心'
+    tag: '数字电商与生活创新中心',
+    image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'nanjing',
@@ -121,7 +128,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '江苏省南京市秦淮区菱角市66号国家领军创业园18号楼',
     desc: '融合高校科技成果转化与硬科技产品创新，助力传统企业智造升级。',
-    tag: '硬科技与成果转化基地'
+    tag: '硬科技与成果转化基地',
+    image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'chengdu',
@@ -132,7 +140,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '成都市成华区仙韵一路450号天府设计产业园',
     desc: '西南区域创意设计枢纽，文创IP、休食快消与智能出行设计基地。',
-    tag: '西南创新中心 · 文创IP'
+    tag: '西南创新中心 · 文创IP',
+    image: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'foshan',
@@ -143,7 +152,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '佛山南海区桂城街道海八路金融公园1号馆',
     desc: '深耕家电集群与泛家居产业，工业设计深度融入万亿制造产业链。',
-    tag: '泛家居与智能家电基地'
+    tag: '泛家居与智能家电基地',
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'nanchang',
@@ -154,7 +164,8 @@ const OFFICES_DATA: OfficeInfo[] = [
     email: 'lkk@lkkdesign.com',
     address: '江西省南昌市青山湖区上海路699号699文化创意园68栋优创空间2楼B07',
     desc: '服务中部崛起的产业创新窗口，助力地方特色产业品类升级。',
-    tag: '中部特色产业创新中心'
+    tag: '中部特色产业创新中心',
+    image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=800&q=80'
   }
 ];
 
@@ -417,7 +428,7 @@ const JOB_POSITIONS: JobPosition[] = [
   }
 ];
 
-export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
+export const ContactUsPage: React.FC<ContactUsPageProps> = ({ onNavigate }) => {
   // Active selected office (default 'all' to show all network lines)
   const [activeOfficeId, setActiveOfficeId] = useState<string>('all');
   
@@ -775,46 +786,45 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
   return (
     <div className="w-full bg-white text-neutral-900 min-h-screen pt-20">
       
-      {/* HEADER HERO SECTION */}
-      <section className="pt-8 pb-12 bg-white">
+      {/* HEADER HERO SECTION (案例页风格排版) */}
+      <div className="bg-neutral-50/70 border-b border-neutral-100 py-8 md:py-12">
         <div className="max-w-[95%] w-full mx-auto">
-          <div className="bg-[#F0F0F0] rounded-3xl p-8 md:p-14 border border-neutral-200/60 relative overflow-hidden flex flex-col justify-between">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-100/50 to-transparent rounded-full blur-3xl pointer-events-none" />
+          {/* 面包屑导航 */}
+          <div className="flex items-center gap-2 text-xs text-neutral-500 mb-4 font-mono">
+            <button 
+              onClick={() => onNavigate && onNavigate('/home')} 
+              className="hover:text-[#007BC7] transition-colors bg-transparent border-none p-0 cursor-pointer"
+            >
+              首页
+            </button>
+            <span>/</span>
+            <span className="text-neutral-900 font-semibold">联系我们</span>
+          </div>
 
-            <div className="relative z-10 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-neutral-200 text-[#007BC7] text-xs font-mono font-bold uppercase tracking-wider mb-4 shadow-sm">
-                全国创新集群 · 即刻联系
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="h-[1.5px] w-6 bg-[#007BC7]"></span>
+                <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
+                  全国创新集群 · 即刻联系
+                </span>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#1A1A1A] tracking-tight leading-tight font-display">
+              <h1 className="text-3xl md:text-5xl font-extrabold text-[#1A1A1A] tracking-tight font-display">
                 分布中国主要经济圈，共创商业增长
               </h1>
-              <p className="text-sm md:text-base text-neutral-600 mt-4 leading-relaxed max-w-2xl">
-                洛可可立足北京集团总部，在深圳、上海、苏州、杭州、南京、成都、佛山、南昌设立9大创新中心。本地化响应+全球化协同，随时随地开启全案设计合作。
-              </p>
             </div>
+
+            <p className="text-sm text-neutral-500 max-w-xl leading-relaxed">
+              洛可可立足北京集团总部，在深圳、上海、苏州、杭州、南京、成都、佛山、南昌设立9大创新中心。本地化响应+全球化协同，随时随地开启全案设计合作。
+            </p>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* SECTION 2: MAP & OFFICE ADDRESSES INTERACTIVE SECTION */}
       <section className="py-8 bg-white">
         <div className="max-w-[95%] w-full mx-auto">
           
-          {/* Section Heading */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-neutral-200/60 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
-                NATIONAL INNOVATION MAP
-              </span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">
-                洛可可的分布范围
-              </h2>
-            </div>
-            <p className="text-xs text-neutral-500 max-w-md">
-              点击地图标点或下方城市按钮，快速切换查看各分公司详细地址、联系电话与实景配图。
-            </p>
-          </div>
-
           {/* Map + Office Details Floating Stage */}
           <div className="map-3d-wrapper rounded-3xl border border-neutral-200/80 shadow-2xl relative overflow-hidden flex flex-col justify-center">
             {/* Top-Left Sunlight Rays Layer above Canvas (auto-weakened when zoomed) */}
@@ -894,21 +904,20 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
                     className="flex flex-col justify-between relative z-10"
                   >
                     <div>
-                      {/* Office Visual Photo / Placeholder */}
-                      <div className="w-full aspect-[16/9] rounded-2xl bg-white/60 mb-5 overflow-hidden relative group border border-white/80 shadow-sm z-10">
-                        <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/60 to-transparent z-10" />
-                        <div className="absolute bottom-3 left-4 right-4 z-20 flex items-center justify-between text-white">
-                          <span className="text-xs font-mono font-semibold tracking-wider">
+                      {/* Office Visual Photo (图片区域组内占比增加8%：由 aspect-[16/9] 调整为 aspect-[16/10]) */}
+                      <div className="w-full aspect-[16/10] rounded-2xl bg-neutral-900/10 mb-5 overflow-hidden relative group border border-white/80 shadow-md z-10 shrink-0">
+                        <img 
+                          src={activeOffice.image || 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80'} 
+                          alt={`${activeOffice.name}创新中心实景`} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 block"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/75 via-neutral-900/20 to-transparent z-10 pointer-events-none" />
+                        <div className="absolute bottom-3.5 left-4 right-4 z-20 flex items-center justify-between text-white pointer-events-none">
+                          <span className="text-xs font-mono font-bold tracking-wider drop-shadow-sm">
                             {activeOffice.tag}
                           </span>
-                          <span className="text-[10px] bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-white font-mono">
+                          <span className="text-[10px] bg-white/25 backdrop-blur-md px-2.5 py-0.5 rounded-md text-white font-mono font-semibold shadow-xs">
                             {activeOffice.city}
-                          </span>
-                        </div>
-                        <div className="w-full h-full bg-[#E5E9F0] flex flex-col items-center justify-center text-neutral-400 p-4">
-                          <Building2 className="w-9 h-9 text-[#007BC7]/60 mb-1.5" />
-                          <span className="text-xs font-mono font-semibold text-neutral-600">
-                            [{activeOffice.name}创新中心实景]
                           </span>
                         </div>
                       </div>
@@ -974,33 +983,7 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
                     </div>
                   </div>
 
-                  {/* Actions */}
-                  <div className="mt-5 pt-3 border-t border-neutral-200/60 flex items-center gap-2">
-                    <button
-                      onClick={() => handleCopyAddress(activeOffice.address, activeOffice.id)}
-                      className="flex-1 bg-white/90 hover:bg-white text-neutral-800 font-bold py-2.5 px-3 rounded-xl text-xs border border-white transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
-                    >
-                      {copiedId === activeOffice.id ? (
-                        <>
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                          已复制地址
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5 text-neutral-500" />
-                          复制详细地址
-                        </>
-                      )}
-                    </button>
 
-                    <a
-                      href={`tel:${activeOffice.phone.replace(/\s+/g, '')}`}
-                      className="flex-1 bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-2.5 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer text-center"
-                    >
-                      <Phone className="w-3.5 h-3.5" />
-                      拨打咨询
-                    </a>
-                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -1020,11 +1003,11 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
                 JOIN US & ENVIRONMENT
               </span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-neutral-900 mt-1 font-display">
                 加入我们
               </h2>
             </div>
-            <p className="text-xs text-neutral-500 max-w-md">
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
               开放、包容、充满创造力的办公与成长生态，期待与富有激情的设计师、工程师与咨询专家同行。
             </p>
           </div>
@@ -1051,12 +1034,12 @@ export const ContactUsPage: React.FC<ContactUsPageProps> = () => {
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono">
                 LKK TALENT POOL
               </span>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-neutral-900 mt-1 font-display">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-neutral-900 mt-1 font-display">
                 洛可可的人才储备计划
               </h2>
             </div>
-            <p className="text-xs text-neutral-500 max-w-md">
-              洛可可提供开放的创意平台与极具竞争力的薪酬福利。期待与富有激情的设计师、工程师与咨询专家同行。
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              洛可可提供开放的创意平台与极具竞争力的薪酬福利，期待与富有激情的设计师、工程师与咨询专家同行。
             </p>
           </div>
 
