@@ -46,7 +46,7 @@ export interface IndustryDetailConfig {
 }
 
 const COMMON_METRICS = [
-  { value: '22', label: '年行业经验积淀' },
+  { value: '22年', label: '行业经验积淀' },
   { value: '600+', label: '专业奖项认证' },
   { value: '1000+', label: '行业头部客户认可' },
   { value: '10000+', label: '产品成功落地' },
@@ -768,6 +768,7 @@ interface IndustryDetailPageProps {
   onOpenContactModal: () => void;
   onSelectCase: (cs: CaseStudy) => void;
   onNavigateParent?: (parentPath: string) => void;
+  onNavigateDetail?: (url: string) => void;
 }
 
 export default function IndustryDetailPage({
@@ -775,6 +776,7 @@ export default function IndustryDetailPage({
   onOpenContactModal,
   onSelectCase,
   onNavigateParent,
+  onNavigateDetail,
 }: IndustryDetailPageProps) {
   const data = INDUSTRY_DATA[industryKey] || INDUSTRY_DATA['industrial-equipment'];
 
@@ -1001,6 +1003,12 @@ export default function IndustryDetailPage({
               <a 
                 key={cs.id}
                 href={`/cases/${cs.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onNavigateDetail) {
+                    onNavigateDetail(`/cases/${cs.id}`);
+                  }
+                }}
                 className="case-card-v2 block relative text-left w-full outline-none select-none overflow-hidden text-decoration-none"
               >
                 <img 

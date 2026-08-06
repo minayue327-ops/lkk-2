@@ -6,9 +6,10 @@ import { ALL_CASES, INDUSTRIES, SERVICES, CLIENT_TYPES } from '../data/cases';
 interface CasesPageProps {
   onSelectCase: (cs: { id: string; title: string; description: string; image?: string; logoType?: any }) => void;
   onOpenContactModal: () => void;
+  onNavigateDetail?: (url: string) => void;
 }
 
-export const CasesPage: React.FC<CasesPageProps> = ({ onSelectCase }) => {
+export const CasesPage: React.FC<CasesPageProps> = ({ onSelectCase, onNavigateDetail }) => {
   // Search & Debounce State
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -370,7 +371,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({ onSelectCase }) => {
         <div className="max-w-[95%] w-full mx-auto">
           
           {displayedCases.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
               {displayedCases.map((cs) => {
                 const isActiveTouch = activeTouchCard === cs.id;
                 return (
@@ -380,8 +381,16 @@ export const CasesPage: React.FC<CasesPageProps> = ({ onSelectCase }) => {
                     onClick={(e) => {
                       const isTouch = window.matchMedia('(hover: none)').matches;
                       if (isTouch) {
-                        e.preventDefault();
-                        setActiveTouchCard(isActiveTouch ? null : cs.id);
+                        const wasActive = activeTouchCard === cs.id;
+                        if (!wasActive) {
+                          e.preventDefault();
+                          setActiveTouchCard(cs.id);
+                          return;
+                        }
+                      }
+                      e.preventDefault();
+                      if (onNavigateDetail) {
+                        onNavigateDetail(`/cases/${cs.id}`);
                       }
                     }}
                     className={`case-card-v2 ${isActiveTouch ? 'is-active' : ''} block relative text-left w-full outline-none select-none overflow-hidden text-decoration-none`}

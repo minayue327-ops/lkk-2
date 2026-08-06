@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 interface CategoryConsultingPageProps {
   onOpenContactModal: () => void;
   onSelectCase: (cs: CaseStudy) => void;
+  onNavigateDetail?: (url: string) => void;
   CounterComponent: React.FC<{ target: number }>;
 }
 
@@ -41,6 +42,7 @@ function ExperienceCard({ title, imgSrc }: ExperienceCardProps) {
 export default function CategoryConsultingPage({
   onOpenContactModal,
   onSelectCase,
+  onNavigateDetail,
   CounterComponent,
 }: CategoryConsultingPageProps) {
   const statsContainerRef = useRef<HTMLDivElement>(null);
@@ -335,12 +337,12 @@ export default function CategoryConsultingPage({
       <section className="achievement-section">
         <div className="max-w-[95%] w-full mx-auto">
           <div className="achievement-grid">
-            {/* Card 1: 22 年行业经验积淀 */}
+            {/* Card 1: 22年 行业经验积淀 */}
             <div className="achievement-card">
               <div className="achievement-number">
-                <CounterComponent target={22} />
+                <CounterComponent target={22} />年
               </div>
-              <div className="achievement-label">年行业经验积淀</div>
+              <div className="achievement-label">行业经验积淀</div>
             </div>
 
             {/* Card 2: 600+ 专业奖项认证 */}
@@ -587,6 +589,12 @@ export default function CategoryConsultingPage({
                 <a 
                   key={cs.id}
                   href={`/cases/${cs.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onNavigateDetail) {
+                      onNavigateDetail(`/cases/${cs.id}`);
+                    }
+                  }}
                   className="case-card-v2 block relative text-left w-full outline-none select-none overflow-hidden text-decoration-none"
                 >
                   {imgSource ? (

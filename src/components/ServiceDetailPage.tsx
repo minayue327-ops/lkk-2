@@ -41,7 +41,7 @@ const SERVICE_DATA: Record<string, ServiceDetailConfig> = {
     slogan: '硬核科技与人文美学的极致融合',
     description: '洛可可工业设计团队凭借20年工业设计沉淀，深度打通人机工程学、材料工艺与消费心理学。我们为垂直领域客户提供从产品外观定义、概念形态探索、CMF（色彩/材质/表面处理）规范到可制造性设计的全流程落地服务，打造终端市场降维打击的美学护城河。',
     metrics: [
-      { value: '22', label: '年行业经验积淀' },
+      { value: '22年', label: '行业经验积淀' },
       { value: '600+', label: '专业奖项认证' },
       { value: '1000+', label: '行业头部客户认可' },
       { value: '10000+', label: '产品成功落地' },
@@ -138,7 +138,7 @@ const SERVICE_DATA: Record<string, ServiceDetailConfig> = {
     slogan: '精密工程与创新堆叠的技术护城河',
     description: '洛可可结构设计拥有实力雄厚的机械、电子及材料学工程专家团队。我们在外观创意初期即深度参与，严苛精算整机空间堆叠、热管理、防水防尘及目标BOM成本，打通人性化联动机构与严苛测试标准，确保设计无缝还原。',
     metrics: [
-      { value: '22', label: '年行业经验积淀' },
+      { value: '22年', label: '行业经验积淀' },
       { value: '600+', label: '专业奖项认证' },
       { value: '1000+', label: '行业头部客户认可' },
       { value: '10000+', label: '产品成功落地' },
@@ -235,7 +235,7 @@ const SERVICE_DATA: Record<string, ServiceDetailConfig> = {
     slogan: '从设计图纸到万级量产的供应链托管闭环',
     description: '洛可可研发供应链生态整合全国1000+优质制造资源，提供从样机试制、模具开发、小批量试产（NPI）到品质控制与大批量生产交付的一站式供应链托管服务，帮助企业跨越硬件创新的“死亡之谷”。',
     metrics: [
-      { value: '22', label: '年行业经验积淀' },
+      { value: '22年', label: '行业经验积淀' },
       { value: '600+', label: '专业奖项认证' },
       { value: '1000+', label: '行业头部客户认可' },
       { value: '10000+', label: '产品成功落地' },
@@ -332,7 +332,7 @@ const SERVICE_DATA: Record<string, ServiceDetailConfig> = {
     slogan: '重构品牌心智，打造商业高溢价资产',
     description: '洛可可品牌全案设计融合商业战略与极致美学，从品牌战略定位、命名、视觉识别系统（VI）、超级符号到终端物料与品牌手册，打造具备高辨识度与强情感粘性的品牌全案体系。',
     metrics: [
-      { value: '22', label: '年行业经验积淀' },
+      { value: '22年', label: '行业经验积淀' },
       { value: '600+', label: '专业奖项认证' },
       { value: '1000+', label: '行业头部客户认可' },
       { value: '10000+', label: '产品成功落地' },
@@ -429,7 +429,7 @@ const SERVICE_DATA: Record<string, ServiceDetailConfig> = {
     slogan: '货架第一触点的超级商业爆发力',
     description: '包装是产品面向消费者的第一销售员。洛可可遵循“看得到、记得住、想下单”的商业爆发原则，结合环保材质与精湛结构，打造极具货架穿透力与社媒传播力的高颜值爆款包装。',
     metrics: [
-      { value: '22', label: '年行业经验积淀' },
+      { value: '22年', label: '行业经验积淀' },
       { value: '600+', label: '专业奖项认证' },
       { value: '1000+', label: '行业头部客户认可' },
       { value: '10000+', label: '产品成功落地' },
@@ -526,7 +526,7 @@ const SERVICE_DATA: Record<string, ServiceDetailConfig> = {
     slogan: '赋予品牌人格，打造长效情绪价值',
     description: '构建品牌人格化资产。洛可可IP设计中心提供从角色形象孵化、3D造型建模、世界观设定到衍生品全产业链开发，打通品牌与新一代消费者的情感连接，实现长效商业变现。',
     metrics: [
-      { value: '22', label: '年行业经验积淀' },
+      { value: '22年', label: '行业经验积淀' },
       { value: '600+', label: '专业奖项认证' },
       { value: '1000+', label: '行业头部客户认可' },
       { value: '10000+', label: '产品成功落地' },
@@ -621,6 +621,7 @@ interface ServiceDetailPageProps {
   onOpenContactModal: () => void;
   onSelectCase: (cs: CaseStudy) => void;
   onNavigateParent?: (parentPath: string) => void;
+  onNavigateDetail?: (url: string) => void;
   onBack?: () => void;
 }
 
@@ -629,6 +630,7 @@ export default function ServiceDetailPage({
   onOpenContactModal,
   onSelectCase,
   onNavigateParent,
+  onNavigateDetail,
 }: ServiceDetailPageProps) {
   const data = SERVICE_DATA[serviceKey] || SERVICE_DATA['industrial-design'];
 
@@ -949,6 +951,12 @@ export default function ServiceDetailPage({
               <a 
                 key={cs.id}
                 href={`/cases/${cs.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onNavigateDetail) {
+                    onNavigateDetail(`/cases/${cs.id}`);
+                  }
+                }}
                 className="case-card-v2 block relative text-left w-full outline-none select-none overflow-hidden text-decoration-none"
               >
                 <img 

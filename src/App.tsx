@@ -188,15 +188,25 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
   const [currentIndustryKey, setCurrentIndustryKey] = useState<string>('industrial-equipment');
   const [currentNewsId, setCurrentNewsId] = useState<string>('news-1');
+  const [currentCaseId, setCurrentCaseId] = useState<string>('xiaoxiandun');
 
   const handleNavigateUrl = (url: string) => {
     if (url === '/about' || url === '/about-us' || url === '#about-lkk') {
       setCurrentPage('about');
     } else if (url === '/contact' || url === '/contact-us' || url === '#contact') {
       setCurrentPage('contact');
-    } else if (url === '/case-detail' || url.startsWith('/case-detail') || url === '/cases/yuexianhuo') {
+    } else if (url === '/case-detail' || url.startsWith('/case-detail') || url.startsWith('/cases/') || url === '/cases/yuexianhuo') {
+      const parts = url.split('/');
+      const id = parts[parts.length - 1];
+      if (id && id !== 'cases' && id !== 'case-detail') {
+        setCurrentCaseId(id);
+      } else if (url === '/cases/yuexianhuo') {
+        setCurrentCaseId('yuexianhuo');
+      } else {
+        setCurrentCaseId('xiaoxiandun');
+      }
       setCurrentPage('case-detail');
-    } else if (url === '/cases' || url === '/case-studies' || url.startsWith('/cases')) {
+    } else if (url === '/cases' || url === '/case-studies' || url === '/cases/') {
       setCurrentPage('cases');
     } else if (url.startsWith('/news-detail') || url.startsWith('/news/')) {
       const parts = url.split('/');
@@ -498,6 +508,9 @@ export default function App() {
           design: '品牌全案设计、包装设计'
         };
       case 'case-4':
+      case 'xiaoxiandun':
+      case 'xiaoxiandun2':
+      case 'xiaoxiandun-2':
         return {
           industry: '食品酒饮',
           consulting: '三品合一品类创新咨询',
@@ -568,6 +581,14 @@ export default function App() {
           industry: '工业装备',
           consulting: '产品创新0-1全案咨询',
           design: '工业设计、结构设计、生产落地'
+        };
+      case 'musinno':
+      case 'yanzoujia':
+      case 'musinno-1':
+        return {
+          industry: '文化创意 ｜ 新文娱',
+          consulting: '品类创新、产品创新、品牌创新、三品合一',
+          design: '产品策略、工业设计、结构设计、CMF 设计'
         };
       default:
         return {
@@ -1575,19 +1596,20 @@ export default function App() {
                   onClick={(e) => {
                     const isTouch = window.matchMedia('(hover: none)').matches;
                     if (isTouch) {
-                      e.preventDefault(); // Stop navigation on touch devices to allow hover effect
                       const wasActive = activeV2Card === cs.id;
-                      if (wasActive) {
-                        setActiveV2Card(null);
-                      } else {
+                      if (!wasActive) {
+                        e.preventDefault(); // Stop navigation on touch devices to allow hover effect
                         setActiveV2Card(cs.id);
+                        return;
                       }
                     }
+                    e.preventDefault();
+                    handleNavigateUrl(`/cases/${cs.id}`);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      window.location.href = `/cases/${cs.id}`;
+                      handleNavigateUrl(`/cases/${cs.id}`);
                     }
                   }}
                   tabIndex={0}
@@ -1768,12 +1790,15 @@ export default function App() {
         <CasesPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
           onSelectCase={(cs) => setSelectedCase(cs as any)}
+          onNavigateDetail={handleNavigateUrl}
         />
       ) : currentPage === 'case-detail' ? (
         <CaseDetailPage 
+          caseId={currentCaseId}
           onOpenContactModal={() => setIsContactModalOpen(true)}
           onNavigate={handleNavigateUrl}
           onSelectRelatedCase={(id) => {
+            setCurrentCaseId(id);
             setCurrentPage('case-detail');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
@@ -1811,6 +1836,7 @@ export default function App() {
         <CategoryConsultingPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
           onSelectCase={(cs) => setSelectedCase(cs)}
+          onNavigateDetail={handleNavigateUrl}
           CounterComponent={Counter}
         />
       ) : currentPage === 'product' ? (
@@ -1837,12 +1863,14 @@ export default function App() {
           onOpenContactModal={() => setIsContactModalOpen(true)}
           onSelectCase={(cs) => setSelectedCase(cs)}
           onNavigateParent={handleNavigateUrl}
+          onNavigateDetail={handleNavigateUrl}
         />
       ) : (
         <ServiceDetailPage 
           serviceKey={currentPage}
           onOpenContactModal={() => setIsContactModalOpen(true)}
           onSelectCase={(cs) => setSelectedCase(cs)}
+          onNavigateDetail={handleNavigateUrl}
           onBack={() => {
             if (['industrial-design', 'structural-design', 'production-landing'].includes(currentPage)) {
               setCurrentPage('product');
@@ -2390,15 +2418,15 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-neutral-100 flex gap-3">
+                <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center gap-3 flex-wrap">
                   <button 
                     onClick={() => {
                       setSelectedCase(null);
                       setIsContactModalOpen(true);
                     }}
-                    className="flex-grow bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-2.5 rounded-xl text-center text-xs transition-all"
+                    className="w-auto px-6 py-2.5 bg-[#007BC7] hover:bg-[#005F96] text-white font-bold rounded-xl text-xs md:text-sm transition-all whitespace-nowrap cursor-pointer shadow-xs"
                   >
-                    获取同款爆品孵化方案
+                    即刻联系
                   </button>
                   <button 
                     onClick={() => {
@@ -2406,9 +2434,9 @@ export default function App() {
                       setCurrentPage('case-detail');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="bg-white hover:bg-[#E5F2FA] text-[#007BC7] border border-[#007BC7] font-bold px-4 py-2.5 rounded-xl text-xs transition-all cursor-pointer"
+                    className="w-auto px-6 py-2.5 bg-white hover:bg-[#E5F2FA] text-[#007BC7] border border-[#007BC7] font-bold rounded-xl text-xs md:text-sm transition-all whitespace-nowrap cursor-pointer"
                   >
-                    查看详情
+                    查看案例详情
                   </button>
                 </div>
               </div>

@@ -326,7 +326,7 @@ export default function ProductInnovationPage({
           display: block;
           width: 100%;
           height: 100%;
-          border-radius: 8px;
+          border-radius: 24px;
           overflow: hidden;
           text-decoration: none;
           background: #000;
@@ -360,7 +360,7 @@ export default function ProductInnovationPage({
             padding: 48px 5%;
           }
           .section-showcase-inner {
-            flex-direction: column;
+            flex-direction: column-reverse;
             gap: 32px;
           }
           .section-text {
@@ -445,43 +445,7 @@ export default function ProductInnovationPage({
               className={`section-showcase ${isDark ? 'theme-dark' : 'theme-light'}`}
             >
               <div className="section-showcase-inner">
-                {/* Left Side: Section Text */}
-                <div className="section-text">
-                  <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-1">
-                    {sect.englishTitle}
-                  </span>
-                  <h2 className="section-title scroll-reveal-heading">{sect.title}</h2>
-                  <div className="section-text-line" />
-                  <p>{sect.description}</p>
-                  
-                  <div className="flex items-center gap-6 flex-wrap">
-                    <button 
-                      onClick={() => {
-                        if (onNavigateDetail) {
-                          onNavigateDetail(sect.detailUrl);
-                        }
-                      }}
-                      className="section-text-link group border-none bg-transparent p-0 cursor-pointer"
-                    >
-                      了解详情
-                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </button>
-
-                    <button 
-                      onClick={() => {
-                        if (onNavigateDetail) {
-                          onNavigateDetail(sect.detailUrl);
-                        }
-                      }}
-                      className="section-text-link-secondary group border-none bg-transparent p-0 cursor-pointer"
-                    >
-                      更多案例
-                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Right Side: Static 1-Large + 2-Small Grid */}
+                {/* Left Side: Static 1-Large + 2-Small Grid */}
                 <div className="w-full lg:w-[57%]">
                   <div className="case-grid">
                     {/* Main Case (Large) */}
@@ -489,6 +453,12 @@ export default function ProductInnovationPage({
                       <div className="case-main">
                         <a
                           href={`/cases/${cMain.id}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (onNavigateDetail) {
+                              onNavigateDetail(`/cases/${cMain.id}`);
+                            }
+                          }}
                           className="case-hover-card case-card-v2 focus:outline-none cursor-pointer text-decoration-none block relative w-full h-full"
                         >
                           <div className="case-card-bg w-full h-full">
@@ -532,6 +502,12 @@ export default function ProductInnovationPage({
                       <div className="case-sub-1">
                         <a
                           href={`/cases/${cSub1.id}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (onNavigateDetail) {
+                              onNavigateDetail(`/cases/${cSub1.id}`);
+                            }
+                          }}
                           className="case-hover-card case-card-v2 focus:outline-none cursor-pointer text-decoration-none block relative w-full h-full"
                         >
                           <div className="case-card-bg w-full h-full">
@@ -575,6 +551,12 @@ export default function ProductInnovationPage({
                       <div className="case-sub-2">
                         <a
                           href={`/cases/${cSub2.id}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (onNavigateDetail) {
+                              onNavigateDetail(`/cases/${cSub2.id}`);
+                            }
+                          }}
                           className="case-hover-card case-card-v2 focus:outline-none cursor-pointer text-decoration-none block relative w-full h-full"
                         >
                           <div className="case-card-bg w-full h-full">
@@ -612,6 +594,42 @@ export default function ProductInnovationPage({
                         </a>
                       </div>
                     )}
+                  </div>
+                </div>
+
+                {/* Right Side: Section Text */}
+                <div className="section-text">
+                  <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-1">
+                    {sect.englishTitle}
+                  </span>
+                  <h2 className="section-title scroll-reveal-heading">{sect.title}</h2>
+                  <div className="section-text-line" />
+                  <p>{sect.description}</p>
+                  
+                  <div className="flex items-center gap-6 flex-wrap">
+                    <button 
+                      onClick={() => {
+                        if (onNavigateDetail) {
+                          onNavigateDetail(sect.detailUrl);
+                        }
+                      }}
+                      className="section-text-link group border-none bg-transparent p-0 cursor-pointer"
+                    >
+                      了解详情
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+
+                    <button 
+                      onClick={() => {
+                        if (onNavigateDetail) {
+                          onNavigateDetail(sect.detailUrl);
+                        }
+                      }}
+                      className="section-text-link-secondary group border-none bg-transparent p-0 cursor-pointer"
+                    >
+                      更多案例
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
                   </div>
                 </div>
               </div>

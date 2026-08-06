@@ -69,7 +69,7 @@ export const PROFESSIONAL_SERVICES: ProfessionalService[] = [
     category: 'Category Innovation',
     title: '品类创新咨询',
     bullets: [
-      '工业品-品类创新咨询',
+      '三品合一品类创新咨询',
       '产品创新0-1全案咨询',
       '品牌创新0-1全案咨询'
     ],
@@ -153,6 +153,13 @@ export const CASE_STUDIES: CaseStudy[] = [
     title: '悦鲜活年轻化产品包装创新咨询设计',
     description: '打造差异化视觉识别。通过超瞬时杀菌技术、0.09s黄金保鲜视觉叙事，助力高端鲜乳品牌抢占年轻主流消费市场。',
     logoType: 'yuexianhuo'
+  },
+  {
+    id: 'musinno',
+    title: '慢阶「演奏家一号」音乐设备',
+    description: '全球首款具有工作站属性的乐谱台，打破传统边界，荣获 2023 年德国红点至尊奖。',
+    image: '/src/assets/images/musinno_hero_banner_1785826677156.jpg',
+    logoType: 'pophie'
   }
 ];
 

@@ -258,7 +258,8 @@ export default function IndustryCollectionPage({
 
         .industry-card-desc {
           font-size: 21px;
-          font-weight: 400;
+          font-weight: 300;
+          letter-spacing: 0.05em;
           color: rgba(255, 255, 255, 0.85);
           line-height: 1.5;
           text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
@@ -372,12 +373,12 @@ export default function IndustryCollectionPage({
       <section className="achievement-section">
         <div className="max-w-[95%] w-full mx-auto">
           <div className="achievement-grid">
-            {/* Card 1: 22 年行业经验积淀 */}
+            {/* Card 1: 22年 行业经验积淀 */}
             <div className="achievement-card">
               <div className="achievement-number">
-                <ActiveCounter target={22} />
+                <ActiveCounter target={22} />年
               </div>
-              <div className="achievement-label">年行业经验积淀</div>
+              <div className="achievement-label">行业经验积淀</div>
             </div>
 
             {/* Card 2: 600+ 专业奖项认证 */}

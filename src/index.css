@@ -349,7 +349,7 @@ body {
 .case-card-v2 {
   aspect-ratio: 4 / 3;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 24px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
@@ -683,6 +683,18 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px 12px;
   }
+}
+
+/* 首页 Banner 区域 4 组数字字号整体缩小 40%（即当前字号的 60%：clamp(28.8px, 3.6vw, 57.6px)），并优化数字与下方说明文字间距 */
+.stats-section .stat-number {
+  font-size: clamp(28.8px, 3.6vw, 57.6px) !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+}
+
+.stats-section .stat-label {
+  margin-top: 5px !important;
 }
 
 /* iOS 26 Light Glass styles - transparent border, 5% background, 6px blur, no shadow */
@@ -1035,7 +1047,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  column-gap: 64px;
+  row-gap: 32px;
   flex-wrap: wrap;
   width: 100%;
   margin: 0 auto;
@@ -1052,7 +1065,7 @@ body {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 14px;
-  padding: 32px 32px;
+  padding: 40px 40px;
   gap: 8px;
   box-shadow:
     0 6px 18px rgba(0, 123, 199, 0.05),
@@ -1068,15 +1081,15 @@ body {
 }
 
 .achievement-number {
-  font-size: clamp(34px, 2.8vw, 44px);
+  font-size: clamp(40px, 3.4vw, 52px);
   font-weight: 700;
-  color: #1A1A1A;
+  color: #007BC7;
   line-height: 1.2;
   white-space: nowrap;
 }
 
 .achievement-label {
-  font-size: 16px;
+  font-size: 17px;
   color: #4D4D4D;
   font-weight: 400;
   white-space: nowrap;
@@ -1085,6 +1098,13 @@ body {
 @media (max-width: 640px) {
   .achievement-section {
     padding: 32px 0;
+  }
+  .achievement-grid {
+    column-gap: 24px;
+    row-gap: 20px;
+  }
+  .achievement-card {
+    padding: 24px 24px;
   }
 }
 
@@ -1109,7 +1129,7 @@ body {
 }
 .achievement-gallery-item {
   aspect-ratio: 4 / 3;
-  border-radius: 8px;
+  border-radius: 24px;
   overflow: hidden;
   background-color: #F5F5F5;
 }
@@ -1118,3 +1138,15 @@ body {
   height: 100%;
   object-fit: cover;
 }
+
+/* 洛可可官网设计规范（所有页面通用）：全站所有"案例"相关卡片圆角统一为 24px (rounded-3xl) */
+.case-card-v2,
+.case-hover-card,
+.case-card,
+.portfolio-card,
+.achievement-gallery-item,
+.case-card-bg,
+[class*="case-card"] {
+  border-radius: 24px !important;
+}
+

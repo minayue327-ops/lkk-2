@@ -137,6 +137,17 @@ const CORE_CASES: CaseItem[] = [
     logoType: 'estun'
   },
   {
+    id: 'musinno',
+    brand: '慢阶',
+    title: '慢阶「演奏家一号」音乐设备',
+    industry: '文化创意',
+    service: '三品合一类创新咨询',
+    clientType: '专精特新企业',
+    description: '全球首款具有工作站属性的乐谱台，打破传统边界，荣获 2023 年德国红点至尊奖。',
+    image: '/src/assets/images/musinno_hero_banner_1785826677156.jpg',
+    logoType: 'pophie'
+  },
+  {
     id: 'case-1',
     brand: '糯宝 Pophie',
     title: '糯宝 (Pophie) 类生命体情感陪伴机器人',
