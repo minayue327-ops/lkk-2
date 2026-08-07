@@ -29,14 +29,22 @@ export interface NewsArticle {
 }
 
 export const SERVICE_CATEGORIES: ServiceCategory[] = [
-  { id: '1', name: '食品酒饮', description: '智能革新，引领装备制造升级' },
-  { id: '2', name: '机器人', description: '智联万物，创建体验新生态' },
-  { id: '3', name: '家居家电', description: '创新设计，联动绿色未来' },
-  { id: '4', name: '智能3C', description: '专业赋能，守护健康生活' },
-  { id: '5', name: '文化创意', description: '科技美学，点亮智慧生活' },
-  { id: '6', name: '医疗健康', description: '焕新消费场景，助推品类增长' },
-  { id: '7', name: '宠物经济', description: '品类创新，赋能造物新生态' },
-  { id: '8', name: '工业装备', description: '深挖文化内涵，传递文化温度' },
+  // 科技类 (7个)
+  { id: '1', name: '机器人', description: '智联万物，创建体验新生态' },
+  { id: '2', name: '智能3C', description: '数码科技，极智终端创新' },
+  { id: '3', name: '智能家电', description: '科技赋能，重构智慧家居生活' },
+  { id: '4', name: '智能医疗', description: '专业赋能，守护生命健康品质' },
+  { id: '5', name: '智能装备', description: '智能革新，引领高端制造升级' },
+  { id: '6', name: '智能能源', description: '绿色低碳，联动新能源未来' },
+  { id: '7', name: '智能交通', description: '智慧出行，定义未来交通体验' },
+  // 消费类 (7个)
+  { id: '8', name: '食品酒饮', description: '爆品打造，焕新消费餐饮场景' },
+  { id: '9', name: '宠物经济', description: '品类创新，赋能造物新生态' },
+  { id: '10', name: '文化创意', description: '科技美学，点亮文创智慧生活' },
+  { id: '11', name: '家居鞋服', description: '时尚美学，重塑品质生活方式' },
+  { id: '12', name: '大健康', description: '预防养生，全周期健康管理' },
+  { id: '13', name: '连锁零售', description: '业态重构，打造终端沉浸体验' },
+  { id: '14', name: '美妆个护', description: '极致审美，塑造时尚美学品牌' },
 ];
 
 export const NEWS_ARTICLES: NewsArticle[] = [

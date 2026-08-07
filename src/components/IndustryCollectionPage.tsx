@@ -12,13 +12,7 @@ interface IndustryItem {
 }
 
 const INDUSTRIES: IndustryItem[] = [
-  {
-    id: 'industrial-equipment',
-    name: '工业装备',
-    desc: '智能装备产业升级的设计伙伴，助力企业打造高端制造与人机工程新标杆',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/aisidun.jpg',
-    detailUrl: '/industry/industrial-equipment'
-  },
+  // 第一行: 机器人 (2列) + 智能3C (1列) + 智能医疗 (1列) = 4列
   {
     id: 'robotics',
     name: '机器人',
@@ -27,60 +21,50 @@ const INDUSTRIES: IndustryItem[] = [
     detailUrl: '/industry/robotics'
   },
   {
-    id: 'new-energy',
-    name: '新能源',
-    desc: '绿色能源与智慧储能体验重塑，打造零碳时代高辨识度标志性产品',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.39.png',
-    detailUrl: '/industry/new-energy'
-  },
-  {
-    id: 'home-appliances',
-    name: '家居家电',
-    desc: '品质生活与智能家电体验升级，让人机交互与空间美学和谐共融',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/xiaozhi.jpg',
-    detailUrl: '/industry/home-appliances'
-  },
-  {
     id: 'smart-3c',
     name: '智能3C',
-    desc: '数码科技与智能硬件爆品打造，引领消费电子潮流与极致体验',
+    desc: '数码科技与智能硬件爆品打造，引领消费电子潮流与极致用户体验',
     image: '/src/assets/images/lkk_coffee_mockup_1783302972120.jpg',
     detailUrl: '/industry/smart-3c'
   },
   {
     id: 'healthcare',
-    name: '医疗健康',
+    name: '智能医疗',
     desc: '高端医疗器械与人性化健康设计，精准赋能诊疗流程与关怀体验',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui.jpg',
     detailUrl: '/industry/healthcare'
   },
+
+  // 第二行: 智能装备 (1列) + 智能家电 (2列，向右移1格) + 智能能源 (1列) = 4列
   {
-    id: 'food-beverage',
-    name: '食品酒饮',
-    desc: '新零售食品与差异化包装创新，以高颜值与情绪价值驱动爆品突破',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif',
-    detailUrl: '/industry/food-beverage'
+    id: 'industrial-equipment',
+    name: '智能装备',
+    desc: '智能装备产业升级的设计伙伴，助力企业打造高端制造与人机工程新标杆',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/aisidun.jpg',
+    detailUrl: '/industry/industrial-equipment'
   },
   {
-    id: 'retail',
-    name: '连锁零售',
-    desc: '品牌商业空间与新零售体验设计，赋能线下场景转化与品牌资产沉淀',
-    image: '/src/assets/images/case_jingkelong.jpg',
-    detailUrl: '/industry/retail'
+    id: 'home-appliances',
+    name: '智能家电',
+    desc: '品质生活与智能家电体验升级，让人机交互与空间美学和谐共融',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/xiaozhi.jpg',
+    detailUrl: '/industry/home-appliances'
   },
   {
-    id: 'beauty-personal-care',
-    name: '美妆个护',
-    desc: '高颜值个护美学与品牌视觉升级，打造深受年轻一代喜爱的时尚单品',
-    image: '/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg',
-    detailUrl: '/industry/beauty-personal-care'
+    id: 'new-energy',
+    name: '智能能源',
+    desc: '绿色能源与智慧储能体验重塑，打造零碳时代高辨识度标志性产品',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.39.png',
+    detailUrl: '/industry/new-energy'
   },
+
+  // 第三行: 智能交通 (1列) + 宠物经济 (1列) + 食品酒饮 (2列，向右移1格) = 4列
   {
-    id: 'cultural-creative',
-    name: '文化创意',
-    desc: '超级IP文创与文化遗产活化，连接传统文化与现代消费新生活方式',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/gugong.jpg',
-    detailUrl: '/industry/cultural-creative'
+    id: 'transportation',
+    name: '智能交通',
+    desc: '智慧出行与未来交通载具设计，探索前瞻造型与座舱感知新维度',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png',
+    detailUrl: '/industry/transportation'
   },
   {
     id: 'pet-economy',
@@ -90,11 +74,50 @@ const INDUSTRIES: IndustryItem[] = [
     detailUrl: '/industry/pet-economy'
   },
   {
-    id: 'transportation',
-    name: '交通工具',
-    desc: '智慧出行与未来交通载具设计，探索前沿造型与座舱感知新维度',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png',
-    detailUrl: '/industry/transportation'
+    id: 'food-beverage',
+    name: '食品酒饮',
+    desc: '新零售食品与差异化包装创新，以高颜值与情绪价值驱动爆品突破',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif',
+    detailUrl: '/industry/food-beverage'
+  },
+
+  // 第四行: 文化创意 (1列) + 家居鞋服 (1列) + 大健康 (1列) + 美妆个护 (1列) = 4列
+  {
+    id: 'cultural-creative',
+    name: '文化创意',
+    desc: '超级IP文创与文化遗产活化，连接传统文化与现代消费新生活方式',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/gugong.jpg',
+    detailUrl: '/industry/cultural-creative'
+  },
+  {
+    id: 'home-apparel',
+    name: '家居鞋服',
+    desc: '时尚软装与人体工学鞋服美学，打造高品质居家与穿戴生活新范式',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/xiaozhi.jpg',
+    detailUrl: '/industry/home-apparel'
+  },
+  {
+    id: 'wellness-health',
+    name: '大健康',
+    desc: '科学养生与现代滋补科技体验，驱动大健康产业全周期品类升级',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/1.png',
+    detailUrl: '/industry/wellness-health'
+  },
+  {
+    id: 'beauty-personal-care',
+    name: '美妆个护',
+    desc: '高颜值个护美学与品牌视觉升级，打造深受年轻一代喜爱的时尚单品',
+    image: '/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg',
+    detailUrl: '/industry/beauty-personal-care'
+  },
+
+  // 第五行: 连锁零售 (自动补齐闭合4列)
+  {
+    id: 'retail',
+    name: '连锁零售',
+    desc: '品牌商业空间与新零售体验设计，赋能线下场景转化与品牌资产沉淀',
+    image: '/src/assets/images/case_jingkelong.jpg',
+    detailUrl: '/industry/retail'
   }
 ];
 
@@ -184,6 +207,7 @@ export default function IndustryCollectionPage({
         .industry-card {
           position: relative;
           display: block;
+          width: 100%;
           aspect-ratio: 3 / 4;
           border-radius: 20px;
           overflow: hidden;
@@ -191,6 +215,47 @@ export default function IndustryCollectionPage({
           background: #000000;
           box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
           transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+        }
+
+        /* 3大跨2列卡片：机器人, 智能家电, 食品酒饮 */
+        .industry-card.large {
+          grid-column: span 2;
+          aspect-ratio: auto;
+          height: 100%;
+          min-height: 100%;
+        }
+
+        /* 尾部收尾卡片：美妆个护 (自动跨满桌面端4列，闭合整个Grid) */
+        .industry-card.full {
+          grid-column: span 4;
+          aspect-ratio: auto;
+          height: 240px;
+        }
+
+        @media (max-width: 1024px) {
+          .industry-card.large {
+            grid-column: span 2;
+            aspect-ratio: auto;
+            height: 100%;
+          }
+          .industry-card.full {
+            grid-column: span 2;
+            aspect-ratio: auto;
+            height: 100%;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .industry-card.large {
+            grid-column: span 2;
+            aspect-ratio: 16 / 9;
+            height: auto;
+          }
+          .industry-card.full {
+            grid-column: span 2;
+            aspect-ratio: 16 / 9;
+            height: auto;
+          }
         }
 
         @media (hover: hover) {
@@ -201,6 +266,9 @@ export default function IndustryCollectionPage({
         }
 
         .industry-card-img {
+          position: absolute;
+          top: 0;
+          left: 0;
           width: 100%;
           height: 100%;
           object-fit: cover;
@@ -414,43 +482,49 @@ export default function IndustryCollectionPage({
           
           <ScrollSectionTitle 
             badge="INDUSTRY DOMAINS"
-            title="十二大垂直行业赛道"
-            subtitle="深耕12大垂直工业与商业领域，提供从品类策略到软硬件研发落地的全栈式解决方案。"
+            title="十四大垂直行业赛道"
+            subtitle="深耕14大垂直工业与商业领域，划分科技与消费两大核心赛道，提供从品类策略到软硬件研发落地的全栈式解决方案。"
             align="left"
           />
 
           <div className="industry-grid">
-            {INDUSTRIES.map((ind) => (
-              <a 
-                key={ind.id}
-                href={ind.detailUrl}
-                onClick={(e) => handleCardClick(e, ind.detailUrl)}
-                className="industry-card group cursor-pointer"
-              >
-                <img 
-                  src={ind.image} 
-                  alt={ind.name} 
-                  className="industry-card-img"
-                  referrerPolicy="no-referrer"
-                  loading="lazy"
-                />
-                
-                <div className="industry-card-overlay" />
+            {INDUSTRIES.map((ind, index) => {
+              const isLarge = ['robotics', 'home-appliances', 'food-beverage'].includes(ind.id);
+              const isFull = index === INDUSTRIES.length - 1;
+              const cardClass = `industry-card ${isLarge ? 'large' : isFull ? 'full' : ''} group cursor-pointer`;
 
-                {/* 右上角蓝色"撕角"色块（第一阶段弹出）与白色箭头（第二阶段延迟淡入） */}
-                <div className="industry-card-badge">
-                  <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.8" stroke="currentColor">
-                    <path d="M7 17L17 7M17 7H8M17 7V16" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
+              return (
+                <a 
+                  key={ind.id}
+                  href={ind.detailUrl}
+                  onClick={(e) => handleCardClick(e, ind.detailUrl)}
+                  className={cardClass}
+                >
+                  <img 
+                    src={ind.image} 
+                    alt={ind.name} 
+                    className="industry-card-img"
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                  />
+                  
+                  <div className="industry-card-overlay" />
 
-                {/* 底部两行文字信息：标题 + 简述 */}
-                <div className="industry-card-text">
-                  <div className="industry-card-title">{ind.name}</div>
-                  <div className="industry-card-desc">{ind.desc}</div>
-                </div>
-              </a>
-            ))}
+                  {/* 右上角蓝色"撕角"色块（第一阶段弹出）与白色箭头（第二阶段延迟淡入） */}
+                  <div className="industry-card-badge">
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.8" stroke="currentColor">
+                      <path d="M7 17L17 7M17 7H8M17 7V16" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+
+                  {/* 底部两行文字信息：标题 + 简述 */}
+                  <div className="industry-card-text">
+                    <div className="industry-card-title">{ind.name}</div>
+                    <div className="industry-card-desc">{ind.desc}</div>
+                  </div>
+                </a>
+              );
+            })}
           </div>
 
         </div>

@@ -1032,65 +1032,61 @@ export default function App() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[560px] bg-white border border-neutral-100 shadow-2xl rounded-2xl p-6 grid gap-4 z-50"
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[920px] bg-white border border-neutral-100 shadow-2xl rounded-2xl p-5 z-50 text-left"
                   >
-                    <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">垂直行业赛道</span>
-                      <button 
-                        onClick={() => { setCurrentPage('industry'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                        className="text-xs text-[#007BC7] hover:underline cursor-pointer bg-transparent border-none p-0 font-medium"
-                      >
-                        全部分类集合页 →
-                      </button>
-                    </div>
-                    <div className="grid grid-cols-4 gap-4">
-                      {/* Column 1 */}
+                    <div className="flex flex-col gap-4">
+                      {/* 科技类 (7个横向一排) */}
                       <div className="flex flex-col gap-2">
-                        <button onClick={() => { handleNavigateUrl('/industry/industrial-equipment'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">工业装备</div>
-                        </button>
-                        <button onClick={() => { handleNavigateUrl('/industry/smart-3c'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">智能3C</div>
-                        </button>
-                        <button onClick={() => { handleNavigateUrl('/industry/beauty-personal-care'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">美妆个护</div>
-                        </button>
+                        <div className="text-xs font-bold uppercase tracking-wider text-[#007BC7] border-b border-neutral-100 pb-2">
+                          科技类
+                        </div>
+                        <div className="grid grid-cols-7 gap-2">
+                          {[
+                            { name: '机器人', path: '/industry/robotics' },
+                            { name: '智能3C', path: '/industry/smart-3c' },
+                            { name: '智能家电', path: '/industry/home-appliances' },
+                            { name: '智能医疗', path: '/industry/healthcare' },
+                            { name: '智能装备', path: '/industry/industrial-equipment' },
+                            { name: '智能能源', path: '/industry/new-energy' },
+                            { name: '智能交通', path: '/industry/transportation' },
+                          ].map((item) => (
+                            <button 
+                              key={item.path}
+                              onClick={() => { handleNavigateUrl(item.path); setActiveMenu(null); }} 
+                              className="py-2 px-2.5 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-700 transition-all font-medium text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
+                            >
+                              <span>{item.name}</span>
+                              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#005F96] shrink-0" />
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                      {/* Column 2 */}
+
+                      {/* 消费类 (7个横向一排) */}
                       <div className="flex flex-col gap-2">
-                        <button onClick={() => { handleNavigateUrl('/industry/robotics'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">机器人</div>
-                        </button>
-                        <button onClick={() => { handleNavigateUrl('/industry/healthcare'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">医疗健康</div>
-                        </button>
-                        <button onClick={() => { handleNavigateUrl('/industry/cultural-creative'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">文化创意</div>
-                        </button>
-                      </div>
-                      {/* Column 3 */}
-                      <div className="flex flex-col gap-2">
-                        <button onClick={() => { handleNavigateUrl('/industry/new-energy'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">新能源</div>
-                        </button>
-                        <button onClick={() => { handleNavigateUrl('/industry/food-beverage'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">食品酒饮</div>
-                        </button>
-                        <button onClick={() => { handleNavigateUrl('/industry/pet-economy'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">宠物经济</div>
-                        </button>
-                      </div>
-                      {/* Column 4 */}
-                      <div className="flex flex-col gap-2">
-                        <button onClick={() => { handleNavigateUrl('/industry/home-appliances'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">家居家电</div>
-                        </button>
-                        <button onClick={() => { handleNavigateUrl('/industry/retail'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">连锁零售</div>
-                        </button>
-                        <button onClick={() => { handleNavigateUrl('/industry/transportation'); setActiveMenu(null); }} className="p-2 rounded-xl hover:bg-neutral-50 text-left transition-all block w-full border-none bg-transparent cursor-pointer">
-                          <div className="font-medium text-neutral-800 hover:text-[#005F96] text-sm whitespace-nowrap">交通工具</div>
-                        </button>
+                        <div className="text-xs font-bold uppercase tracking-wider text-[#007BC7] border-b border-neutral-100 pb-2">
+                          消费类
+                        </div>
+                        <div className="grid grid-cols-7 gap-2">
+                          {[
+                            { name: '食品酒饮', path: '/industry/food-beverage' },
+                            { name: '宠物经济', path: '/industry/pet-economy' },
+                            { name: '文化创意', path: '/industry/cultural-creative' },
+                            { name: '家居鞋服', path: '/industry/home-apparel' },
+                            { name: '大健康', path: '/industry/wellness-health' },
+                            { name: '连锁零售', path: '/industry/retail' },
+                            { name: '美妆个护', path: '/industry/beauty-personal-care' },
+                          ].map((item) => (
+                            <button 
+                              key={item.path}
+                              onClick={() => { handleNavigateUrl(item.path); setActiveMenu(null); }} 
+                              className="py-2 px-2.5 rounded-xl hover:bg-neutral-50 hover:text-[#005F96] text-sm text-neutral-700 transition-all font-medium text-left w-full border-none bg-transparent cursor-pointer group flex items-center justify-between whitespace-nowrap"
+                            >
+                              <span>{item.name}</span>
+                              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#005F96] shrink-0" />
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -1462,50 +1458,112 @@ export default function App() {
             </div>
           </motion.div>
 
-          {/* Right Service Grid (8 categories) */}
+          {/* Right Service Grid (14 categories: 科技类 7个, 消费类 7个) */}
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="hero-category-grid lg:col-span-5 flex flex-col justify-between rounded-3xl p-5 md:p-6 lg:p-7 border border-neutral-100 h-full"
+            className="hero-category-grid lg:col-span-5 flex flex-col justify-between rounded-3xl px-3.5 sm:px-4.5 md:px-5 py-4 lg:py-5 border border-neutral-100 h-full"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 lg:gap-y-2 flex-1">
-              {SERVICE_CATEGORIES.map((cat, index) => (
-                <motion.div 
-                  key={cat.id}
-                  whileHover={{ x: 4 }}
-                  className="group flex flex-col justify-center py-2 border-b border-neutral-200/70 hover:border-[#005F96] transition-colors text-left"
-                >
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-base font-bold text-neutral-800 group-hover:text-[#005F96] transition-colors">
-                        {cat.name}
-                      </span>
-                      <ArrowRight className="w-4 h-4 text-neutral-300 group-hover:text-[#005F96] group-hover:translate-x-1.5 transition-all" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 lg:gap-x-6 gap-y-1 lg:gap-y-1.5 flex-1">
+              {/* Column 1: 科技类 (7个) */}
+              <div className="flex flex-col justify-between">
+                {SERVICE_CATEGORIES.slice(0, 7).map((cat) => (
+                  <motion.div 
+                    key={cat.id}
+                    whileHover={{ x: 3 }}
+                    onClick={() => {
+                      const map: Record<string, string> = {
+                        '机器人': '/industry/robotics',
+                        '智能3C': '/industry/smart-3c',
+                        '智能家电': '/industry/home-appliances',
+                        '智能医疗': '/industry/healthcare',
+                        '智能装备': '/industry/industrial-equipment',
+                        '智能能源': '/industry/new-energy',
+                        '智能交通': '/industry/transportation',
+                      };
+                      handleNavigateUrl(map[cat.name] || '/industry');
+                    }}
+                    className="group flex flex-col justify-center py-1.5 border-b border-neutral-200/70 hover:border-[#005F96] transition-colors text-left cursor-pointer"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs sm:text-sm font-bold text-neutral-800 group-hover:text-[#005F96] transition-colors">
+                          {cat.name}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-neutral-300 group-hover:text-[#005F96] group-hover:translate-x-1 transition-all" />
+                      </div>
+                      <p className="text-[11px] text-neutral-500 mt-0.5 leading-tight pr-1 line-clamp-1">
+                        {cat.description}
+                      </p>
                     </div>
-                    <p className="text-xs text-neutral-500 mt-1 leading-relaxed pr-2">
-                      {cat.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                  </motion.div>
+                ))}
+              </div>
 
-            <div className="mt-4 pt-4 border-t border-neutral-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <span className="text-xs text-neutral-400">
-                洛可可聚焦行业细分，致力于通过产品创新为企业突破增长壁垒。
-              </span>
-              <button 
-                onClick={() => setIsContactModalOpen(true)}
-                className="shrink-0 flex items-center gap-2 bg-[#1a1a1a] text-white hover:bg-[#007BC7] px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider transition-all"
-              >
-                立即对接垂直专家
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              {/* Column 2: 消费类 (7个) */}
+              <div className="flex flex-col justify-between">
+                {SERVICE_CATEGORIES.slice(7, 14).map((cat) => (
+                  <motion.div 
+                    key={cat.id}
+                    whileHover={{ x: 3 }}
+                    onClick={() => {
+                      const map: Record<string, string> = {
+                        '食品酒饮': '/industry/food-beverage',
+                        '宠物经济': '/industry/pet-economy',
+                        '文化创意': '/industry/cultural-creative',
+                        '家居鞋服': '/industry/home-apparel',
+                        '大健康': '/industry/wellness-health',
+                        '连锁零售': '/industry/retail',
+                        '美妆个护': '/industry/beauty-personal-care',
+                      };
+                      handleNavigateUrl(map[cat.name] || '/industry');
+                    }}
+                    className="group flex flex-col justify-center py-1.5 border-b border-neutral-200/70 hover:border-[#005F96] transition-colors text-left cursor-pointer"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs sm:text-sm font-bold text-neutral-800 group-hover:text-[#005F96] transition-colors">
+                          {cat.name}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 text-neutral-300 group-hover:text-[#005F96] group-hover:translate-x-1 transition-all" />
+                      </div>
+                      <p className="text-[11px] text-neutral-500 mt-0.5 leading-tight pr-1 line-clamp-1">
+                        {cat.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </motion.div>
 
         </div>
+
+        {/* Consultation Banner below the Hero grid */}
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="max-w-[95%] w-full mx-auto mt-6 sm:mt-8 rounded-3xl bg-gradient-to-r from-blue-50/80 via-white to-neutral-50/80 border border-neutral-200/80 p-5 sm:p-6 lg:px-8 lg:py-5 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xs hover:shadow-md hover:border-[#007BC7]/30 transition-all"
+        >
+          <div className="flex flex-col sm:flex-row items-center sm:items-start md:items-center text-center sm:text-left gap-3.5 sm:gap-4 flex-1">
+            <span className="px-3 py-1 rounded-full bg-blue-100/80 text-[#007BC7] text-xs font-bold tracking-wide shrink-0">
+              垂直行业创新咨询
+            </span>
+            <p className="text-sm sm:text-base font-semibold text-neutral-800 leading-relaxed">
+              洛可可聚焦行业细分，致力于通过产品创新为企业突破增长壁垒。
+            </p>
+          </div>
+
+          <button 
+            onClick={() => setIsContactModalOpen(true)}
+            className="shrink-0 flex items-center gap-2 bg-[#1a1a1a] hover:bg-[#007BC7] text-white px-6 py-3 rounded-full text-xs sm:text-sm font-semibold tracking-wider transition-all shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
+          >
+            <span>立即对接垂直专家</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </motion.div>
       </section>
 
       {/* 4. 专业服务 SECTION */}
@@ -2029,18 +2087,20 @@ export default function App() {
             <div className="col-span-1 md:col-span-3 text-left">
               <h5 className={`font-bold text-sm uppercase tracking-wider mb-4 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>案例</h5>
               <ul className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs">
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>工业装备</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>机器人</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>新能源</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>家居家电</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能3C</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>医疗健康</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>食品酒饮</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>连锁零售</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>美妆个护</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>文化创意</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>宠物经济</a></li>
-                <li><a href="#case-studies" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>交通工具</a></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/robotics')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>机器人</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/smart-3c')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能3C</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/home-appliances')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能家电</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/healthcare')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能医疗</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/industrial-equipment')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能装备</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/new-energy')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能能源</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/transportation')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能交通</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/food-beverage')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>食品酒饮</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/pet-economy')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>宠物经济</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/cultural-creative')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>文化创意</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/home-apparel')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>家居鞋服</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/wellness-health')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>大健康</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/retail')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>连锁零售</button></li>
+                <li><button onClick={() => handleNavigateUrl('/industry/beauty-personal-care')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>美妆个护</button></li>
               </ul>
             </div>
 
@@ -2248,12 +2308,20 @@ export default function App() {
                       onChange={(e) => setModalForm({ ...modalForm, industry: e.target.value })}
                       className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 text-sm text-neutral-800 outline-none focus:border-[#007BC7]"
                     >
-                      <option value="智能制造">智能机器人 / 机械臂 / 高端制造</option>
-                      <option value="医疗健康">医疗保健 / 医疗器械 / 创新药盒</option>
-                      <option value="食品酒饮">食品包装 / 滋补品 / 饮料</option>
-                      <option value="智能3C">智能穿戴 / 消费数码 / 手机配件</option>
-                      <option value="家居家电">智能家电 / 智能家居 / 绿色灯具</option>
-                      <option value="宠物经济">宠物智趣用品 / 包装包装</option>
+                      <option value="机器人">机器人 / 人形机器人 / 具身智能</option>
+                      <option value="智能3C">智能3C / 消费电子 / 数码硬件</option>
+                      <option value="智能家电">智能家电 / 智慧家居 / 厨电照明</option>
+                      <option value="智能医疗">智能医疗 / 医疗器械 / 诊疗装备</option>
+                      <option value="智能装备">智能装备 / 高端制造 / 机械设备</option>
+                      <option value="智能能源">智能能源 / 储能设施 / 充电桩设备</option>
+                      <option value="智能交通">智能交通 / 智能座舱 / 微出行载具</option>
+                      <option value="食品酒饮">食品酒饮 / 新零售快消 / 滋补饮品</option>
+                      <option value="宠物经济">宠物经济 / 宠物智能用品 / 精致养宠</option>
+                      <option value="文化创意">文化创意 / 博物馆文创 / 潮玩IP</option>
+                      <option value="家居鞋服">家居鞋服 / 智能穿戴 / 软装纺织</option>
+                      <option value="大健康">大健康 / 养生滋补 / 健康管理</option>
+                      <option value="连锁零售">连锁零售 / 商业空间 / 新零售SI</option>
+                      <option value="美妆个护">美妆个护 / 个护家清 / 美妆容器</option>
                     </select>
                   </div>
 
