@@ -685,9 +685,9 @@ body {
   }
 }
 
-/* 首页 Banner 区域 4 组数字字号整体缩小 40%（即当前字号的 60%：clamp(28.8px, 3.6vw, 57.6px)），并优化数字与下方说明文字间距 */
+/* 首页 Banner 区域 4 组数字字号等比放大 20%（即 clamp(34.56px, 4.32vw, 69.12px)） */
 .stats-section .stat-number {
-  font-size: clamp(28.8px, 3.6vw, 57.6px) !important;
+  font-size: clamp(34.56px, 4.32vw, 69.12px) !important;
   font-weight: 900 !important;
   white-space: nowrap !important;
   line-height: 1 !important;
