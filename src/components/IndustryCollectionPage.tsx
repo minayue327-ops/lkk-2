@@ -11,8 +11,7 @@ interface IndustryItem {
   detailUrl: string;
 }
 
-const INDUSTRIES: IndustryItem[] = [
-  // 第一行: 机器人 (2列) + 智能3C (1列) + 智能医疗 (1列) = 4列
+const TECH_INDUSTRIES: IndustryItem[] = [
   {
     id: 'robotics',
     name: '机器人',
@@ -22,26 +21,10 @@ const INDUSTRIES: IndustryItem[] = [
   },
   {
     id: 'smart-3c',
-    name: '智能3C',
+    name: '智能 3C',
     desc: '数码科技与智能硬件爆品打造，引领消费电子潮流与极致用户体验',
     image: '/src/assets/images/lkk_coffee_mockup_1783302972120.jpg',
     detailUrl: '/industry/smart-3c'
-  },
-  {
-    id: 'healthcare',
-    name: '智能医疗',
-    desc: '高端医疗器械与人性化健康设计，精准赋能诊疗流程与关怀体验',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui.jpg',
-    detailUrl: '/industry/healthcare'
-  },
-
-  // 第二行: 智能装备 (1列) + 智能家电 (2列，向右移1格) + 智能能源 (1列) = 4列
-  {
-    id: 'industrial-equipment',
-    name: '智能装备',
-    desc: '智能装备产业升级的设计伙伴，助力企业打造高端制造与人机工程新标杆',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/aisidun.jpg',
-    detailUrl: '/industry/industrial-equipment'
   },
   {
     id: 'home-appliances',
@@ -51,20 +34,42 @@ const INDUSTRIES: IndustryItem[] = [
     detailUrl: '/industry/home-appliances'
   },
   {
+    id: 'healthcare',
+    name: '智能医疗',
+    desc: '高端医疗器械与人性化健康设计，精准赋能诊疗流程与关怀体验',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui.jpg',
+    detailUrl: '/industry/healthcare'
+  },
+  {
+    id: 'industrial-equipment',
+    name: '智能装备',
+    desc: '智能装备产业升级的设计伙伴，助力企业打造高端制造与人机工程新标杆',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/aisidun.jpg',
+    detailUrl: '/industry/industrial-equipment'
+  },
+  {
     id: 'new-energy',
     name: '智能能源',
     desc: '绿色能源与智慧储能体验重塑，打造零碳时代高辨识度标志性产品',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.39.png',
     detailUrl: '/industry/new-energy'
   },
-
-  // 第三行: 智能交通 (1列) + 宠物经济 (1列) + 食品酒饮 (2列，向右移1格) = 4列
   {
     id: 'transportation',
     name: '智能交通',
     desc: '智慧出行与未来交通载具设计，探索前瞻造型与座舱感知新维度',
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png',
     detailUrl: '/industry/transportation'
+  }
+];
+
+const CONSUMER_INDUSTRIES: IndustryItem[] = [
+  {
+    id: 'food-beverage',
+    name: '食品酒饮',
+    desc: '新零售食品与差异化包装创新，以高颜值与情绪价值驱动爆品突破',
+    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif',
+    detailUrl: '/industry/food-beverage'
   },
   {
     id: 'pet-economy',
@@ -73,15 +78,6 @@ const INDUSTRIES: IndustryItem[] = [
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png',
     detailUrl: '/industry/pet-economy'
   },
-  {
-    id: 'food-beverage',
-    name: '食品酒饮',
-    desc: '新零售食品与差异化包装创新，以高颜值与情绪价值驱动爆品突破',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif',
-    detailUrl: '/industry/food-beverage'
-  },
-
-  // 第四行: 文化创意 (1列) + 家居鞋服 (1列) + 大健康 (1列) + 美妆个护 (1列) = 4列
   {
     id: 'cultural-creative',
     name: '文化创意',
@@ -104,20 +100,18 @@ const INDUSTRIES: IndustryItem[] = [
     detailUrl: '/industry/wellness-health'
   },
   {
-    id: 'beauty-personal-care',
-    name: '美妆个护',
-    desc: '高颜值个护美学与品牌视觉升级，打造深受年轻一代喜爱的时尚单品',
-    image: '/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg',
-    detailUrl: '/industry/beauty-personal-care'
-  },
-
-  // 第五行: 连锁零售 (自动补齐闭合4列)
-  {
     id: 'retail',
     name: '连锁零售',
     desc: '品牌商业空间与新零售体验设计，赋能线下场景转化与品牌资产沉淀',
     image: '/src/assets/images/case_jingkelong.jpg',
     detailUrl: '/industry/retail'
+  },
+  {
+    id: 'beauty-personal-care',
+    name: '美妆个护',
+    desc: '高颜值个护美学与品牌视觉升级，打造深受年轻一代喜爱的时尚单品',
+    image: '/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg',
+    detailUrl: '/industry/beauty-personal-care'
   }
 ];
 
@@ -476,22 +470,21 @@ export default function IndustryCollectionPage({
         </div>
       </section>
 
-      {/* 2. 12 INDUSTRY CARDS GRID SECTION */}
-      <section className="py-16 md:py-24 bg-white">
+      {/* 2.1 科技垂直行业赛道 */}
+      <section className="pt-16 md:pt-20 pb-10 bg-white">
         <div className="max-w-[95%] w-full mx-auto">
           
           <ScrollSectionTitle 
-            badge="INDUSTRY DOMAINS"
-            title="十四大垂直行业赛道"
-            subtitle="深耕14大垂直工业与商业领域，划分科技与消费两大核心赛道，提供从品类策略到软硬件研发落地的全栈式解决方案。"
+            badge="TECH TRACKS"
+            title="科技垂直行业赛道"
+            subtitle="聚焦硬核科技与智能硬件，涵盖机器人、智能3C、智能家电、智能医疗、智能装备、智能能源、智能交通等领域。"
             align="left"
           />
 
           <div className="industry-grid">
-            {INDUSTRIES.map((ind, index) => {
-              const isLarge = ['robotics', 'home-appliances', 'food-beverage'].includes(ind.id);
-              const isFull = index === INDUSTRIES.length - 1;
-              const cardClass = `industry-card ${isLarge ? 'large' : isFull ? 'full' : ''} group cursor-pointer`;
+            {TECH_INDUSTRIES.map((ind, index) => {
+              const isLarge = index === 0;
+              const cardClass = `industry-card ${isLarge ? 'large' : ''} group cursor-pointer`;
 
               return (
                 <a 
@@ -510,7 +503,60 @@ export default function IndustryCollectionPage({
                   
                   <div className="industry-card-overlay" />
 
-                  {/* 右上角蓝色"撕角"色块（第一阶段弹出）与白色箭头（第二阶段延迟淡入） */}
+                  {/* 右上角蓝色"撕角"色块与白色箭头 */}
+                  <div className="industry-card-badge">
+                    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.8" stroke="currentColor">
+                      <path d="M7 17L17 7M17 7H8M17 7V16" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+
+                  {/* 底部两行文字信息：标题 + 简述 */}
+                  <div className="industry-card-text">
+                    <div className="industry-card-title">{ind.name}</div>
+                    <div className="industry-card-desc">{ind.desc}</div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 2.2 消费垂直赛道 */}
+      <section className="pt-6 pb-16 md:pb-24 bg-white">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          <ScrollSectionTitle 
+            badge="CONSUMER TRACKS"
+            title="消费垂直行业赛道"
+            subtitle="驱动新消费与品质生活方式升级，涵盖食品酒饮、宠物经济、文化创意、家居鞋服、大健康、连锁零售、美妆个护等领域。"
+            align="left"
+          />
+
+          <div className="industry-grid">
+            {CONSUMER_INDUSTRIES.map((ind, index) => {
+              const isLarge = index === 0;
+              const cardClass = `industry-card ${isLarge ? 'large' : ''} group cursor-pointer`;
+
+              return (
+                <a 
+                  key={ind.id}
+                  href={ind.detailUrl}
+                  onClick={(e) => handleCardClick(e, ind.detailUrl)}
+                  className={cardClass}
+                >
+                  <img 
+                    src={ind.image} 
+                    alt={ind.name} 
+                    className="industry-card-img"
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                  />
+                  
+                  <div className="industry-card-overlay" />
+
+                  {/* 右上角蓝色"撕角"色块与白色箭头 */}
                   <div className="industry-card-badge">
                     <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.8" stroke="currentColor">
                       <path d="M7 17L17 7M17 7H8M17 7V16" strokeLinecap="round" strokeLinejoin="round"/>

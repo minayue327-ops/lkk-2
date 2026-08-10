@@ -371,7 +371,7 @@ body {
   transition: filter 0.5s ease, transform 0.5s ease;
 }
 
-/* 网格容器：6个卡片，3列×2行 */
+/* 网格容器：9个卡片，3列×3行 */
 .case-grid-v2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

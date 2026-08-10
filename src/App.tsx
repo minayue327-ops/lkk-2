@@ -77,6 +77,24 @@ const CASE_STUDIES_V2: CaseStudy[] = [
     title: '思哲睿康多手术机器人产品创新咨询设计',
     description: '集工业设计美学、临床需求、卓越稳定性能于一体',
     logoType: 'sizherui'
+  },
+  {
+    id: 'case-v2-7',
+    title: '糯宝 (Pophie) 类生命体情感陪伴机器人',
+    description: '融合AI算法、温润触感材料与拟人化微表情',
+    logoType: 'pophie'
+  },
+  {
+    id: 'case-v2-8',
+    title: '库迪咖啡品牌战略咨询&爆品包装升级',
+    description: '塑造全民咖啡品类创新概念，助力跨界爆款孵化',
+    logoType: 'cotti'
+  },
+  {
+    id: 'case-v2-9',
+    title: '海底捞自热火锅与便携即食产品创新设计',
+    description: '打破传统餐饮空间局限，开辟随时随地即享火锅的新品类赛道',
+    logoType: 'haidilao'
   }
 ];
 
@@ -377,6 +395,12 @@ export default function App() {
         return 'https://github.com/minaxyue-ops/MINA/releases/download/1/sizherui.jpg';
       case 'case-v2-6':
         return 'https://github.com/minaxyue-ops/MINA/releases/download/1/aisidun.jpg';
+      case 'case-v2-7':
+        return '/src/assets/images/case_pophie.jpg';
+      case 'case-v2-8':
+        return '/src/assets/images/lkk_coffee_mockup_1783302972120.jpg';
+      case 'case-v2-9':
+        return 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.35.png';
       default:
         return null;
     }
@@ -390,7 +414,7 @@ export default function App() {
   };
 
   const getCaseV2PlaceholderColor = (id: string): string => {
-    if (['case-v2-2', 'case-v2-3'].includes(id)) {
+    if (['case-v2-2', 'case-v2-3', 'case-v2-7', 'case-v2-8'].includes(id)) {
       return '#E5F2FA';
     }
     return '#F5F5F5';
@@ -477,6 +501,24 @@ export default function App() {
           brand: '埃斯顿',
           title: '埃斯顿ED3S系列伺服驱动器产品创新咨询设计',
           desc: '全面赋能工业自动化运动控制领域升级'
+        };
+      case 'case-v2-7':
+        return {
+          brand: '糯宝 Pophie',
+          title: '糯宝 (Pophie) 类生命体情感陪伴机器人',
+          desc: '融合AI算法、温润触感材料与拟人化微表情，打造温情陪伴机器人'
+        };
+      case 'case-v2-8':
+        return {
+          brand: '库迪咖啡',
+          title: '库迪咖啡品牌战略咨询&爆品包装升级',
+          desc: '塑造全民咖啡品类创新概念，助力跨界爆款孵化'
+        };
+      case 'case-v2-9':
+        return {
+          brand: '海底捞',
+          title: '海底捞自热火锅与便携即食产品创新设计',
+          desc: '打破传统餐饮空间局限，开辟随时随地即享火锅的新品类赛道'
         };
       default:
         return {
@@ -581,6 +623,24 @@ export default function App() {
           industry: '工业装备',
           consulting: '产品创新0-1全案咨询',
           design: '工业设计、结构设计、生产落地'
+        };
+      case 'case-v2-7':
+        return {
+          industry: '机器人',
+          consulting: '三品合一类创新咨询',
+          design: '工业设计、结构设计、CMF设计'
+        };
+      case 'case-v2-8':
+        return {
+          industry: '食品酒饮',
+          consulting: '品牌创新0-1全案咨询',
+          design: '品牌设计、包装升级、爆品打造'
+        };
+      case 'case-v2-9':
+        return {
+          industry: '食品酒饮',
+          consulting: '产品创新0-1全案咨询',
+          design: '结构创新、便携包装设计、体验升级'
         };
       case 'musinno':
       case 'yanzoujia':
@@ -1267,14 +1327,14 @@ export default function App() {
         </div>
 
         {/* HERO GRID WORK */}
-        <div className="max-w-[95%] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 md:mt-16 text-left items-stretch">
+        <div className="max-w-[95%] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mt-12 md:mt-16 text-left items-stretch">
           
           {/* Left Large Banner Card */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-7 relative group overflow-hidden rounded-3xl shadow-lg border border-neutral-100 bg-white flex flex-col justify-center w-full aspect-[16/9]"
+            className="lg:col-span-8 relative group overflow-hidden rounded-3xl shadow-lg border border-neutral-100 bg-white flex flex-col justify-center w-full aspect-[16/9]"
           >
             <div className="absolute inset-0 w-full h-full flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${activeBannerIndex * 100}%)` }}>
               
@@ -1463,9 +1523,9 @@ export default function App() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="hero-category-grid lg:col-span-5 flex flex-col justify-between rounded-3xl px-3.5 sm:px-4.5 md:px-5 py-4 lg:py-5 border border-neutral-100 h-full"
+            className="hero-category-grid lg:col-span-4 flex flex-col justify-between rounded-3xl px-3 sm:px-4 md:px-4.5 py-3.5 lg:py-4 border border-neutral-100 h-full"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 lg:gap-x-6 gap-y-1 lg:gap-y-1.5 flex-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3.5 lg:gap-x-4 gap-y-1 lg:gap-y-1.5 flex-1">
               {/* Column 1: 科技类 (7个) */}
               <div className="flex flex-col justify-between">
                 {SERVICE_CATEGORIES.slice(0, 7).map((cat) => (
@@ -1542,26 +1602,29 @@ export default function App() {
 
         {/* Consultation Banner below the Hero grid */}
         <motion.div 
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="max-w-[95%] w-full mx-auto mt-6 sm:mt-8 rounded-3xl bg-gradient-to-r from-blue-50/80 via-white to-neutral-50/80 border border-neutral-200/80 p-5 sm:p-6 lg:px-8 lg:py-5 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 shadow-xs hover:shadow-md hover:border-[#007BC7]/30 transition-all"
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="max-w-[95%] w-full mx-auto mt-4 sm:mt-5 rounded-2xl bg-white border border-neutral-100 py-3.5 px-5 sm:py-4.5 sm:px-8 flex flex-col items-center justify-center text-center gap-2.5 sm:gap-3 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden"
         >
-          <div className="flex flex-col sm:flex-row items-center sm:items-start md:items-center text-center sm:text-left gap-3.5 sm:gap-4 flex-1">
-            <span className="px-3 py-1 rounded-full bg-blue-100/80 text-[#007BC7] text-xs font-bold tracking-wide shrink-0">
-              垂直行业创新咨询
-            </span>
-            <p className="text-sm sm:text-base font-semibold text-neutral-800 leading-relaxed">
-              洛可可聚焦行业细分，致力于通过产品创新为企业突破增长壁垒。
-            </p>
-          </div>
+          {/* 顶栏极细微光渐变边线 */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/5 h-[1px] bg-gradient-to-r from-transparent via-[#007BC7]/20 to-transparent pointer-events-none" />
 
+          {/* 1. 描述文本 */}
+          <p className="text-[12px] sm:text-[13px] font-normal text-neutral-500 leading-normal text-center w-full max-w-full lg:whitespace-nowrap my-0 tracking-tight sm:tracking-normal">
+            洛可可是一家用咨询设计的能力，为垂直行业客户，提供产品创新价值的公司。我们坚持以用户体验为核心，致力于为企业提供行业整体创新解决方案。如需创新设计咨询，请联系专家团队。
+          </p>
+
+          {/* 2. 按钮：品牌蓝色质感胶囊 */}
           <button 
             onClick={() => setIsContactModalOpen(true)}
-            className="shrink-0 flex items-center gap-2 bg-[#1a1a1a] hover:bg-[#007BC7] text-white px-6 py-3 rounded-full text-xs sm:text-sm font-semibold tracking-wider transition-all shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
+            className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-[#007BC7] to-[#0284C7] hover:from-[#0066a5] hover:to-[#0270b2] text-white px-6 py-2 sm:px-7 sm:py-2.5 rounded-full text-sm sm:text-base font-semibold tracking-wide transition-all duration-300 shadow-xs hover:shadow-md hover:scale-[1.01] active:scale-95 cursor-pointer border border-sky-300/30 overflow-hidden"
           >
+            {/* 扫光流线 */}
+            <span className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+            
             <span>立即对接垂直专家</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
           </button>
         </motion.div>
       </section>

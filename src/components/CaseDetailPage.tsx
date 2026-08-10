@@ -414,11 +414,11 @@ export default function CaseDetailPage({
                   </div>
                 </section>
 
-                {/* 3. 咨询服务（与用户咨询合并，去掉4个豆腐块，用户咨询作为副标题） */}
+                {/* 3. 用户咨询 */}
                 <section className="space-y-6 text-left">
                   <ScrollSectionTitle 
-                    badge="CONSULTING SERVICES"
-                    title="咨询服务"
+                    badge="USER CONSULTING"
+                    title="用户咨询"
                   />
 
                   <div className="pt-2 space-y-8">
@@ -442,15 +442,7 @@ export default function CaseDetailPage({
                       </div>
                     </div>
 
-                    {/* 副标题：用户咨询 */}
                     <div className="pt-4 border-t border-[#D6E2ED]">
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#0284C7]"></span>
-                        <h3 className="text-[20px] md:text-[22px] font-bold text-[#0F172A] font-display">
-                          用户咨询
-                        </h3>
-                      </div>
-
                       <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                         <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                           <img 
@@ -849,11 +841,11 @@ export default function CaseDetailPage({
                   </div>
                 </section>
 
-                {/* 3. 咨询服务（与用户咨询合并，副标题：用户咨询） */}
+                {/* 3. 用户咨询 */}
                 <section className="space-y-6 text-left">
                   <ScrollSectionTitle 
-                    badge="CONSULTING SERVICES"
-                    title="咨询服务"
+                    badge="USER CONSULTING"
+                    title="用户咨询"
                   />
 
                   <div className="pt-2 space-y-8">
@@ -867,13 +859,6 @@ export default function CaseDetailPage({
                     </div>
 
                     <div className="pt-4 border-t border-[#D6E2ED]">
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#0284C7]"></span>
-                        <h3 className="text-[20px] md:text-[22px] font-bold text-[#0F172A] font-display">
-                          用户咨询
-                        </h3>
-                      </div>
-
                       <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                         <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
                           <img 
@@ -1230,11 +1215,11 @@ export default function CaseDetailPage({
                   </div>
                 </section>
 
-                {/* 3. 咨询服务（与用户咨询合并，去掉4个豆腐块，用户咨询作为副标题） */}
+                {/* 3. 用户咨询 */}
                 <section className="space-y-6 text-left">
                   <ScrollSectionTitle 
-                    badge="CONSULTING SERVICES"
-                    title="咨询服务"
+                    badge="USER CONSULTING"
+                    title="用户咨询"
                   />
 
                   <div className="pt-2 space-y-8">
@@ -1250,15 +1235,7 @@ export default function CaseDetailPage({
                       </div>
                     </div>
 
-                    {/* 副标题：用户咨询 */}
                     <div className="pt-4 border-t border-[#D6E2ED]">
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#0284C7]"></span>
-                        <h3 className="text-[20px] md:text-[22px] font-bold text-[#0F172A] font-display">
-                          用户咨询
-                        </h3>
-                      </div>
-
                       <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                         {/* 左侧：图片卡片 */}
                         <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
@@ -1740,7 +1717,7 @@ export default function CaseDetailPage({
                   <div className="content-block-1 space-y-6 pt-2">
                     <div className="w-full aspect-[16/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/60 shadow-xs">
                       <img 
-                        src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/sanpin.png" 
+                        src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/Group.53.png" 
                         alt="小仙炖项目背景"
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover"
@@ -1781,11 +1758,11 @@ export default function CaseDetailPage({
                   </div>
                 </section>
 
-                {/* 2. 咨询服务（与用户咨询合并，去掉4个豆腐块，用户咨询作为副标题） */}
+                {/* 2. 用户咨询 */}
                 <section className="space-y-6 text-left">
                   <ScrollSectionTitle 
-                    badge="CONSULTING SERVICES"
-                    title="咨询服务"
+                    badge="USER CONSULTING"
+                    title="用户咨询"
                   />
 
                   <div className="pt-2 space-y-8">
@@ -1809,15 +1786,7 @@ export default function CaseDetailPage({
                       </div>
                     </div>
 
-                    {/* 副标题：用户咨询 */}
                     <div className="pt-4 border-t border-[#D6E2ED]">
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#0284C7]"></span>
-                        <h3 className="text-[20px] md:text-[22px] font-bold text-[#0F172A] font-display">
-                          用户咨询
-                        </h3>
-                      </div>
-
                       <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                         {/* 左侧：图片卡片 */}
                         <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
