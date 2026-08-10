@@ -49,15 +49,6 @@ const EXACT_RELATED_CASES: RelatedCaseItem[] = [
     image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png'
   },
   {
-    id: 'xiaoxiandun2',
-    brand: '小仙炖',
-    title: '小仙炖品类创新全案咨询二',
-    category: '品类创新',
-    industry: '食品酒饮',
-    description: '开创鲜炖燕窝新品类，三年突破260万份',
-    image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png'
-  },
-  {
     id: 'yuexianhuo',
     brand: '悦鲜活',
     title: '悦鲜活年轻化产品包装创新',
@@ -157,21 +148,18 @@ export default function CaseDetailPage({
   const isYueXianHuo = caseId === 'yuexianhuo' || caseId === 'case-v2-1';
   const isMusinno = caseId === 'musinno' || caseId === 'yanzoujia' || caseId === 'musinno-1' || caseId === 'case-musinno' || caseId === 'case-yanzoujia';
   const isEstun = caseId === 'estun' || caseId === 'estun-robot' || caseId === 'case-7' || caseId === 'codroid02' || caseId === 'case-v2-6';
-  const isXiaoxiandun2 = caseId === 'xiaoxiandun2' || caseId === 'xiaoxiandun-2' || caseId === 'case-xiaoxiandun-2';
 
   return (
     <div className="w-full bg-white text-neutral-900 min-h-screen">
       
       {/* 一、Hero 区域 Banner */}
-      {!isXiaoxiandun2 && (
-        <div className="bg-neutral-100 border-b border-neutral-200/80 w-full overflow-hidden flex items-center justify-center relative min-h-[140px] md:min-h-[180px] max-h-[320px]">
-          <img 
-            src={isMusinno ? "/src/assets/images/musinno_hero_banner_1785826677156.jpg" : isEstun ? "https://github.com/minaxyue-ops/MINA/releases/download/1/image.39.png" : isYueXianHuo ? "/src/assets/images/case_yuexianhuo.jpg" : "https://github.com/minaxyue-ops/MINA/releases/download/1/694cfb00bb51b.png"} 
-            alt={isMusinno ? "慢阶「演奏家一号」音乐设备 Hero Banner" : isEstun ? "埃斯顿 Codroid 02 第二代人形机器人 Hero Banner" : isYueXianHuo ? "悦鲜活案例 Hero Banner" : "小仙炖案例 Hero Banner"} 
-            className="w-full h-full min-h-[140px] md:min-h-[180px] max-h-[320px] object-cover object-center"
-          />
-        </div>
-      )}
+      <div className="bg-neutral-100 border-b border-neutral-200/80 w-full overflow-hidden flex items-center justify-center relative min-h-[140px] md:min-h-[180px] max-h-[320px]">
+        <img 
+          src={isMusinno ? "/src/assets/images/musinno_hero_banner_1785826677156.jpg" : isEstun ? "https://github.com/minaxyue-ops/MINA/releases/download/1/image.39.png" : isYueXianHuo ? "/src/assets/images/case_yuexianhuo.jpg" : "https://github.com/minaxyue-ops/MINA/releases/download/1/694cfb00bb51b.png"} 
+          alt={isMusinno ? "慢阶「演奏家一号」音乐设备 Hero Banner" : isEstun ? "埃斯顿 Codroid 02 第二代人形机器人 Hero Banner" : isYueXianHuo ? "悦鲜活案例 Hero Banner" : "小仙炖案例 Hero Banner"} 
+          className="w-full h-full min-h-[140px] md:min-h-[180px] max-h-[320px] object-cover object-center"
+        />
+      </div>
 
       {/* 主内容区域 */}
       <div className="max-w-[95%] w-full mx-auto pt-6 md:pt-8 pb-12 md:pb-16">
@@ -1560,7 +1548,7 @@ export default function CaseDetailPage({
                   {/* 顶部标题 */}
                   <div className="mb-6 p-5 md:p-7 rounded-3xl bg-white border border-[#D6E2ED] shadow-xs text-center">
                     <h1 className="text-[36px] sm:text-[48px] lg:text-[60px] font-black text-[#0F172A] leading-tight tracking-tight font-display text-center">
-                      {isXiaoxiandun2 ? '小仙炖品类创新全案咨询二' : '小仙炖品类创新全案咨询'}
+                      小仙炖品类创新全案咨询
                     </h1>
                   </div>
 
@@ -1620,92 +1608,6 @@ export default function CaseDetailPage({
                     </div>
                   </div>
                 </section>
-
-                {/* 如果是小仙炖二，则成果展示放在项目背景上方 */}
-                {isXiaoxiandun2 && (
-                  <section className="space-y-6 text-left">
-                    <ScrollSectionTitle 
-                      badge="ACHIEVEMENTS GALLERY"
-                      title="成果展示"
-                    />
-
-                    <div className="pt-2">
-                      <div className="flex flex-col gap-6">
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/8.png" 
-                            alt="成果展示 1"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/6.png" 
-                            alt="成果展示 2"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/2.png" 
-                            alt="成果展示 3"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/7.png" 
-                            alt="成果展示 4"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/5.png" 
-                            alt="成果展示 5"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/12.png" 
-                            alt="成果展示 6"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/10.png" 
-                            alt="成果展示 7"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/11.png" 
-                            alt="成果展示 8"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                )}
 
                 {/* 1. 项目背景 —— 上图下文 (配图 16:9) */}
                 <section className="space-y-4 text-left">
@@ -2058,9 +1960,8 @@ export default function CaseDetailPage({
                   </div>
                 </section>
 
-                {/* 9. 成果展示 —— 纯图垂直连排（仅在小仙炖一展示于底部） */}
-                {!isXiaoxiandun2 && (
-                  <section className="space-y-6 text-left">
+                {/* 9. 成果展示 —— 纯图垂直连排 */}
+                <section className="space-y-6 text-left">
                     <ScrollSectionTitle 
                       badge="ACHIEVEMENTS GALLERY"
                       title="成果展示"
@@ -2070,17 +1971,8 @@ export default function CaseDetailPage({
                       <div className="flex flex-col gap-6">
                         <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
                           <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/8.png" 
-                            alt="成果展示 1"
-                            referrerPolicy="no-referrer"
-                            className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
-                          />
-                        </div>
-
-                        <div className="w-full rounded-3xl overflow-hidden border border-neutral-200/60 shadow-xs bg-neutral-50">
-                          <img 
                             src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/6.png" 
-                            alt="成果展示 2"
+                            alt="成果展示 1"
                             referrerPolicy="no-referrer"
                             className="w-full h-auto hover:scale-[1.01] transition-transform duration-300 block"
                           />
@@ -2142,7 +2034,6 @@ export default function CaseDetailPage({
                       </div>
                     </div>
                   </section>
-                )}
               </>
             )}
 

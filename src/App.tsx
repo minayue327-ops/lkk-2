@@ -551,8 +551,6 @@ export default function App() {
         };
       case 'case-4':
       case 'xiaoxiandun':
-      case 'xiaoxiandun2':
-      case 'xiaoxiandun-2':
         return {
           industry: '食品酒饮',
           consulting: '三品合一品类创新咨询',
