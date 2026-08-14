@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { ArrowRight, Plus, Minus, Compass, Layers, ShieldCheck, TrendingUp } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ArrowRight, Compass, Layers, ShieldCheck, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface ThreeInOneCategoryConsultingPageProps {
   onOpenContactModal: () => void;
@@ -18,15 +18,173 @@ export default function ThreeInOneCategoryConsultingPage({
   onNavigateDetail,
   CounterComponent = DefaultCounter,
 }: ThreeInOneCategoryConsultingPageProps) {
-  // State for Section 2 (System Structure Service Cards)
+  // State for Section 3 (Service Definition Cards Hover)
   const [hoveredServiceCard, setHoveredServiceCard] = useState<number | null>(null);
 
-  // State for Section 7 (FAQ Accordion)
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  // State for Category Life Cycle Section (Stage selection & hover)
+  const [hoveredStage, setHoveredStage] = useState<number | null>(null);
+
+  // State for Section 6 (Carousel scroll & drag)
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollStartLeft, setScrollStartLeft] = useState(0);
+  const [hasDragged, setHasDragged] = useState(false);
+
+  const checkScroll = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      setCanScrollLeft(scrollLeft > 4);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 4);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const container = carouselRef.current;
+      const card = container.querySelector<HTMLElement>('.case-carousel-card');
+      const step = card ? card.offsetWidth + 24 : 360;
+      container.scrollBy({
+        left: direction === 'left' ? -step : step,
+        behavior: 'smooth',
+      });
+      setTimeout(checkScroll, 350);
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!carouselRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - carouselRef.current.offsetLeft);
+    setScrollStartLeft(carouselRef.current.scrollLeft);
+    setHasDragged(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !carouselRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    if (Math.abs(walk) > 4) {
+      setHasDragged(true);
+    }
+    carouselRef.current.scrollLeft = scrollStartLeft - walk;
+    checkScroll();
+  };
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
 
   // ================= DATA DEFINITIONS =================
 
-  // SECTION 1: 品类创新七步流程
+  // SECTION 01 (原05): 适合哪些企业 (4类企业)
+  const TARGET_ENTERPRISES = [
+    {
+      icon: Compass,
+      title: '开辟第二曲线',
+      desc: '想开辟新赛道、寻找第二增长曲线的企业'
+    },
+    {
+      icon: Layers,
+      title: '突破制造代工',
+      desc: '有制造和供应链能力，但缺少品类与品牌溢价的企业'
+    },
+    {
+      icon: ShieldCheck,
+      title: '跨越同质陷阱',
+      desc: '已有产品或品牌，却被同质化竞争限制增长的企业'
+    },
+    {
+      icon: TrendingUp,
+      title: '统筹全案增长',
+      desc: '需要统筹战略、产品、品牌，而非采购单点设计服务的企业'
+    }
+  ];
+
+  // SECTION 02 (原03): 4大增长瓶颈问题
+  const CHALLENGES = [
+    {
+      num: '01',
+      title: '只能打价格战',
+      desc: '产品同质化严重，竞争持续压低利润空间。'
+    },
+    {
+      num: '02',
+      title: '增长没有新方向',
+      desc: '原有市场接近天花板，找不到第二增长曲线。'
+    },
+    {
+      num: '03',
+      title: '产品和品牌没有形成合力',
+      desc: '产品持续迭代，但用户无法感知明确价值与差异。'
+    },
+    {
+      num: '04',
+      title: '想做新品类，却缺少路径',
+      desc: '有资源和想法，却不知道从哪里切入、如何降低试错风险。'
+    }
+  ];
+
+  // SECTION 03 (原02): 三项协同服务 (阶梯式结构)
+  const THREE_SERVICES = [
+    {
+      num: '01',
+      title: '品类战略',
+      desc: '洞察机会，定义赛道，建立品类标准与增长策略。',
+      tags: ['洞察机会', '定义赛道', '增长策略']
+    },
+    {
+      num: '02',
+      title: '产品创新',
+      desc: '规划产品矩阵，定义核心体验，推进设计研发与量产落地。',
+      tags: ['产品矩阵', '核心体验', '量产落地']
+    },
+    {
+      num: '03',
+      title: '品牌创新',
+      desc: '建立价值定位、品牌话语、视觉体系与市场传播表达。',
+      tags: ['价值定位', '超级话语', '传播表达']
+    }
+  ];
+
+  // SECTION 04 (原04): 交付矩阵 (4行)
+  const DELIVERABLES_MATRIX = [
+    {
+      num: '01',
+      phase: '机会判断',
+      deliverable: '趋势洞察、用户研究、竞争地图、技术扫描',
+      outcome: '找到值得进入的品类机会'
+    },
+    {
+      num: '02',
+      phase: '品类定义',
+      deliverable: '品类定位、价值主张、品类标准、战略推演',
+      outcome: '明确新赛道的竞争规则'
+    },
+    {
+      num: '03',
+      phase: '产品与品牌构建',
+      deliverable: '产品矩阵、产品定义、品牌定位、话语与视觉系统',
+      outcome: '让品类价值可体验、可识别'
+    },
+    {
+      num: '04',
+      phase: '上市与引爆',
+      deliverable: '上市策略、传播主题、渠道策略、营销节奏',
+      outcome: '让新品类进入市场并形成认知'
+    }
+  ];
+
+  // SECTION 05 (原01): 品类创新七步流程
   const SEVEN_STEPS = [
     {
       num: '01',
@@ -72,105 +230,7 @@ export default function ThreeInOneCategoryConsultingPage({
     }
   ];
 
-  // SECTION 2: 三项协同服务
-  const THREE_SERVICES = [
-    {
-      num: '01',
-      title: '品类战略',
-      desc: '洞察机会，定义赛道，建立品类标准与增长策略。',
-      tags: ['洞察机会', '定义赛道', '增长策略']
-    },
-    {
-      num: '02',
-      title: '产品创新',
-      desc: '规划产品矩阵，定义核心体验，推进设计研发与量产落地。',
-      tags: ['产品矩阵', '核心体验', '量产落地']
-    },
-    {
-      num: '03',
-      title: '品牌创新',
-      desc: '建立价值定位、品牌话语、视觉体系与市场传播表达。',
-      tags: ['价值定位', '超级话语', '传播表达']
-    }
-  ];
-
-  // SECTION 3: 4大增长瓶颈问题
-  const CHALLENGES = [
-    {
-      num: '01',
-      title: '只能打价格战',
-      desc: '产品同质化严重，竞争持续压低利润空间。'
-    },
-    {
-      num: '02',
-      title: '增长没有新方向',
-      desc: '原有市场接近天花板，找不到第二增长曲线。'
-    },
-    {
-      num: '03',
-      title: '产品和品牌没有形成合力',
-      desc: '产品持续迭代，但用户无法感知明确价值与差异。'
-    },
-    {
-      num: '04',
-      title: '想做新品类，却缺少路径',
-      desc: '有资源和想法，却不知道从哪里切入、如何降低试错风险。'
-    }
-  ];
-
-  // SECTION 4: 交付矩阵 (4行)
-  const DELIVERABLES_MATRIX = [
-    {
-      num: '01',
-      phase: '机会判断',
-      deliverable: '趋势洞察、用户研究、竞争地图、技术扫描',
-      outcome: '找到值得进入的品类机会'
-    },
-    {
-      num: '02',
-      phase: '品类定义',
-      deliverable: '品类定位、价值主张、品类标准、战略推演',
-      outcome: '明确新赛道的竞争规则'
-    },
-    {
-      num: '03',
-      phase: '产品与品牌构建',
-      deliverable: '产品矩阵、产品定义、品牌定位、话语与视觉系统',
-      outcome: '让品类价值可体验、可识别'
-    },
-    {
-      num: '04',
-      phase: '上市与引爆',
-      deliverable: '上市策略、传播主题、渠道策略、营销节奏',
-      outcome: '让新品类进入市场并形成认知'
-    }
-  ];
-
-  // SECTION 5: 适合哪些企业 (4类企业)
-  const TARGET_ENTERPRISES = [
-    {
-      icon: Compass,
-      title: '开辟第二曲线',
-      desc: '想开辟新赛道、寻找第二增长曲线的企业'
-    },
-    {
-      icon: Layers,
-      title: '突破制造代工',
-      desc: '有制造和供应链能力，但缺少品类与品牌溢价的企业'
-    },
-    {
-      icon: ShieldCheck,
-      title: '跨越同质陷阱',
-      desc: '已有产品或品牌，却被同质化竞争限制增长的企业'
-    },
-    {
-      icon: TrendingUp,
-      title: '统筹全案增长',
-      desc: '需要统筹战略、产品、品牌，而非采购单点设计服务的企业'
-    }
-  ];
-
-  // SECTION 6: 案例数据 (3个案例)
+  // SECTION 06: 8个真实全案案例
   const CASES = [
     {
       id: 'tanmujiang',
@@ -181,7 +241,7 @@ export default function ThreeInOneCategoryConsultingPage({
       painPoint: '传统礼品梳具品类老化，消费场景局限于特定节庆。',
       action: '重构“东方木艺美学”品类定义，全系迭代爆品体验与品牌视觉。',
       result: '拓宽高端送礼与自我关爱场景，销量与品牌溢价同步提升。',
-      url: '/case/tanmujiang'
+      url: '/cases/tanmujiang'
     },
     {
       id: '55degree',
@@ -192,7 +252,7 @@ export default function ThreeInOneCategoryConsultingPage({
       painPoint: '保温杯市场同质化白热化，缺乏突破性功能使用场景。',
       action: '发现摇摇降温核心体验，一体化打造品类爆品与超级符号。',
       result: '创造数亿元销售神话，奠定降温杯品类霸主地位。',
-      url: '/case/55degree'
+      url: '/cases/55degree'
     },
     {
       id: 'miaokelanduo',
@@ -203,11 +263,66 @@ export default function ThreeInOneCategoryConsultingPage({
       painPoint: '国内奶酪市场被外资垄断，缺乏适合中国儿童的奶酪品类。',
       action: '重新定义“儿童奶酪棒”品类，主导产品造型阻隔包装与品牌IP化。',
       result: '3年实现数十倍爆发式增长，跻身百亿级乳品领军企业。',
-      url: '/case/miaokelanduo'
+      url: '/cases/miaokelanduo'
+    },
+    {
+      id: 'case-1',
+      client: '糯宝 Pophie',
+      subtitle: '三品合一，打造类生命体情感陪伴机器人',
+      image: '/src/assets/images/case_pophie.jpg',
+      defaultResult: '融合AI算法与温润触感，定义家庭情感机器人新品类。',
+      painPoint: '传统陪伴硬件机械冰冷，缺少情感交互与持续陪伴粘性。',
+      action: '软硬一体化定义生命感造型、微表情反馈与亲和力品牌语言。',
+      result: '上市即获科技与母婴圈层高度认可，荣获多项国际顶级设计大奖。',
+      url: '/cases/case-1'
+    },
+    {
+      id: 'xiaoxiandun',
+      client: '小仙炖',
+      subtitle: '确立“鲜炖燕窝”高端赛道，全维度打造保鲜标杆',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.33.png',
+      defaultResult: '开创即食滋补冷鲜新品类，连续多年位列全网销量第一。',
+      painPoint: '传统燕窝繁琐耗时，即食燕窝品质存疑，亟需信任新支点。',
+      action: '定义“鲜炖”品类标准，主导冷鲜包装容器与高端视觉符号。',
+      result: '建立国民级鲜炖燕窝第一认知，引爆数十亿级高端滋补赛道。',
+      url: '/cases/xiaoxiandun'
+    },
+    {
+      id: 'haidilao',
+      client: '海底捞',
+      subtitle: '堂食体验延伸至家庭即食，开创便携自热火锅',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png',
+      defaultResult: '拓宽火锅消费场景，自热即食系列年销售额破数亿元。',
+      painPoint: '堂食场景受物理空间与就餐时段限制，外带即食体验严重脱节。',
+      action: '定义自加热火锅结构安全与包装模块，沉淀家族化零售视觉。',
+      result: '成为快消零售第二增长曲线，引领行业即食火锅标准化浪潮。',
+      url: '/cases/case-5'
+    },
+    {
+      id: 'musinno',
+      client: '慢阶 Musinno',
+      subtitle: '全球首款工作站属性乐谱台，斩获红点至尊奖',
+      image: '/src/assets/images/musinno_hero_banner_1785826677156.jpg',
+      defaultResult: '从概念草图到批量量产，打通专业音乐设备新品类。',
+      painPoint: '专业音乐演奏家排练设备杂乱，传统谱架无法融合现代数字设备。',
+      action: '品类定义乐谱工作站形态，完成全套精密机械架构与极简美学。',
+      result: '荣获2023红点至尊奖，进驻国内外数十所顶级音乐学府。',
+      url: '/cases/musinno'
+    },
+    {
+      id: 'yuexianhuo',
+      client: '悦鲜活',
+      subtitle: '超瞬时锁鲜技术赋能，打造年轻化高端鲜乳爆品',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif',
+      defaultResult: '0.09s黄金保鲜叙事，助力品牌跃升高端鲜奶第一梯队。',
+      painPoint: '常温奶同质化严重，传统鲜奶保质期短且包装视觉老化。',
+      action: '聚焦0.09s瞬时锁鲜科技心智，重构人体工学瓶身与年轻化视觉。',
+      result: '销量年复合增长超100%，成为新一代高端鲜奶现象级单品。',
+      url: '/cases/case-v2-1'
     }
   ];
 
-  // SECTION 7: FAQ (6个问题)
+  // SECTION 07: FAQ (6个问题)
   const FAQS = [
     {
       q: '1. 三品合一全案和只做产品／品牌设计有什么区别？',
@@ -315,7 +430,827 @@ export default function ThreeInOneCategoryConsultingPage({
         </div>
       </section>
 
-      {/* ================= SECTION 1: 品类创新七步流程 (METHOD / 01) ================= */}
+      {/* ================= SECTION 01: 适合哪些企业 (WHO IT IS FOR / 01) ================= */}
+      <section id="section-who-it-is-for" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                WHO IT IS FOR / 01
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                适合需要系统突破的企业
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              不是所有项目都需要三品合一。它面向的是需要开辟新赛道、统筹产品与品牌长期增长的企业。
+            </p>
+          </div>
+
+          {/* 4 Enterprise Columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {TARGET_ENTERPRISES.map((item, idx) => {
+              const IconComp = item.icon;
+              return (
+                <div key={idx} className="group p-6 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300">
+                  {/* Fine Line Circle Icon */}
+                  <div className="w-12 h-12 rounded-full border border-[#E5E5E5] group-hover:border-[#007BC7] flex items-center justify-center mb-6 transition-colors duration-300">
+                    <IconComp className="w-6 h-6 text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300" />
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-[#1A1A1A] mb-3 font-display">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-base text-[#4D4D4D] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 02: 你是否遇到这些增长问题 (CHALLENGES / 02) ================= */}
+      <section id="section-growth-challenges" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                CHALLENGES / 02
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                增长为什么停在原地
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              当企业持续投入却没有新增量，问题往往不在单点设计，而在于缺少一条清晰的品类增长路径。
+            </p>
+          </div>
+
+          {/* 4 Problem Columns Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {CHALLENGES.map((item) => (
+              <div 
+                key={item.num}
+                className="group flex flex-col justify-between p-6 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 relative min-h-[220px]"
+              >
+                <div>
+                  {/* Top Big Number */}
+                  <div className="font-mono text-3xl lg:text-4xl font-extrabold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300 mb-4">
+                    {item.num}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2 font-display">
+                    {item.title}
+                  </h3>
+
+                  {/* 2-line Description */}
+                  <p className="text-base text-[#4D4D4D] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+
+                {/* Bottom Fine Line with Hover Animation */}
+                <div className="mt-6 pt-4 border-t border-[#E5E5E5] relative overflow-hidden">
+                  <div className="w-full h-[2px] bg-[#E5E5E5]" />
+                  <div className="absolute top-4 left-0 w-full h-[2px] bg-[#007BC7] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 03: 品类有周期，创新要找准时机 (CATEGORY LIFE CYCLE / 03) ================= */}
+      <section id="category-life-cycle" className="py-20 lg:py-24 bg-[#FAFAFA] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto relative z-10">
+          
+          {/* 一、Section Header */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: [0.65, 0, 0.35, 1] }}
+            className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 lg:mb-16 gap-6"
+          >
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                CATEGORY LIFE CYCLE / 03
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1A1A1A] font-display">
+                品类有周期，创新要找准时机
+              </h2>
+            </div>
+            <div className="max-w-xl text-left">
+              <p className="text-sm md:text-base text-[#4D4D4D] leading-relaxed font-normal mb-1.5">
+                从导入、成长、成熟到衰退，市场机会、用户心智与竞争问题不断变化。
+              </p>
+              <p className="text-xs md:text-sm text-[#007BC7] font-medium leading-relaxed">
+                先找到你的品类阶段，再判断适合你的创新路径。
+              </p>
+            </div>
+          </motion.div>
+
+          {/* 二、生命周期曲线 (Desktop & Tablet) */}
+          <div className="hidden md:block relative w-full mb-10 select-none">
+            <svg viewBox="0 0 1000 86" className="w-full h-20 overflow-visible">
+              {/* Base continuous sleek line: 导入 (低位) -> 成长 (快速上升) -> 成熟 (顶部平台) -> 衰退 (下降) */}
+              <path
+                d="M 20 66 C 140 66, 200 64, 250 48 C 300 32, 420 16, 500 16 C 580 16, 680 16, 750 36 C 820 56, 880 66, 980 68"
+                fill="none"
+                stroke="#E5E5E5"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              
+              {/* Active Highlight Segment based on hoveredStage */}
+              {hoveredStage === 0 && (
+                <path
+                  d="M 20 66 C 140 66, 200 64, 250 48"
+                  fill="none"
+                  stroke="#007BC7"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  className="transition-all duration-300"
+                />
+              )}
+              {hoveredStage === 1 && (
+                <path
+                  d="M 220 54 C 290 36, 420 16, 500 16"
+                  fill="none"
+                  stroke="#007BC7"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  className="transition-all duration-300"
+                />
+              )}
+              {hoveredStage === 2 && (
+                <path
+                  d="M 480 16 C 580 16, 680 16, 750 36"
+                  fill="none"
+                  stroke="#007BC7"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  className="transition-all duration-300"
+                />
+              )}
+              {hoveredStage === 3 && (
+                <path
+                  d="M 720 28 C 800 50, 880 66, 980 68"
+                  fill="none"
+                  stroke="#007BC7"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  className="transition-all duration-300"
+                />
+              )}
+
+              {/* 4 Center Stage Node Points */}
+              {[
+                { cx: 125, cy: 66, stage: 0, label: '01 导入期' },
+                { cx: 375, cy: 30, stage: 1, label: '02 成长期' },
+                { cx: 625, cy: 16, stage: 2, label: '03 成熟期' },
+                { cx: 875, cy: 56, stage: 3, label: '04 衰退期' },
+              ].map((node) => {
+                const isActive = hoveredStage === node.stage;
+                return (
+                  <g 
+                    key={node.stage} 
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredStage(node.stage)}
+                    onMouseLeave={() => setHoveredStage(null)}
+                    onClick={() => {
+                      setHoveredStage(hoveredStage === node.stage ? null : node.stage);
+                    }}
+                  >
+                    {/* Vertical connecting guideline down towards card */}
+                    <line
+                      x1={node.cx}
+                      y1={node.cy}
+                      x2={node.cx}
+                      y2={86}
+                      stroke={isActive ? '#007BC7' : '#E5E5E5'}
+                      strokeWidth={isActive ? '1.5' : '1'}
+                      strokeDasharray={isActive ? 'none' : '3 3'}
+                      className="transition-colors duration-300"
+                    />
+                    {/* Node circle */}
+                    <circle
+                      cx={node.cx}
+                      cy={node.cy}
+                      r={isActive ? 6.5 : 4.5}
+                      fill={isActive ? '#007BC7' : '#FFFFFF'}
+                      stroke={isActive ? '#007BC7' : '#8C8C8C'}
+                      strokeWidth={isActive ? '3' : '1.5'}
+                      className="transition-all duration-300"
+                    />
+                    {/* Stage Text Label */}
+                    <text
+                      x={node.cx}
+                      y={node.stage === 2 ? node.cy - 10 : node.cy - 12}
+                      textAnchor="middle"
+                      className={`text-[11px] font-mono font-bold tracking-wider transition-colors duration-300 select-none ${
+                        isActive ? 'fill-[#007BC7]' : 'fill-[#8C8C8C]'
+                      }`}
+                    >
+                      {node.label}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+
+          {/* Mobile Vertical Timeline Overview */}
+          <div className="md:hidden flex items-center justify-between px-3.5 py-2.5 mb-6 bg-white border border-[#E5E5E5] rounded-xl text-xs font-mono text-[#4D4D4D]">
+            <button 
+              onClick={() => setHoveredStage(hoveredStage === 0 ? null : 0)}
+              className={hoveredStage === 0 ? 'text-[#007BC7] font-bold underline' : ''}
+            >
+              01 导入
+            </button>
+            <span className="text-[#8C8C8C]">→</span>
+            <button 
+              onClick={() => setHoveredStage(hoveredStage === 1 ? null : 1)}
+              className={hoveredStage === 1 ? 'text-[#007BC7] font-bold underline' : ''}
+            >
+              02 成长
+            </button>
+            <span className="text-[#8C8C8C]">→</span>
+            <button 
+              onClick={() => setHoveredStage(hoveredStage === 2 ? null : 2)}
+              className={hoveredStage === 2 ? 'text-[#007BC7] font-bold underline' : ''}
+            >
+              03 成熟
+            </button>
+            <span className="text-[#8C8C8C]">→</span>
+            <button 
+              onClick={() => setHoveredStage(hoveredStage === 3 ? null : 3)}
+              className={hoveredStage === 3 ? 'text-[#007BC7] font-bold underline' : ''}
+            >
+              04 衰退
+            </button>
+          </div>
+
+          {/* 三、四阶段核心诊断卡片 (4-Column Grid) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+            
+            {/* STAGE 01: 导入期 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.05 }}
+              onMouseEnter={() => setHoveredStage(0)}
+              onMouseLeave={() => setHoveredStage(null)}
+              onClick={() => setHoveredStage(hoveredStage === 0 ? null : 0)}
+              className={`flex flex-col justify-between p-6 sm:p-7 bg-white rounded-2xl border transition-all duration-300 text-left cursor-pointer ${
+                hoveredStage === 0 
+                  ? 'border-[#007BC7] shadow-sm -translate-y-1 ring-1 ring-[#007BC7]/30' 
+                  : hoveredStage !== null 
+                    ? 'border-[#E5E5E5] opacity-60' 
+                    : 'border-[#E5E5E5] hover:border-[#007BC7]/50'
+              }`}
+            >
+              <div className="space-y-4">
+                {/* Number & Stage Name */}
+                <div className="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3">
+                  <span className={`text-3xl font-bold font-mono tracking-tight transition-colors duration-300 ${
+                    hoveredStage === 0 ? 'text-[#007BC7]' : 'text-[#8C8C8C]'
+                  }`}>
+                    01
+                  </span>
+                  <span className="text-xl font-bold text-[#1A1A1A] font-display">
+                    导入期
+                  </span>
+                </div>
+
+                {/* 市场状态 */}
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    市场状态
+                  </span>
+                  <p className="text-xs text-[#1A1A1A] font-medium leading-relaxed">
+                    品类探索 · 需求萌芽 · 市场教育
+                  </p>
+                </div>
+
+                {/* 用户心智 */}
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    用户心智
+                  </span>
+                  <p className="text-xs text-[#4D4D4D] leading-relaxed">
+                    认知有限 · 需求未明 · 尝试意愿
+                  </p>
+                </div>
+
+                {/* 核心问题 (High Priority Highlight) */}
+                <div className={`p-3.5 rounded-xl border-l-2 transition-all duration-300 ${
+                  hoveredStage === 0 
+                    ? 'bg-[#007BC7]/[0.08] border-[#007BC7]' 
+                    : 'bg-[#007BC7]/[0.03] border-[#007BC7]/70'
+                }`}>
+                  <span className="text-[10px] font-mono tracking-widest text-[#007BC7] uppercase font-bold block mb-1.5">
+                    核心问题
+                  </span>
+                  <div className="space-y-1 text-xs text-[#1A1A1A] font-medium leading-normal">
+                    <p>· 需求从哪里来？</p>
+                    <p>· 为什么是现在？</p>
+                    <p>· 用户为什么选择？</p>
+                  </div>
+                </div>
+
+                {/* 创新方向 */}
+                <div className="pt-2">
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    创新方向
+                  </span>
+                  <p className="text-xs font-bold text-[#1A1A1A] leading-relaxed">
+                    发现机会 · 定义价值 · 建立认知
+                  </p>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="pt-5 mt-5 border-t border-[#E5E5E5]">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenContactModal();
+                  }}
+                  className="w-full text-left flex items-center justify-between text-xs font-bold text-[#007BC7] hover:text-[#005F96] transition-colors group cursor-pointer"
+                >
+                  <span>匹配对应服务方案</span>
+                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform duration-200" />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* STAGE 02: 成长期 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              onMouseEnter={() => setHoveredStage(1)}
+              onMouseLeave={() => setHoveredStage(null)}
+              onClick={() => setHoveredStage(hoveredStage === 1 ? null : 1)}
+              className={`flex flex-col justify-between p-6 sm:p-7 bg-white rounded-2xl border transition-all duration-300 text-left cursor-pointer ${
+                hoveredStage === 1 
+                  ? 'border-[#007BC7] shadow-sm -translate-y-1 ring-1 ring-[#007BC7]/30' 
+                  : hoveredStage !== null 
+                    ? 'border-[#E5E5E5] opacity-60' 
+                    : 'border-[#E5E5E5] hover:border-[#007BC7]/50'
+              }`}
+            >
+              <div className="space-y-4">
+                {/* Number & Stage Name */}
+                <div className="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3">
+                  <span className={`text-3xl font-bold font-mono tracking-tight transition-colors duration-300 ${
+                    hoveredStage === 1 ? 'text-[#007BC7]' : 'text-[#8C8C8C]'
+                  }`}>
+                    02
+                  </span>
+                  <span className="text-xl font-bold text-[#1A1A1A] font-display">
+                    成长期
+                  </span>
+                </div>
+
+                {/* 市场状态 */}
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    市场状态
+                  </span>
+                  <p className="text-xs text-[#1A1A1A] font-medium leading-relaxed">
+                    需求增长 · 竞争进入 · 品类扩张
+                  </p>
+                </div>
+
+                {/* 用户心智 */}
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    用户心智
+                  </span>
+                  <p className="text-xs text-[#4D4D4D] leading-relaxed">
+                    认知形成 · 选择增多 · 偏好建立
+                  </p>
+                </div>
+
+                {/* 核心问题 (High Priority Highlight) */}
+                <div className={`p-3.5 rounded-xl border-l-2 transition-all duration-300 ${
+                  hoveredStage === 1 
+                    ? 'bg-[#007BC7]/[0.08] border-[#007BC7]' 
+                    : 'bg-[#007BC7]/[0.03] border-[#007BC7]/70'
+                }`}>
+                  <span className="text-[10px] font-mono tracking-widest text-[#007BC7] uppercase font-bold block mb-1.5">
+                    核心问题
+                  </span>
+                  <div className="space-y-1 text-xs text-[#1A1A1A] font-medium leading-normal">
+                    <p>· 如何建立差异？</p>
+                    <p>· 如何抢占认知？</p>
+                    <p>· 如何持续增长？</p>
+                  </div>
+                </div>
+
+                {/* 创新方向 */}
+                <div className="pt-2">
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    创新方向
+                  </span>
+                  <p className="text-xs font-bold text-[#1A1A1A] leading-relaxed">
+                    产品升级 · 差异化 · 品牌认知
+                  </p>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="pt-5 mt-5 border-t border-[#E5E5E5]">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenContactModal();
+                  }}
+                  className="w-full text-left flex items-center justify-between text-xs font-bold text-[#007BC7] hover:text-[#005F96] transition-colors group cursor-pointer"
+                >
+                  <span>匹配对应服务方案</span>
+                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform duration-200" />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* STAGE 03: 成熟期 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              onMouseEnter={() => setHoveredStage(2)}
+              onMouseLeave={() => setHoveredStage(null)}
+              onClick={() => setHoveredStage(hoveredStage === 2 ? null : 2)}
+              className={`flex flex-col justify-between p-6 sm:p-7 bg-white rounded-2xl border transition-all duration-300 text-left cursor-pointer ${
+                hoveredStage === 2 
+                  ? 'border-[#007BC7] shadow-sm -translate-y-1 ring-1 ring-[#007BC7]/30' 
+                  : hoveredStage !== null 
+                    ? 'border-[#E5E5E5] opacity-60' 
+                    : 'border-[#E5E5E5] hover:border-[#007BC7]/50'
+              }`}
+            >
+              <div className="space-y-4">
+                {/* Number & Stage Name */}
+                <div className="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3">
+                  <span className={`text-3xl font-bold font-mono tracking-tight transition-colors duration-300 ${
+                    hoveredStage === 2 ? 'text-[#007BC7]' : 'text-[#8C8C8C]'
+                  }`}>
+                    03
+                  </span>
+                  <span className="text-xl font-bold text-[#1A1A1A] font-display">
+                    成熟期
+                  </span>
+                </div>
+
+                {/* 市场状态 */}
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    市场状态
+                  </span>
+                  <p className="text-xs text-[#1A1A1A] font-medium leading-relaxed">
+                    竞争激烈 · 同质化 · 增长放缓
+                  </p>
+                </div>
+
+                {/* 用户心智 */}
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    用户心智
+                  </span>
+                  <p className="text-xs text-[#4D4D4D] leading-relaxed">
+                    认知固化 · 选择成熟 · 价格敏感
+                  </p>
+                </div>
+
+                {/* 核心问题 (High Priority Highlight) */}
+                <div className={`p-3.5 rounded-xl border-l-2 transition-all duration-300 ${
+                  hoveredStage === 2 
+                    ? 'bg-[#007BC7]/[0.08] border-[#007BC7]' 
+                    : 'bg-[#007BC7]/[0.03] border-[#007BC7]/70'
+                }`}>
+                  <span className="text-[10px] font-mono tracking-widest text-[#007BC7] uppercase font-bold block mb-1.5">
+                    核心问题
+                  </span>
+                  <div className="space-y-1 text-xs text-[#1A1A1A] font-medium leading-normal">
+                    <p>· 如何摆脱同质化？</p>
+                    <p>· 如何重建价值？</p>
+                    <p>· 新增长从哪里来？</p>
+                  </div>
+                </div>
+
+                {/* 创新方向 */}
+                <div className="pt-2">
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    创新方向
+                  </span>
+                  <p className="text-xs font-bold text-[#1A1A1A] leading-relaxed">
+                    价值重构 · 场景创新 · 品类分化
+                  </p>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="pt-5 mt-5 border-t border-[#E5E5E5]">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenContactModal();
+                  }}
+                  className="w-full text-left flex items-center justify-between text-xs font-bold text-[#007BC7] hover:text-[#005F96] transition-colors group cursor-pointer"
+                >
+                  <span>匹配对应服务方案</span>
+                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform duration-200" />
+                </button>
+              </div>
+            </motion.div>
+
+            {/* STAGE 04: 衰退期 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              onMouseEnter={() => setHoveredStage(3)}
+              onMouseLeave={() => setHoveredStage(null)}
+              onClick={() => setHoveredStage(hoveredStage === 3 ? null : 3)}
+              className={`flex flex-col justify-between p-6 sm:p-7 bg-white rounded-2xl border transition-all duration-300 text-left cursor-pointer ${
+                hoveredStage === 3 
+                  ? 'border-[#007BC7] shadow-sm -translate-y-1 ring-1 ring-[#007BC7]/30' 
+                  : hoveredStage !== null 
+                    ? 'border-[#E5E5E5] opacity-60' 
+                    : 'border-[#E5E5E5] hover:border-[#007BC7]/50'
+              }`}
+            >
+              <div className="space-y-4">
+                {/* Number & Stage Name */}
+                <div className="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3">
+                  <span className={`text-3xl font-bold font-mono tracking-tight transition-colors duration-300 ${
+                    hoveredStage === 3 ? 'text-[#007BC7]' : 'text-[#8C8C8C]'
+                  }`}>
+                    04
+                  </span>
+                  <span className="text-xl font-bold text-[#1A1A1A] font-display">
+                    衰退期
+                  </span>
+                </div>
+
+                {/* 市场状态 */}
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    市场状态
+                  </span>
+                  <p className="text-xs text-[#1A1A1A] font-medium leading-relaxed">
+                    需求下降 · 心智迁移 · 旧增长失效
+                  </p>
+                </div>
+
+                {/* 用户心智 */}
+                <div>
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    用户心智
+                  </span>
+                  <p className="text-xs text-[#4D4D4D] leading-relaxed">
+                    需求转移 · 品类弱化 · 认知迁移
+                  </p>
+                </div>
+
+                {/* 核心问题 (High Priority Highlight) */}
+                <div className={`p-3.5 rounded-xl border-l-2 transition-all duration-300 ${
+                  hoveredStage === 3 
+                    ? 'bg-[#007BC7]/[0.08] border-[#007BC7]' 
+                    : 'bg-[#007BC7]/[0.03] border-[#007BC7]/70'
+                }`}>
+                  <span className="text-[10px] font-mono tracking-widest text-[#007BC7] uppercase font-bold block mb-1.5">
+                    核心问题
+                  </span>
+                  <div className="space-y-1 text-xs text-[#1A1A1A] font-medium leading-normal">
+                    <p>· 用户为什么离开？</p>
+                    <p>· 旧价值还能做什么？</p>
+                    <p>· 下一增长点在哪里？</p>
+                  </div>
+                </div>
+
+                {/* 创新方向 */}
+                <div className="pt-2">
+                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
+                    创新方向
+                  </span>
+                  <p className="text-xs font-bold text-[#1A1A1A] leading-relaxed">
+                    价值再定义 · 品类拓展 · 新增长
+                  </p>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="pt-5 mt-5 border-t border-[#E5E5E5]">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenContactModal();
+                  }}
+                  className="w-full text-left flex items-center justify-between text-xs font-bold text-[#007BC7] hover:text-[#005F96] transition-colors group cursor-pointer"
+                >
+                  <span>匹配对应服务方案</span>
+                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform duration-200" />
+                </button>
+              </div>
+            </motion.div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 04: 全案是什么／服务定义 (SERVICE DEFINITION / 04) ================= */}
+      <section id="section-three-in-one-service" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                SERVICE DEFINITION / 04
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                品类先行，产品与品牌协同
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              以品类战略确定新赛道，再同步完成产品 0–1 与品牌 0–1，让企业拥有可被市场识别、选择并持续增长的新品类。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left Column: CTA & Overview Card */}
+            <div className="lg:col-span-4 bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] flex flex-col justify-between">
+              <div>
+                <span className="inline-block bg-[#007BC7] text-white text-xs font-mono font-bold px-3 py-1 rounded-full mb-4">
+                  ONE SYSTEM
+                </span>
+                <h3 className="text-xl font-bold text-[#1A1A1A] font-display mb-3">
+                  全案系统化突破
+                </h3>
+                <p className="text-sm text-[#4D4D4D] leading-relaxed">
+                  不再做割裂的单点设计。品类战略指引方向，产品体验筑牢底座，品牌传播塑造感知，三者协同形成高爆发增长闭环。
+                </p>
+              </div>
+
+              <div className="pt-6 border-t border-[#E5E5E5]">
+                <button 
+                  onClick={onOpenContactModal}
+                  className="w-full bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all duration-300 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  预约三品合一专家咨询
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Right System Structure Cards Column (Strictly Aligned Vertical Layout) */}
+            <div className="lg:col-span-8">
+              <div className="bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] h-full flex flex-col justify-center relative">
+                
+                <div className="space-y-4 relative">
+                  {THREE_SERVICES.map((srv, idx) => {
+                    const isHovered = hoveredServiceCard === idx;
+                    
+                    return (
+                      <div
+                        key={srv.num}
+                        onMouseEnter={() => setHoveredServiceCard(idx)}
+                        onMouseLeave={() => setHoveredServiceCard(null)}
+                        className={`p-6 rounded-2xl bg-white transition-all duration-300 border cursor-default relative w-full ${
+                          isHovered ? 'border-[#007BC7] shadow-sm' : 'border-[#E5E5E5]'
+                        }`}
+                      >
+                        <div className="flex items-start gap-4">
+                          {/* Left Number Badge: 01 / 02 / 03, Blue background & White text */}
+                          <span className="w-8 h-8 rounded-lg bg-[#007BC7] text-white font-mono font-bold text-sm flex items-center justify-center shrink-0">
+                            {srv.num}
+                          </span>
+
+                          <div className="flex-1">
+                            <h3 className="text-xl font-semibold text-[#1A1A1A] font-display mb-1">
+                              {srv.title}
+                            </h3>
+                            <p className="text-base text-[#4D4D4D] leading-relaxed">
+                              {srv.desc}
+                            </p>
+
+                            {/* Hover Expanded Keywords */}
+                            <div className={`flex flex-wrap gap-2 transition-all duration-300 overflow-hidden ${
+                              isHovered ? 'max-h-20 opacity-100 mt-4 pt-3 border-t border-[#E5E5E5]' : 'max-h-0 opacity-0'
+                            }`}>
+                              {srv.tags.map((tag, tIdx) => (
+                                <span key={tIdx} className="text-xs bg-[#F0F0F0] text-[#1A1A1A] px-2.5 py-1 rounded font-medium">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Thin Connecting Line to next card */}
+                        {idx < THREE_SERVICES.length - 1 && (
+                          <div 
+                            className={`hidden md:block absolute -bottom-4 w-[2px] h-4 z-10 transition-colors ${
+                              isHovered ? 'bg-[#007BC7]' : 'bg-[#E5E5E5]'
+                            }`}
+                            style={{ left: '40px' }}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 05: 服务交付 (DELIVERABLES / 05) ================= */}
+      <section id="section-deliverables-matrix" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                DELIVERABLES / 05
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                从判断机会，到进入市场
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              每个阶段都有明确的工作动作、核心交付和预期结果，让品类创新从战略判断走向实际增长。
+            </p>
+          </div>
+
+          {/* 4 Deliverable Matrix Rows */}
+          <div className="border-t border-[#E5E5E5] divide-y divide-[#E5E5E5]">
+            {DELIVERABLES_MATRIX.map((row) => (
+              <div 
+                key={row.num}
+                className="group py-6 lg:py-8 px-4 hover:bg-[#F0F0F0]/50 transition-colors duration-300 relative"
+              >
+                {/* Left Hover Accent Indicator Line */}
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#007BC7] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-center">
+                  
+                  {/* Col 1: Phase Number & Title */}
+                  <div className="lg:col-span-4 flex items-center gap-4">
+                    <span className="font-mono text-2xl font-bold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors">
+                      {row.num}
+                    </span>
+                    <h3 className="text-xl font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors font-display">
+                      {row.phase}
+                    </h3>
+                  </div>
+
+                  {/* Col 2: Key Deliverables */}
+                  <div className="lg:col-span-5 text-base text-[#4D4D4D] leading-relaxed">
+                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">关键交付：</span>
+                    {row.deliverable}
+                  </div>
+
+                  {/* Col 3: Solution Outcome */}
+                  <div className="lg:col-span-3 text-base font-medium text-[#1A1A1A] group-hover:-translate-y-0.5 transition-transform duration-300">
+                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">解决结果：</span>
+                    {row.outcome}
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 06: 方法论／核心服务结构 (METHOD / 06) ================= */}
       <section id="section-seven-steps" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
         <div className="max-w-[95%] w-full mx-auto">
           
@@ -323,7 +1258,7 @@ export default function ThreeInOneCategoryConsultingPage({
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-4">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                METHOD / 01
+                METHOD / 06
               </span>
               <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
                 品类创新七步流程
@@ -334,7 +1269,7 @@ export default function ThreeInOneCategoryConsultingPage({
             </p>
           </div>
 
-          {/* Editorial Strategic Roadmap - No Gray Box */}
+          {/* Strategic Roadmap */}
           <div className="w-full">
             
             {/* Desktop Horizontal Editorial Roadmap */}
@@ -372,7 +1307,6 @@ export default function ThreeInOneCategoryConsultingPage({
                   {SEVEN_STEPS.map((step) => (
                     <div key={step.num} className="flex items-center">
                       <div className="relative flex items-center justify-center">
-                        {/* Connection Dot */}
                         <div className="w-3 h-3 rounded-full border-2 bg-[#FFFFFF] border-[#E5E5E5] hover:border-[#007BC7] hover:bg-[#007BC7] transition-all duration-300" />
                       </div>
                     </div>
@@ -427,7 +1361,6 @@ export default function ThreeInOneCategoryConsultingPage({
             <div className="block lg:hidden relative pl-6 border-l border-[#E5E5E5] space-y-8">
               {SEVEN_STEPS.map((step) => (
                 <div key={step.num} className="relative group">
-                  {/* Node on vertical line */}
                   <div className="absolute -left-[31px] top-1.5 w-3 h-3 rounded-full border-2 bg-[#FFFFFF] border-[#E5E5E5]" />
 
                   <div className="flex items-center gap-3 mb-2">
@@ -458,284 +1391,12 @@ export default function ThreeInOneCategoryConsultingPage({
         </div>
       </section>
 
-      {/* ================= SECTION 2: 三品合一品类创新全案是什么 (SERVICE / 02) ================= */}
-      <section id="section-three-in-one-service" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+      {/* ================= SECTION 07: 8个案例横向轮播 (CASE STUDIES / 07) ================= */}
+      <section id="section-case-studies" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5] overflow-hidden">
         <div className="max-w-[95%] w-full mx-auto">
           
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                SERVICE / 02
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-                品类先行，产品与品牌协同
-              </h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              以品类战略确定新赛道，再同步完成产品 0–1 与品牌 0–1，让企业拥有可被市场识别、选择并持续增长的新品类。
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            
-            {/* Left Column: CTA & Overview Card */}
-            <div className="lg:col-span-4 bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] flex flex-col justify-between">
-              <div>
-                <span className="inline-block bg-[#007BC7] text-white text-xs font-mono font-bold px-3 py-1 rounded-full mb-4">
-                  ONE SYSTEM
-                </span>
-                <h3 className="text-xl font-bold text-[#1A1A1A] font-display mb-3">
-                  全案系统化突破
-                </h3>
-                <p className="text-sm text-[#4D4D4D] leading-relaxed">
-                  不再做割裂的单点设计。品类战略指引方向，产品体验筑牢底座，品牌传播塑造感知，三者协同形成高爆发增长闭环。
-                </p>
-              </div>
-
-              <div className="pt-6 border-t border-[#E5E5E5]">
-                <button 
-                  onClick={onOpenContactModal}
-                  className="w-full bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all duration-300 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  预约三品合一专家咨询
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Right System Structure Cards Column */}
-            <div className="lg:col-span-8">
-              <div className="bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] h-full flex flex-col justify-center">
-                
-                <div className="space-y-4">
-                  {THREE_SERVICES.map((srv, idx) => {
-                    const isHovered = hoveredServiceCard === idx;
-                    return (
-                      <div
-                        key={srv.num}
-                        onMouseEnter={() => setHoveredServiceCard(idx)}
-                        onMouseLeave={() => setHoveredServiceCard(null)}
-                        className={`p-6 rounded-xl bg-white transition-all duration-300 border cursor-pointer relative ${
-                          isHovered ? 'border-[#007BC7] shadow-sm' : 'border-[#E5E5E5]'
-                        }`}
-                        style={{
-                          marginLeft: `${idx * 16}px` // Staggered indent for 3-layer structure
-                        }}
-                      >
-                        <div className="flex items-start gap-4">
-                          {/* Number Badge */}
-                          <span className="w-8 h-8 rounded-lg bg-[#007BC7] text-white font-mono font-bold text-sm flex items-center justify-center shrink-0">
-                            {srv.num}
-                          </span>
-
-                          <div className="flex-1">
-                            <h3 className="text-xl font-semibold text-[#1A1A1A] font-display mb-1">
-                              {srv.title}
-                            </h3>
-                            <p className="text-base text-[#4D4D4D] leading-relaxed">
-                              {srv.desc}
-                            </p>
-
-                            {/* Hover Expanded Keywords */}
-                            <div className={`flex flex-wrap gap-2 transition-all duration-300 overflow-hidden ${
-                              isHovered ? 'max-h-20 opacity-100 mt-4 pt-3 border-t border-[#E5E5E5]' : 'max-h-0 opacity-0'
-                            }`}>
-                              {srv.tags.map((tag, tIdx) => (
-                                <span key={tIdx} className="text-xs bg-[#F0F0F0] text-[#1A1A1A] px-2.5 py-1 rounded font-medium">
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Connecting Line to next card */}
-                        {idx < THREE_SERVICES.length - 1 && (
-                          <div className={`absolute left-10 -bottom-4 w-[2px] h-4 z-10 transition-colors ${
-                            isHovered ? 'bg-[#007BC7]' : 'bg-[#E5E5E5]'
-                          }`} />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 3: 你是否遇到这些增长问题 (CHALLENGES / 03) ================= */}
-      <section id="section-growth-challenges" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                CHALLENGES / 03
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-                增长为什么停在原地
-              </h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              当企业持续投入却没有新增量，问题往往不在单点设计，而在于缺少一条清晰的品类增长路径。
-            </p>
-          </div>
-
-          {/* 4 Problem Columns Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {CHALLENGES.map((item) => (
-              <div 
-                key={item.num}
-                className="group flex flex-col justify-between p-6 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 relative min-h-[220px]"
-              >
-                <div>
-                  {/* Top Big Number */}
-                  <div className="font-mono text-3xl lg:text-4xl font-extrabold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300 mb-4">
-                    {item.num}
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2 font-display">
-                    {item.title}
-                  </h3>
-
-                  {/* 2-line Description */}
-                  <p className="text-base text-[#4D4D4D] leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-
-                {/* Bottom Fine Line with Hover Animation */}
-                <div className="mt-6 pt-4 border-t border-[#E5E5E5] relative overflow-hidden">
-                  <div className="w-full h-[2px] bg-[#E5E5E5]" />
-                  <div className="absolute top-4 left-0 w-full h-[2px] bg-[#007BC7] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 4: 我们交付什么 (DELIVERABLES / 04) ================= */}
-      <section id="section-deliverables-matrix" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                DELIVERABLES / 04
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-                从判断机会，到进入市场
-              </h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              每个阶段都有明确的工作动作、核心交付和预期结果，让品类创新从战略判断走向实际增长。
-            </p>
-          </div>
-
-          {/* 4 Deliverable Matrix Rows */}
-          <div className="border-t border-[#E5E5E5] divide-y divide-[#E5E5E5]">
-            {DELIVERABLES_MATRIX.map((row) => (
-              <div 
-                key={row.num}
-                className="group py-6 lg:py-8 px-4 hover:bg-[#F0F0F0]/50 transition-colors duration-300 relative"
-              >
-                {/* Left Hover Accent Indicator Line */}
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#007BC7] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-center">
-                  
-                  {/* Col 1: Phase Number & Title */}
-                  <div className="lg:col-span-4 flex items-center gap-4">
-                    <span className="font-mono text-2xl font-bold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors">
-                      {row.num}
-                    </span>
-                    <h3 className="text-xl font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors font-display">
-                      {row.phase}
-                    </h3>
-                  </div>
-
-                  {/* Col 2: Key Deliverables */}
-                  <div className="lg:col-span-5 text-base text-[#4D4D4D] leading-relaxed">
-                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">关键交付：</span>
-                    {row.deliverable}
-                  </div>
-
-                  {/* Col 3: Solution Outcome */}
-                  <div className="lg:col-span-3 text-base font-medium text-[#1A1A1A] group-hover:-translate-y-0.5 transition-transform duration-300">
-                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">解决结果：</span>
-                    {row.outcome}
-                  </div>
-
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 5: 适合哪些企业 (WHO IT IS FOR / 05) ================= */}
-      <section id="section-who-it-is-for" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                WHO IT IS FOR / 05
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-                适合需要系统突破的企业
-              </h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              不是所有项目都需要三品合一。它面向的是需要开辟新赛道、统筹产品与品牌长期增长的企业。
-            </p>
-          </div>
-
-          {/* 4 Enterprise Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {TARGET_ENTERPRISES.map((item, idx) => {
-              const IconComp = item.icon;
-              return (
-                <div key={idx} className="group p-6 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300">
-                  {/* Fine Line Circle Icon */}
-                  <div className="w-12 h-12 rounded-full border border-[#E5E5E5] group-hover:border-[#007BC7] flex items-center justify-center mb-6 transition-colors duration-300">
-                    <IconComp className="w-6 h-6 text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300" />
-                  </div>
-
-                  <h3 className="text-xl font-semibold text-[#1A1A1A] mb-3 font-display">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-base text-[#4D4D4D] leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 6: 品类创新案例 (CASE STUDIES / 06) ================= */}
-      <section id="section-case-studies" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+          {/* Header with Navigation Arrows */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-6">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
                 CASE STUDIES / 06
@@ -744,18 +1405,66 @@ export default function ThreeInOneCategoryConsultingPage({
                 从策略到市场的真实结果
               </h2>
             </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              选择与“三品合一”服务边界强相关的全案案例，证明从品类定义到产品、品牌和市场落地的完整能力。
-            </p>
+            
+            <div className="flex items-center justify-between md:justify-end gap-6">
+              <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal hidden sm:block">
+                精选 8 个三品合一标杆全案，证明从品类定义到产品、品牌与市场落地的完整实力。
+              </p>
+              
+              {/* Carousel Navigation Arrows */}
+              <div className="flex items-center gap-3 shrink-0">
+                <button
+                  onClick={() => handleScroll('left')}
+                  disabled={!canScrollLeft}
+                  aria-label="Previous Case"
+                  className={`w-10 h-10 rounded-full border border-[#E5E5E5] flex items-center justify-center transition-all duration-300 ${
+                    canScrollLeft
+                      ? 'text-[#8C8C8C] hover:text-[#007BC7] hover:border-[#007BC7] hover:bg-white shadow-xs cursor-pointer'
+                      : 'text-[#E5E5E5] border-[#E5E5E5] opacity-35 cursor-not-allowed'
+                  }`}
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => handleScroll('right')}
+                  disabled={!canScrollRight}
+                  aria-label="Next Case"
+                  className={`w-10 h-10 rounded-full border border-[#E5E5E5] flex items-center justify-center transition-all duration-300 ${
+                    canScrollRight
+                      ? 'text-[#8C8C8C] hover:text-[#007BC7] hover:border-[#007BC7] hover:bg-white shadow-xs cursor-pointer'
+                      : 'text-[#E5E5E5] border-[#E5E5E5] opacity-35 cursor-not-allowed'
+                  }`}
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* 3 Cases Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          {/* 8 Cases Horizontal Carousel Container */}
+          <div
+            ref={carouselRef}
+            onScroll={checkScroll}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            className="flex gap-6 overflow-x-auto scrollbar-none pb-4 select-none cursor-grab active:cursor-grabbing w-full"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
             {CASES.map((item) => (
               <div 
                 key={item.id}
-                onClick={() => onNavigateDetail && onNavigateDetail(item.url)}
-                className="group relative rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden cursor-pointer transition-all duration-300 hover:border-[#007BC7] hover:shadow-lg flex flex-col h-full"
+                onClick={() => {
+                  if (!hasDragged && onNavigateDetail) {
+                    onNavigateDetail(item.url);
+                  }
+                }}
+                className="case-carousel-card shrink-0 w-full sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)] group relative rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden cursor-pointer transition-all duration-300 hover:border-[#007BC7] hover:shadow-lg flex flex-col"
               >
                 {/* Image Container (4:3) */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F0F0F0]">
@@ -763,11 +1472,12 @@ export default function ThreeInOneCategoryConsultingPage({
                     src={item.image} 
                     alt={item.client}
                     className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:brightness-90"
+                    draggable={false}
                   />
 
                   {/* Dark Semi-transparent Overlay on Hover (Desktop) */}
-                  <div className="absolute inset-0 bg-[#1A1A1A]/90 p-6 lg:p-7 text-white flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex">
-                    <div className="space-y-4">
+                  <div className="absolute inset-0 bg-[#1A1A1A]/90 p-6 text-white flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex">
+                    <div className="space-y-3.5 text-left">
                       <div>
                         <div className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[#8C8C8C] mb-1">客户原有困境</div>
                         <p className="text-xs md:text-sm leading-relaxed text-neutral-200">{item.painPoint}</p>
@@ -785,7 +1495,7 @@ export default function ThreeInOneCategoryConsultingPage({
                 </div>
 
                 {/* Card Content Footer */}
-                <div className="p-6 lg:p-7 flex-1 flex flex-col justify-between">
+                <div className="p-6 flex-1 flex flex-col justify-between text-left">
                   <div>
                     {/* Top Line: Client Title & Category Tag */}
                     <div className="flex items-start justify-between gap-3 mb-2.5">
@@ -797,12 +1507,12 @@ export default function ThreeInOneCategoryConsultingPage({
                       </span>
                     </div>
 
-                    {/* Subtitle / Positioning (1 line fixed height for perfect desktop row alignment) */}
+                    {/* Subtitle / Positioning */}
                     <p className="text-xs md:text-sm text-[#8C8C8C] mb-3 font-medium line-clamp-1">
                       {item.subtitle}
                     </p>
 
-                    {/* Default Result Description (2 lines clamp with min-h for perfect vertical alignment across 3 parallel cards) */}
+                    {/* Default Result Description */}
                     <p className="text-sm text-[#4D4D4D] leading-relaxed line-clamp-2 min-h-[44px]">
                       {item.defaultResult}
                     </p>
@@ -814,7 +1524,7 @@ export default function ThreeInOneCategoryConsultingPage({
                     <div><span className="text-emerald-600 font-mono font-medium">结果：</span>{item.result}</div>
                   </div>
 
-                  {/* Card Bottom: Clear visual divider & CTA indicator aligned across the row */}
+                  {/* Card Bottom CTA */}
                   <div className="mt-5 pt-4 border-t border-[#E5E5E5] flex items-center justify-between">
                     <span className="text-xs font-mono font-semibold text-[#8C8C8C] group-hover:text-[#007BC7] tracking-wider uppercase transition-colors">
                       VIEW CASE STUDY
@@ -831,15 +1541,17 @@ export default function ThreeInOneCategoryConsultingPage({
         </div>
       </section>
 
-      {/* ================= SECTION 7: 常见问题 (FAQ / 07) ================= */}
-      <section id="section-faq" className="py-20 lg:py-24 bg-[#FFFFFF]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+      {/* ================= SECTION 08: 常见问题 (FAQ / 08) ================= */}
+      <section 
+        id="section-faq" 
+        className="py-20 lg:py-24 bg-[#FFFFFF] w-full overflow-hidden border-b border-[#E5E5E5]"
+      >
+        {/* Title Area - Left aligned */}
+        <div className="max-w-[95%] w-full mx-auto relative z-10 mb-10 md:mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                FAQ / 07
+                FAQ / 08
               </span>
               <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
                 合作前，先把问题说清
@@ -849,62 +1561,30 @@ export default function ThreeInOneCategoryConsultingPage({
               围绕服务边界、项目周期和合作方式，提前回答常见决策问题。
             </p>
           </div>
+        </div>
 
-          {/* Accordion List (2 Columns on Desktop) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            {FAQS.map((faq, idx) => {
-              const isOpen = openFaqIndex === idx;
-              return (
-                <div 
-                  key={idx}
-                  className={`rounded-xl border transition-all duration-300 overflow-hidden ${
-                    isOpen ? 'border-[#007BC7] bg-white shadow-sm' : 'border-[#E5E5E5] bg-white hover:border-[#8C8C8C]'
-                  }`}
-                >
-                  <button
-                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full text-left p-6 flex items-center justify-between gap-4 cursor-pointer relative"
-                  >
-                    {/* Active Left Indicator Bar */}
-                    {isOpen && (
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#007BC7]" />
-                    )}
-
-                    <h3 className="text-base md:text-lg font-semibold text-[#1A1A1A] font-display pr-4">
-                      {faq.q}
-                    </h3>
-
-                    <div className="w-6 h-6 rounded-full bg-[#F0F0F0] flex items-center justify-center shrink-0">
-                      {isOpen ? (
-                        <Minus className="w-4 h-4 text-[#007BC7]" />
-                      ) : (
-                        <Plus className="w-4 h-4 text-[#8C8C8C]" />
-                      )}
-                    </div>
-                  </button>
-
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <div className="px-6 pb-6 pt-0 text-sm md:text-base text-[#4D4D4D] leading-relaxed border-t border-[#E5E5E5]/60 mt-1">
-                          {faq.a}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>
-
+        {/* Full-width List Container */}
+        <div className="flex flex-col border-t border-[#E5E5E5] w-full">
+          {FAQS.map((item, index) => (
+            <div 
+              key={index} 
+              className="w-full border-b border-[#E5E5E5]"
+            >
+              {/* Centered item content */}
+              <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 py-6 flex flex-col text-left group">
+                <h4 className="text-[16px] font-semibold text-[#1a1a1a] group-hover:text-[#007BC7] transition-colors duration-300">
+                  {item.q}
+                </h4>
+                <p className="mt-2 text-[14px] text-[#4D4D4D] leading-[1.6]">
+                  {item.a}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
     </div>
   );
 }
+

@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   ArrowRight, 
-  Plus, 
-  Minus, 
   Lightbulb, 
   Rocket, 
   RefreshCw, 
-  TrendingUp, 
-  CheckCircle2
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 interface BrandInnovationConsultingPageProps {
   onOpenContactModal: () => void;
@@ -27,46 +26,123 @@ export default function BrandInnovationConsultingPage({
   onNavigateDetail,
   CounterComponent = DefaultCounter,
 }: BrandInnovationConsultingPageProps) {
-  // State for Section 1 (Pipeline Hover State)
+  // State for Section 5 (Pipeline Hover State)
   const [hoveredModule, setHoveredModule] = useState<number | null>(null);
 
-  // State for Section 2 (Service Definition Cards Hover)
+  // State for Section 3 (Service Definition Cards Hover)
   const [hoveredServiceCard, setHoveredServiceCard] = useState<number | null>(null);
 
-  // State for Section 7 (FAQ Accordion)
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  // State for Section 6 (Carousel scroll & drag)
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollStartLeft, setScrollStartLeft] = useState(0);
+  const [hasDragged, setHasDragged] = useState(false);
+
+  const checkScroll = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      setCanScrollLeft(scrollLeft > 4);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 4);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const container = carouselRef.current;
+      const card = container.querySelector<HTMLElement>('.case-carousel-card');
+      const step = card ? card.offsetWidth + 24 : 360;
+      container.scrollBy({
+        left: direction === 'left' ? -step : step,
+        behavior: 'smooth',
+      });
+      setTimeout(checkScroll, 350);
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!carouselRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - carouselRef.current.offsetLeft);
+    setScrollStartLeft(carouselRef.current.scrollLeft);
+    setHasDragged(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !carouselRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    if (Math.abs(walk) > 4) {
+      setHasDragged(true);
+    }
+    carouselRef.current.scrollLeft = scrollStartLeft - walk;
+    checkScroll();
+  };
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
 
   // ================= DATA DEFINITIONS =================
 
-  // SECTION 1: 品牌策略四要素 (4个模块)
-  const BRAND_STRATEGY_MODULES = [
+  // SECTION 01 (原05): 哪些企业适合做 (4类企业 - 4列布局)
+  const TARGET_ENTERPRISES = [
     {
-      num: '01',
-      title: '品牌价值',
-      desc: '提炼品牌的核心价值体系，并为品牌注入超越功能利益的精神内核，建立与用户深层情感共鸣的价值根基。',
-      tags: ['核心价值体系', '精神内核', '情感共鸣']
+      icon: Lightbulb,
+      title: '从代工走向自有品牌',
+      desc: '从白牌、OEM 或代工制造走向自主品牌'
     },
     {
-      num: '02',
-      title: '品牌定位',
-      desc: '基于竞争与用户洞察，确立差异化品牌承诺与心智位置，让用户清楚理解品牌为何存在、为何值得选择。',
-      tags: ['差异化承诺', '心智位置', '为何选择']
+      icon: Rocket,
+      title: '新品牌全面启动',
+      desc: '新品牌启动，需要一次性搭建完整品牌系统'
     },
     {
-      num: '03',
-      title: '品牌话语',
-      desc: '建立易传播、易记忆的话语体系，包括品牌命名、Slogan、品牌故事与表达逻辑。',
-      tags: ['品牌命名', 'Slogan口号', '品牌故事']
+      icon: RefreshCw,
+      title: '老品牌形象与认知升级',
+      desc: '老品牌形象老化，需要重新建立差异化认知'
     },
     {
-      num: '04',
-      title: '品牌美学',
-      desc: '将品牌价值转化为视觉风格、色彩、字体、图形与视觉识别系统，形成统一且有辨识度的品牌形象。',
-      tags: ['视觉风格', '色彩与字体', 'VI识别系统']
+      icon: CheckCircle2,
+      title: '统一多渠道品牌表达',
+      desc: '品牌表达分散，需要统一定位、视觉与传播口径'
     }
   ];
 
-  // SECTION 2: 从产品到品牌 (4项协同服务)
+  // SECTION 02 (原03): 品牌卡在哪 (4大问题)
+  const BRAND_CHALLENGES = [
+    {
+      num: '01',
+      title: '品牌定位不清',
+      desc: '用户不知道品牌是谁、适合谁、与同行有什么不同。'
+    },
+    {
+      num: '02',
+      title: '视觉缺少统一性',
+      desc: 'Logo、包装、渠道物料各自表达，无法建立稳定识别。'
+    },
+    {
+      num: '03',
+      title: '产品有价值，品牌无溢价',
+      desc: '用户只比较功能与价格，无法感知品牌价值。'
+    },
+    {
+      num: '04',
+      title: '传播缺少核心表达',
+      desc: '有活动、有内容，却缺少一句能被复述的品牌话语。'
+    }
+  ];
+
+  // SECTION 03 (原02): 从产品到品牌 (4项协同服务 - 阶梯式结构)
   const FOUR_BRAND_SERVICES = [
     {
       num: '01',
@@ -94,31 +170,7 @@ export default function BrandInnovationConsultingPage({
     }
   ];
 
-  // SECTION 3: 品牌卡在哪 (4大问题)
-  const BRAND_CHALLENGES = [
-    {
-      num: '01',
-      title: '品牌定位不清',
-      desc: '用户不知道品牌是谁、适合谁、与同行有什么不同。'
-    },
-    {
-      num: '02',
-      title: '视觉缺少统一性',
-      desc: 'Logo、包装、渠道物料各自表达，无法建立稳定识别。'
-    },
-    {
-      num: '03',
-      title: '产品有价值，品牌无溢价',
-      desc: '用户只比较功能与价格，无法感知品牌价值。'
-    },
-    {
-      num: '04',
-      title: '传播缺少核心表达',
-      desc: '有活动、有内容，却缺少一句能被复述的品牌话语。'
-    }
-  ];
-
-  // SECTION 4: 品牌创新全案交付 (4行矩阵)
+  // SECTION 04 (原04): 品牌创新全案交付 (4行矩阵)
   const DELIVERABLES_MATRIX = [
     {
       num: '01',
@@ -146,36 +198,35 @@ export default function BrandInnovationConsultingPage({
     }
   ];
 
-  // SECTION 5: 哪些企业适合做 (5类企业 - 3+2 布局)
-  const TARGET_ENTERPRISES = [
+  // SECTION 05 (原01): 品牌策略四要素 (4个模块)
+  const BRAND_STRATEGY_MODULES = [
     {
-      icon: Lightbulb,
-      title: '从代工走向自有品牌',
-      desc: '从白牌、OEM 或产品品牌走向自有品牌'
+      num: '01',
+      title: '品牌价值',
+      desc: '提炼品牌的核心价值体系，并为品牌注入超越功能利益的精神内核，建立与用户深层情感共鸣的价值根基。',
+      tags: ['核心价值体系', '精神内核', '情感共鸣']
     },
     {
-      icon: Rocket,
-      title: '新品牌全面启动',
-      desc: '新品牌启动，需要一次性搭建完整品牌系统'
+      num: '02',
+      title: '品牌定位',
+      desc: '基于竞争与用户洞察，确立差异化品牌承诺与心智位置，让用户清楚理解品牌为何存在、为何值得选择。',
+      tags: ['差异化承诺', '心智位置', '为何选择']
     },
     {
-      icon: RefreshCw,
-      title: '老品牌形象与认知升级',
-      desc: '老品牌形象老化，需要重新建立差异化认知'
+      num: '03',
+      title: '品牌话语',
+      desc: '建立易传播、易记忆的话语体系，包括品牌命名、Slogan、品牌故事与表达逻辑。',
+      tags: ['品牌命名', 'Slogan口号', '品牌故事']
     },
     {
-      icon: TrendingUp,
-      title: '破除内卷获取品牌溢价',
-      desc: '产品已经具备竞争力，但难以获得品牌溢价'
-    },
-    {
-      icon: CheckCircle2,
-      title: '统一多渠道品牌表达',
-      desc: '品牌表达分散，需要统一定位、视觉与传播口径'
+      num: '04',
+      title: '品牌美学',
+      desc: '将品牌价值转化为视觉风格、色彩、字体、图形与视觉识别系统，形成统一且有辨识度的品牌形象。',
+      tags: ['视觉风格', '色彩与字体', 'VI识别系统']
     }
   ];
 
-  // SECTION 6: 品牌创新案例 (3个精选案例)
+  // SECTION 06: 8个真实品牌全案案例
   const CASES = [
     {
       id: 'tanmujiang',
@@ -209,10 +260,65 @@ export default function BrandInnovationConsultingPage({
       action: '锁定儿童营养与趣味场景，构建高辨识度IP形象、超级包装识别与多场景传播体系。',
       result: '从细分赛道突围跃居行业销量第一，年营收与品牌声量实现跨越式增长。',
       url: '/case/miaokelanduo'
+    },
+    {
+      id: 'beidahuang',
+      client: '北大荒亲民食品',
+      subtitle: '从大宗农产品原粮输出，走向有机健康高端主食品牌',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.38.png',
+      defaultResult: '确立黑土地有机大单品心智，实现从农业原料到高溢价消费品牌的转型。',
+      painPoint: '拥有优质寒地黑土种植资源，但长期停留在原料初加工，产品缺少品牌附加值。',
+      action: '提炼“亲民有机”品牌核心承诺，重构母子品牌架构与全系列有机粮油包装美学体系。',
+      result: '入驻全国高端商超与精品电商，单品毛利率提升超40%，成为国民有机餐桌标杆。',
+      url: '/case/case-4'
+    },
+    {
+      id: 'gugong',
+      client: '故宫文化文创',
+      subtitle: '让传统国宝文物走进现代日常生活美学',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/gugong.jpg',
+      defaultResult: '打造国潮现象级超级文创IP，带动故宫文创文旅产业年销售额数十亿元。',
+      painPoint: '传统宫廷历史文化晦涩厚重，年轻一代对传统博物馆文创缺乏共鸣与日常消费欲望。',
+      action: '提炼宫廷生活哲学与经典纹样符号，系统规划文房、美妆与文创礼盒品牌话语及包装。',
+      result: '引爆全网“国潮”风尚，开创博物馆IP商业化与文化传承全新典范。',
+      url: '/case/tanmujiang'
+    },
+    {
+      id: 'chaomei',
+      client: '朝美科技',
+      subtitle: '从工业防护老厂，升级为国民级专业健康呼吸防护品牌',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.34.png',
+      defaultResult: '打破低价代工内卷，建立民用与医用专业防颗粒呼吸器第一品牌认知。',
+      painPoint: '传统劳保防护企业形象粗放，缺乏针对大众消费市场的品牌辨识度与信任背书。',
+      action: '重新定义“专业防尘防霾”品牌价值，系统打造CM朝美视觉超级符号与民用消费级包装。',
+      result: '成为国家重大赛事与应急物资核心品牌，线上线下全渠道销量位列行业前茅。',
+      url: '/case/chaomei'
+    },
+    {
+      id: 'tianxiaxiu',
+      client: '天下秀新媒体集团',
+      subtitle: 'IMS 品牌全面年轻化升级，构建红人经济超级符号',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.37.png',
+      defaultResult: '树立红人新经济第一股现代科技品牌形象，强化跨业务板块品牌凝聚力。',
+      painPoint: '旗下数字营销、大数据与元宇宙创新业务多元，缺乏统一的集团级品牌核心认知。',
+      action: '提炼“连接红人与品牌”的超级枢纽概念，设计极具动感与科技识别度的全新VI视觉系统。',
+      result: '完成主板上市品牌重塑，全面赋能B端品牌主与C端创作者生态。',
+      url: '/case/case-5'
+    },
+    {
+      id: 'bapuda',
+      client: '巴普达新材料',
+      subtitle: '打造高端工业新材料专业品牌形象与行业话语权',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.36.png',
+      defaultResult: '打破国际巨头垄断认知，树立国产高性能聚合物高端科技品牌标杆。',
+      painPoint: '技术实力过硬但B端工业品牌形象陈旧，难以在国际展会和头部车企采购中建立高端信任。',
+      action: '梳理“微观分子工程”品牌价值主张，打造极具精密科技感的VI视觉识别与技术白皮书。',
+      result: '顺利进入全球顶尖新能源车企供应链体系，品牌估值与订单量实现大幅跃升。',
+      url: '/case/estun'
     }
   ];
 
-  // SECTION 7: FAQ (6个问题)
+  // SECTION 07: FAQ (6个问题)
   const FAQS = [
     {
       q: '1. 品牌创新全案与单独做 Logo 有什么区别？',
@@ -322,7 +428,280 @@ export default function BrandInnovationConsultingPage({
         </div>
       </section>
 
-      {/* ================= SECTION 1: 品牌策略四要素 (METHOD / 01) ================= */}
+      {/* ================= SECTION 01: 哪些企业适合做 (WHO IT IS FOR / 01) ================= */}
+      <section id="section-brand-who-it-is-for" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                WHO IT IS FOR / 01
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                哪些企业适合做
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              适合需要从 0 建立品牌，或通过系统升级重新获得用户认知与品牌溢价的企业。
+            </p>
+          </div>
+
+          {/* 4 Enterprise Columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {TARGET_ENTERPRISES.map((item, idx) => {
+              const IconComp = item.icon;
+              return (
+                <div key={idx} className="group p-6 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300">
+                  {/* Fine Line Circle Icon */}
+                  <div className="w-12 h-12 rounded-full border border-[#E5E5E5] group-hover:border-[#007BC7] flex items-center justify-center mb-6 transition-colors duration-300">
+                    <IconComp className="w-6 h-6 text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300" />
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-[#1A1A1A] mb-3 font-display">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-base text-[#4D4D4D] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 02: 品牌卡在哪 (CHALLENGES / 02) ================= */}
+      <section id="section-brand-challenges" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                CHALLENGES / 02
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                品牌卡在哪
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              品牌增长受限，通常不是缺少一次传播，而是缺少能被稳定识别与持续积累的品牌系统。
+            </p>
+          </div>
+
+          {/* 4 Problem Columns Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {BRAND_CHALLENGES.map((item) => (
+              <div 
+                key={item.num}
+                className="group flex flex-col justify-between p-6 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 relative min-h-[220px]"
+              >
+                <div>
+                  {/* Top Big Number */}
+                  <div className="font-mono text-3xl lg:text-4xl font-extrabold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300 mb-4">
+                    {item.num}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2 font-display">
+                    {item.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-base text-[#4D4D4D] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+
+                {/* Bottom Fine Line with Hover Animation */}
+                <div className="mt-6 pt-4 border-t border-[#E5E5E5] relative overflow-hidden">
+                  <div className="w-full h-[2px] bg-[#E5E5E5]" />
+                  <div className="absolute top-4 left-0 w-full h-[2px] bg-[#007BC7] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 03: 从产品到品牌 (SERVICE DEFINITION / 03) ================= */}
+      <section id="section-brand-service" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                SERVICE DEFINITION / 03
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                从产品到品牌
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              从竞争、用户与企业自身出发，完成品牌定位、视觉系统与传播表达，让好产品拥有被用户记住和选择的理由。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left Column: CTA & Overview Card */}
+            <div className="lg:col-span-4 bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] flex flex-col justify-between">
+              <div>
+                <span className="inline-block bg-[#007BC7] text-white text-xs font-mono font-bold px-3 py-1 rounded-full mb-4">
+                  BRAND 0–1
+                </span>
+                <h3 className="text-xl font-bold text-[#1A1A1A] font-display mb-3">
+                  全链路品牌心智搭建
+                </h3>
+                <p className="text-sm text-[#4D4D4D] leading-relaxed">
+                  打通品牌洞察、品牌策略、视觉系统与传播落地，避免策略与视觉脱节，为企业建立可持续积累的品牌无形资产与溢价空间。
+                </p>
+              </div>
+
+              <div className="pt-6 border-t border-[#E5E5E5]">
+                <button 
+                  onClick={onOpenContactModal}
+                  className="w-full bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all duration-300 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  预约品牌创新专家咨询
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Right System Structure Cards Column (4 Services - Strictly Aligned Vertical Layout) */}
+            <div className="lg:col-span-8">
+              <div className="bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] h-full flex flex-col justify-center relative">
+                
+                <div className="space-y-3.5 relative">
+                  {FOUR_BRAND_SERVICES.map((srv, idx) => {
+                    const isHovered = hoveredServiceCard === idx;
+
+                    return (
+                      <div
+                        key={srv.num}
+                        onMouseEnter={() => setHoveredServiceCard(idx)}
+                        onMouseLeave={() => setHoveredServiceCard(null)}
+                        className={`p-5 rounded-2xl bg-white transition-all duration-300 border cursor-default relative w-full ${
+                          isHovered ? 'border-[#007BC7] shadow-sm' : 'border-[#E5E5E5]'
+                        }`}
+                      >
+                        <div className="flex items-start gap-4">
+                          {/* Number Badge */}
+                          <span className="w-8 h-8 rounded-lg bg-[#007BC7] text-white font-mono font-bold text-sm flex items-center justify-center shrink-0">
+                            {srv.num}
+                          </span>
+
+                          <div className="flex-1">
+                            <h3 className="text-lg font-semibold text-[#1A1A1A] font-display mb-1">
+                              {srv.title}
+                            </h3>
+                            <p className="text-sm text-[#4D4D4D] leading-relaxed">
+                              {srv.desc}
+                            </p>
+
+                            {/* Hover Expanded Keywords */}
+                            <div className={`flex flex-wrap gap-2 transition-all duration-300 overflow-hidden ${
+                              isHovered ? 'max-h-20 opacity-100 mt-3 pt-2.5 border-t border-[#E5E5E5]' : 'max-h-0 opacity-0'
+                            }`}>
+                              {srv.tags.map((tag, tIdx) => (
+                                <span key={tIdx} className="text-xs bg-[#F0F0F0] text-[#1A1A1A] px-2.5 py-0.5 rounded font-medium">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Connecting Line to next card */}
+                        {idx < FOUR_BRAND_SERVICES.length - 1 && (
+                          <div 
+                            className={`hidden md:block absolute -bottom-3.5 w-[2px] h-3.5 z-10 transition-colors ${
+                              isHovered ? 'bg-[#007BC7]' : 'bg-[#E5E5E5]'
+                            }`}
+                            style={{ left: '36px' }}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 04: 品牌从 0 到 1 的交付 (DELIVERABLES / 04) ================= */}
+      <section id="section-brand-deliverables" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                DELIVERABLES / 04
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                品牌从 0 到 1 的交付
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              从发现心智机会，到建立品牌资产与市场表达，让每个阶段都有清晰成果。
+            </p>
+          </div>
+
+          {/* 4 Deliverable Matrix Rows */}
+          <div className="border-t border-[#E5E5E5] divide-y divide-[#E5E5E5]">
+            {DELIVERABLES_MATRIX.map((row) => (
+              <div 
+                key={row.num}
+                className="group py-6 lg:py-8 px-4 hover:bg-[#F0F0F0]/50 transition-colors duration-300 relative"
+              >
+                {/* Left Hover Accent Indicator Line */}
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#007BC7] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-center">
+                  
+                  {/* Col 1: Phase Number & Title */}
+                  <div className="lg:col-span-4 flex items-center gap-4">
+                    <span className="font-mono text-2xl font-bold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors">
+                      {row.num}
+                    </span>
+                    <h3 className="text-xl font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors font-display">
+                      {row.phase}
+                    </h3>
+                  </div>
+
+                  {/* Col 2: Key Deliverables */}
+                  <div className="lg:col-span-5 text-base text-[#4D4D4D] leading-relaxed">
+                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">关键交付：</span>
+                    {row.deliverable}
+                  </div>
+
+                  {/* Col 3: Solution Outcome */}
+                  <div className="lg:col-span-3 text-base font-medium text-[#1A1A1A] group-hover:-translate-y-0.5 transition-transform duration-300">
+                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">解决结果：</span>
+                    {row.outcome}
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 05: 品牌策略四要素 (METHOD / 05) ================= */}
       <section id="section-brand-strategy-elements" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
         <div className="max-w-[95%] w-full mx-auto">
           
@@ -330,7 +709,7 @@ export default function BrandInnovationConsultingPage({
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-4">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                METHOD / 01
+                METHOD / 05
               </span>
               <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
                 品牌策略四要素
@@ -510,318 +889,12 @@ export default function BrandInnovationConsultingPage({
         </div>
       </section>
 
-      {/* ================= SECTION 2: 从产品到品牌 (SERVICE / 02) ================= */}
-      <section id="section-brand-service" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+      {/* ================= SECTION 06: 8个品牌创新案例横向轮播 (CASE STUDIES / 06) ================= */}
+      <section id="section-brand-cases" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5] overflow-hidden">
         <div className="max-w-[95%] w-full mx-auto">
           
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                SERVICE / 02
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-                从产品到品牌
-              </h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              从竞争、用户与企业自身出发，完成品牌定位、视觉系统与传播表达，让好产品拥有被用户记住和选择的理由。
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            
-            {/* Left Column: CTA & Overview Card */}
-            <div className="lg:col-span-4 bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] flex flex-col justify-between">
-              <div>
-                <span className="inline-block bg-[#007BC7] text-white text-xs font-mono font-bold px-3 py-1 rounded-full mb-4">
-                  BRAND 0–1
-                </span>
-                <h3 className="text-xl font-bold text-[#1A1A1A] font-display mb-3">
-                  全链路品牌心智搭建
-                </h3>
-                <p className="text-sm text-[#4D4D4D] leading-relaxed">
-                  打通品牌洞察、品牌策略、视觉系统与传播落地，避免策略与视觉脱节，为企业建立可持续积累的品牌无形资产与溢价空间。
-                </p>
-              </div>
-
-              <div className="pt-6 border-t border-[#E5E5E5]">
-                <button 
-                  onClick={onOpenContactModal}
-                  className="w-full bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all duration-300 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  预约品牌创新专家咨询
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Right System Structure Cards Column (4 Services) */}
-            <div className="lg:col-span-8">
-              <div className="bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] h-full flex flex-col justify-center">
-                
-                <div className="space-y-3.5">
-                  {FOUR_BRAND_SERVICES.map((srv, idx) => {
-                    const isHovered = hoveredServiceCard === idx;
-                    return (
-                      <div
-                        key={srv.num}
-                        onMouseEnter={() => setHoveredServiceCard(idx)}
-                        onMouseLeave={() => setHoveredServiceCard(null)}
-                        className={`p-5 rounded-xl bg-white transition-all duration-300 border cursor-pointer relative ${
-                          isHovered ? 'border-[#007BC7] shadow-sm' : 'border-[#E5E5E5]'
-                        }`}
-                        style={{
-                          marginLeft: `${idx * 12}px` // Staggered indent for 4-layer structure
-                        }}
-                      >
-                        <div className="flex items-start gap-4">
-                          {/* Number Badge */}
-                          <span className="w-8 h-8 rounded-lg bg-[#007BC7] text-white font-mono font-bold text-sm flex items-center justify-center shrink-0">
-                            {srv.num}
-                          </span>
-
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-[#1A1A1A] font-display mb-1">
-                              {srv.title}
-                            </h3>
-                            <p className="text-sm text-[#4D4D4D] leading-relaxed">
-                              {srv.desc}
-                            </p>
-
-                            {/* Hover Expanded Keywords */}
-                            <div className={`flex flex-wrap gap-2 transition-all duration-300 overflow-hidden ${
-                              isHovered ? 'max-h-20 opacity-100 mt-3 pt-2.5 border-t border-[#E5E5E5]' : 'max-h-0 opacity-0'
-                            }`}>
-                              {srv.tags.map((tag, tIdx) => (
-                                <span key={tIdx} className="text-xs bg-[#F0F0F0] text-[#1A1A1A] px-2.5 py-0.5 rounded font-medium">
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Connecting Line to next card */}
-                        {idx < FOUR_BRAND_SERVICES.length - 1 && (
-                          <div className={`absolute left-9 -bottom-3.5 w-[2px] h-3.5 z-10 transition-colors ${
-                            isHovered ? 'bg-[#007BC7]' : 'bg-[#E5E5E5]'
-                          }`} />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 3: 品牌卡在哪 (CHALLENGES / 03) ================= */}
-      <section id="section-brand-challenges" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                CHALLENGES / 03
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-                品牌卡在哪
-              </h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              品牌增长受限，通常不是缺少一次传播，而是缺少能被稳定识别与持续积累的品牌系统。
-            </p>
-          </div>
-
-          {/* 4 Problem Columns Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {BRAND_CHALLENGES.map((item) => (
-              <div 
-                key={item.num}
-                className="group flex flex-col justify-between p-6 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 relative min-h-[220px]"
-              >
-                <div>
-                  {/* Top Big Number */}
-                  <div className="font-mono text-3xl lg:text-4xl font-extrabold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300 mb-4">
-                    {item.num}
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2 font-display">
-                    {item.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-base text-[#4D4D4D] leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-
-                {/* Bottom Fine Line with Hover Animation */}
-                <div className="mt-6 pt-4 border-t border-[#E5E5E5] relative overflow-hidden">
-                  <div className="w-full h-[2px] bg-[#E5E5E5]" />
-                  <div className="absolute top-4 left-0 w-full h-[2px] bg-[#007BC7] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 4: 品牌从 0 到 1 的交付 (DELIVERABLES / 04) ================= */}
-      <section id="section-brand-deliverables" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                DELIVERABLES / 04
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-                品牌从 0 到 1 的交付
-              </h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              从发现心智机会，到建立品牌资产与市场表达，让每个阶段都有清晰成果。
-            </p>
-          </div>
-
-          {/* 4 Deliverable Matrix Rows */}
-          <div className="border-t border-[#E5E5E5] divide-y divide-[#E5E5E5]">
-            {DELIVERABLES_MATRIX.map((row) => (
-              <div 
-                key={row.num}
-                className="group py-6 lg:py-8 px-4 hover:bg-[#F0F0F0]/50 transition-colors duration-300 relative"
-              >
-                {/* Left Hover Accent Indicator Line */}
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#007BC7] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-center">
-                  
-                  {/* Col 1: Phase Number & Title */}
-                  <div className="lg:col-span-4 flex items-center gap-4">
-                    <span className="font-mono text-2xl font-bold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors">
-                      {row.num}
-                    </span>
-                    <h3 className="text-xl font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors font-display">
-                      {row.phase}
-                    </h3>
-                  </div>
-
-                  {/* Col 2: Key Deliverables */}
-                  <div className="lg:col-span-5 text-base text-[#4D4D4D] leading-relaxed">
-                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">关键交付：</span>
-                    {row.deliverable}
-                  </div>
-
-                  {/* Col 3: Solution Outcome */}
-                  <div className="lg:col-span-3 text-base font-medium text-[#1A1A1A] group-hover:-translate-y-0.5 transition-transform duration-300">
-                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">解决结果：</span>
-                    {row.outcome}
-                  </div>
-
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 5: 哪些企业适合做 (WHO IT IS FOR / 05) ================= */}
-      <section id="section-brand-who-it-is-for" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                WHO IT IS FOR / 05
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
-                哪些企业适合做
-              </h2>
-            </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              适合需要从 0 建立品牌，或通过系统升级重新获得用户认知与品牌溢价的企业。
-            </p>
-          </div>
-
-          {/* 5 Enterprise Cards (3+2 Layout for Desktop) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 lg:gap-8">
-            
-            {/* Top 3 Cards (Span 2 cols each in a 6-col grid = 3 equal columns) */}
-            {TARGET_ENTERPRISES.slice(0, 3).map((item, idx) => {
-              const IconComp = item.icon;
-              return (
-                <div 
-                  key={idx} 
-                  className="lg:col-span-2 group p-6 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Circle Icon */}
-                    <div className="w-12 h-12 rounded-full border border-[#E5E5E5] group-hover:border-[#007BC7] flex items-center justify-center mb-6 transition-colors duration-300">
-                      <IconComp className="w-6 h-6 text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300" />
-                    </div>
-
-                    <h3 className="text-xl font-semibold text-[#1A1A1A] mb-3 font-display">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-base text-[#4D4D4D] leading-relaxed">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* Bottom 2 Cards (Span 3 cols each in a 6-col grid = 2 equal wide columns) */}
-            {TARGET_ENTERPRISES.slice(3, 5).map((item, idx) => {
-              const IconComp = item.icon;
-              return (
-                <div 
-                  key={idx + 3} 
-                  className="lg:col-span-3 group p-6 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Circle Icon */}
-                    <div className="w-12 h-12 rounded-full border border-[#E5E5E5] group-hover:border-[#007BC7] flex items-center justify-center mb-6 transition-colors duration-300">
-                      <IconComp className="w-6 h-6 text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300" />
-                    </div>
-
-                    <h3 className="text-xl font-semibold text-[#1A1A1A] mb-3 font-display">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-base text-[#4D4D4D] leading-relaxed">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 6: 品牌创新案例 (CASE STUDIES / 06) ================= */}
-      <section id="section-brand-cases" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+          {/* Header with Navigation Arrows */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-6">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
                 CASE STUDIES / 06
@@ -830,18 +903,66 @@ export default function BrandInnovationConsultingPage({
                 从认知到选择
               </h2>
             </div>
-            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
-              选择品牌从 0 到 1、品牌升级与心智建立案例，展示从定位到表达再到市场应用的完整能力。
-            </p>
+            
+            <div className="flex items-center justify-between md:justify-end gap-6">
+              <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal hidden sm:block">
+                精选 8 个品牌从 0 到 1、品牌升级与心智建立案例，展示从定位到表达再到市场应用的完整能力。
+              </p>
+              
+              {/* Carousel Navigation Arrows */}
+              <div className="flex items-center gap-3 shrink-0">
+                <button
+                  onClick={() => handleScroll('left')}
+                  disabled={!canScrollLeft}
+                  aria-label="Previous Case"
+                  className={`w-10 h-10 rounded-full border border-[#E5E5E5] flex items-center justify-center transition-all duration-300 ${
+                    canScrollLeft
+                      ? 'text-[#8C8C8C] hover:text-[#007BC7] hover:border-[#007BC7] hover:bg-white shadow-xs cursor-pointer'
+                      : 'text-[#E5E5E5] border-[#E5E5E5] opacity-35 cursor-not-allowed'
+                  }`}
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => handleScroll('right')}
+                  disabled={!canScrollRight}
+                  aria-label="Next Case"
+                  className={`w-10 h-10 rounded-full border border-[#E5E5E5] flex items-center justify-center transition-all duration-300 ${
+                    canScrollRight
+                      ? 'text-[#8C8C8C] hover:text-[#007BC7] hover:border-[#007BC7] hover:bg-white shadow-xs cursor-pointer'
+                      : 'text-[#E5E5E5] border-[#E5E5E5] opacity-35 cursor-not-allowed'
+                  }`}
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* 3 Cases Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          {/* 8 Cases Horizontal Carousel Container */}
+          <div
+            ref={carouselRef}
+            onScroll={checkScroll}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            onMouseLeave={handleMouseUpOrLeave}
+            className="flex gap-6 overflow-x-auto scrollbar-none pb-4 select-none cursor-grab active:cursor-grabbing w-full"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
             {CASES.map((item) => (
               <div 
                 key={item.id}
-                onClick={() => onNavigateDetail && onNavigateDetail(item.url)}
-                className="group relative rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden cursor-pointer transition-all duration-300 hover:border-[#007BC7] hover:shadow-lg flex flex-col h-full"
+                onClick={() => {
+                  if (!hasDragged && onNavigateDetail) {
+                    onNavigateDetail(item.url);
+                  }
+                }}
+                className="case-carousel-card shrink-0 w-full sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)] group relative rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden cursor-pointer transition-all duration-300 hover:border-[#007BC7] hover:shadow-lg flex flex-col"
               >
                 {/* Image Container (4:3) */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F0F0F0]">
@@ -849,11 +970,12 @@ export default function BrandInnovationConsultingPage({
                     src={item.image} 
                     alt={item.client}
                     className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:brightness-90"
+                    draggable={false}
                   />
 
                   {/* Dark Semi-transparent Overlay on Hover (Desktop) */}
-                  <div className="absolute inset-0 bg-[#1A1A1A]/90 p-6 lg:p-7 text-white flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex">
-                    <div className="space-y-4">
+                  <div className="absolute inset-0 bg-[#1A1A1A]/90 p-6 text-white flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex">
+                    <div className="space-y-3.5 text-left">
                       <div>
                         <div className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[#8C8C8C] mb-1">原有品牌问题</div>
                         <p className="text-xs md:text-sm leading-relaxed text-neutral-200">{item.painPoint}</p>
@@ -871,7 +993,7 @@ export default function BrandInnovationConsultingPage({
                 </div>
 
                 {/* Card Content Footer */}
-                <div className="p-6 lg:p-7 flex-1 flex flex-col justify-between">
+                <div className="p-6 flex-1 flex flex-col justify-between text-left">
                   <div>
                     {/* Top Line: Client Title & Category Tag */}
                     <div className="flex items-start justify-between gap-3 mb-2.5">
@@ -883,12 +1005,12 @@ export default function BrandInnovationConsultingPage({
                       </span>
                     </div>
 
-                    {/* Subtitle / Positioning (1 line fixed height for perfect desktop row alignment) */}
+                    {/* Subtitle / Positioning */}
                     <p className="text-xs md:text-sm text-[#8C8C8C] mb-3 font-medium line-clamp-1">
                       {item.subtitle}
                     </p>
 
-                    {/* Default Result Description (2 lines clamp with min-h for perfect vertical alignment across 3 parallel cards) */}
+                    {/* Default Result Description */}
                     <p className="text-sm text-[#4D4D4D] leading-relaxed line-clamp-2 min-h-[44px]">
                       {item.defaultResult}
                     </p>
@@ -900,7 +1022,7 @@ export default function BrandInnovationConsultingPage({
                     <div><span className="text-emerald-600 font-mono font-medium">结果：</span>{item.result}</div>
                   </div>
 
-                  {/* Card Bottom: Clear visual divider & CTA indicator aligned across the row */}
+                  {/* Card Bottom CTA */}
                   <div className="mt-5 pt-4 border-t border-[#E5E5E5] flex items-center justify-between">
                     <span className="text-xs font-mono font-semibold text-[#8C8C8C] group-hover:text-[#007BC7] tracking-wider uppercase transition-colors">
                       VIEW CASE STUDY
@@ -917,12 +1039,14 @@ export default function BrandInnovationConsultingPage({
         </div>
       </section>
 
-      {/* ================= SECTION 7: 常见问题 (FAQ / 07) ================= */}
-      <section id="section-brand-faq" className="py-20 lg:py-24 bg-[#FFFFFF]">
-        <div className="max-w-[95%] w-full mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+      {/* ================= SECTION 07: 常见问题 (FAQ / 07) ================= */}
+      <section 
+        id="section-brand-faq" 
+        className="py-20 lg:py-24 bg-[#FFFFFF] w-full overflow-hidden border-b border-[#E5E5E5]"
+      >
+        {/* Title Area - Left aligned */}
+        <div className="max-w-[95%] w-full mx-auto relative z-10 mb-10 md:mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
                 FAQ / 07
@@ -935,81 +1059,26 @@ export default function BrandInnovationConsultingPage({
               围绕品牌策略、视觉系统与落地方式，提前回答企业最常见的问题。
             </p>
           </div>
-
-          {/* Accordion List (2 Columns on Desktop) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            {FAQS.map((faq, idx) => {
-              const isOpen = openFaqIndex === idx;
-              return (
-                <div 
-                  key={idx}
-                  className={`rounded-xl border transition-all duration-300 overflow-hidden ${
-                    isOpen ? 'border-[#007BC7] bg-white shadow-sm' : 'border-[#E5E5E5] bg-white hover:border-[#8C8C8C]'
-                  }`}
-                >
-                  <button
-                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full text-left p-6 flex items-center justify-between gap-4 cursor-pointer relative"
-                  >
-                    {/* Active Left Indicator Bar */}
-                    {isOpen && (
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#007BC7]" />
-                    )}
-
-                    <h3 className="text-base md:text-lg font-semibold text-[#1A1A1A] font-display pr-4">
-                      {faq.q}
-                    </h3>
-
-                    <div className="w-6 h-6 rounded-full bg-[#F0F0F0] flex items-center justify-center shrink-0">
-                      {isOpen ? (
-                        <Minus className="w-4 h-4 text-[#007BC7]" />
-                      ) : (
-                        <Plus className="w-4 h-4 text-[#8C8C8C]" />
-                      )}
-                    </div>
-                  </button>
-
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <div className="px-6 pb-6 pt-0 text-sm md:text-base text-[#4D4D4D] leading-relaxed border-t border-[#E5E5E5]/60 mt-1">
-                          {faq.a}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>
-
         </div>
-      </section>
 
-      {/* ================= BOTTOM CTA BANNER ================= */}
-      <section className="py-16 md:py-20 bg-[#F0F0F0] border-t border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto text-center flex flex-col items-center">
-          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono mb-3 block">
-            GET STARTED WITH BRAND INNOVATION
-          </span>
-          <h2 className="text-2xl md:text-4xl font-extrabold text-[#1A1A1A] font-display mb-4">
-            准备好为您的企业建立强有力的品牌认知与溢价了吗？
-          </h2>
-          <p className="text-sm md:text-base text-[#4D4D4D] max-w-2xl mb-8 leading-relaxed">
-            与洛可可资深品牌战略专家和视觉创意总监深入探讨，获取定制化品牌 0–1 落地全案规划。
-          </p>
-          <button 
-            onClick={onOpenContactModal}
-            className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
-          >
-            预约品牌创新专家咨询
-            <ArrowRight className="w-4 h-4 text-white" />
-          </button>
+        {/* Full-width List Container */}
+        <div className="flex flex-col border-t border-[#E5E5E5] w-full">
+          {FAQS.map((item, index) => (
+            <div 
+              key={index} 
+              className="w-full border-b border-[#E5E5E5]"
+            >
+              {/* Centered item content */}
+              <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 py-6 flex flex-col text-left group">
+                <h4 className="text-[16px] font-semibold text-[#1a1a1a] group-hover:text-[#007BC7] transition-colors duration-300">
+                  {item.q}
+                </h4>
+                <p className="mt-2 text-[14px] text-[#4D4D4D] leading-[1.6]">
+                  {item.a}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
