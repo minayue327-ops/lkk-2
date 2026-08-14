@@ -261,8 +261,10 @@ export default function App() {
       setCurrentPage('brand');
     } else if (url === '/category-consulting-2' || url === '/category-consulting-v2' || url === '/category-v2' || url === '/category-2') {
       setCurrentPage('category-v2');
-    } else if (url === '/category-consulting') {
+    } else if (url === '/category-consulting-1' || url === '/category-consulting-v1' || url === '/category-v1' || url === '/category-1') {
       setCurrentPage('category');
+    } else if (url === '/category-consulting' || url === '/category') {
+      setCurrentPage('category-v2');
     } else if (url === '/three-in-one-category' || url === '/three-in-one-category-consulting' || url === '/category-consulting/three-in-one') {
       setCurrentPage('three-in-one-category');
     } else if (url === '/product-innovation-consulting' || url === '/product-innovation-0-1' || url === '/category-consulting/product-innovation-0-1') {
@@ -890,7 +892,7 @@ export default function App() {
               onMouseLeave={() => setActiveMenu(null)}
             >
               <button 
-                onClick={() => setCurrentPage('category')}
+                onClick={() => { setCurrentPage('category-v2'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="flex items-center gap-1 text-[15px] font-medium text-neutral-700 hover:text-[#005F96] transition-colors py-2"
               >
                 品类创新咨询
@@ -911,18 +913,18 @@ export default function App() {
                       <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500">品类服务专区</div>
                       <div className="flex items-center gap-3 text-xs font-medium">
                         <button 
-                          onClick={() => { setCurrentPage('category'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                          className={`hover:text-[#007BC7] transition-colors cursor-pointer ${currentPage === 'category' ? 'text-[#007BC7] font-bold' : 'text-neutral-500'}`}
-                        >
-                          品类创新咨询集合页
-                        </button>
-                        <span className="text-neutral-200">|</span>
-                        <button 
                           onClick={() => { setCurrentPage('category-v2'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                           className={`hover:text-[#007BC7] transition-colors cursor-pointer flex items-center gap-1 ${currentPage === 'category-v2' ? 'text-[#007BC7] font-bold' : 'text-neutral-500'}`}
                         >
                           <span>品类创新咨询二</span>
                           <span className="px-1.5 py-0.2 rounded text-[10px] bg-[#007BC7]/10 text-[#007BC7] font-mono">NEW</span>
+                        </button>
+                        <span className="text-neutral-200">|</span>
+                        <button 
+                          onClick={() => { setCurrentPage('category'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                          className={`hover:text-[#007BC7] transition-colors cursor-pointer ${currentPage === 'category' ? 'text-[#007BC7] font-bold' : 'text-neutral-500'}`}
+                        >
+                          品类创新咨询集合页
                         </button>
                       </div>
                     </div>
@@ -1283,14 +1285,14 @@ export default function App() {
             
             <nav aria-label="手机端导航" className="grid gap-2">
               <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">业务专区</span>
+              <button onClick={() => { setCurrentPage('category-v2'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-[#007BC7] font-bold text-left cursor-pointer flex items-center justify-between">
+                <span>品类创新咨询</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#007BC7]/10 text-[#007BC7] font-mono">NEW</span>
+              </button>
               <button onClick={() => { setCurrentPage('three-in-one-category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">三品合一品类创新咨询</button>
               <button onClick={() => { setCurrentPage('product-innovation-consulting'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">产品创新 0–1 全案咨询</button>
               <button onClick={() => { setCurrentPage('brand-innovation-consulting'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品牌创新 0–1 全案咨询</button>
-              <button onClick={() => { setCurrentPage('category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品类创新咨询集合页</button>
-              <button onClick={() => { setCurrentPage('category-v2'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-[#007BC7] font-bold text-left cursor-pointer flex items-center justify-between">
-                <span>品类创新咨询二</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#007BC7]/10 text-[#007BC7] font-mono">新版决策流</span>
-              </button>
+              <button onClick={() => { setCurrentPage('category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-500 text-left cursor-pointer">品类创新咨询集合页</button>
               <button onClick={() => { setCurrentPage('product'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">产品创新</button>
               <button onClick={() => { setCurrentPage('brand'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品牌创新</button>
               <button 
