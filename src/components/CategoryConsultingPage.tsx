@@ -395,15 +395,7 @@ export default function CategoryConsultingPage({
               whileHover={{ y: -8 }}
               className="group bg-white rounded-3xl overflow-hidden border border-[#E5E5E5] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
             >
-              <div className="h-64 relative overflow-hidden bg-neutral-100">
-                <img 
-                  src="/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg" 
-                  alt="品类咨询" 
-                  referrerPolicy="no-referrer"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/30 to-transparent"></div>
+              <div className="h-64 relative overflow-hidden bg-neutral-100 border-b border-[#E5E5E5] flex items-center justify-center">
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1a1a1a] px-3 py-1 rounded-full border border-[#E5E5E5] uppercase tracking-wider font-mono">
                   Category Consulting
                 </div>
@@ -438,15 +430,7 @@ export default function CategoryConsultingPage({
               whileHover={{ y: -8 }}
               className="group bg-white rounded-3xl overflow-hidden border border-[#E5E5E5] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
             >
-              <div className="h-64 relative overflow-hidden bg-neutral-100">
-                <img 
-                  src="/src/assets/images/lkk_humanoid_robot_1783302961282.jpg" 
-                  alt="产品咨询" 
-                  referrerPolicy="no-referrer"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/30 to-transparent"></div>
+              <div className="h-64 relative overflow-hidden bg-neutral-100 border-b border-[#E5E5E5] flex items-center justify-center">
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1a1a1a] px-3 py-1 rounded-full border border-[#E5E5E5] uppercase tracking-wider font-mono">
                   Product Consulting
                 </div>
@@ -481,15 +465,7 @@ export default function CategoryConsultingPage({
               whileHover={{ y: -8 }}
               className="group bg-white rounded-3xl overflow-hidden border border-[#E5E5E5] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
             >
-              <div className="h-64 relative overflow-hidden bg-neutral-100">
-                <img 
-                  src="/src/assets/images/lkk_coffee_mockup_1783302972120.jpg" 
-                  alt="品牌咨询" 
-                  referrerPolicy="no-referrer"
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/30 to-transparent"></div>
+              <div className="h-64 relative overflow-hidden bg-neutral-100 border-b border-[#E5E5E5] flex items-center justify-center">
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1a1a1a] px-3 py-1 rounded-full border border-[#E5E5E5] uppercase tracking-wider font-mono">
                   Brand Consulting
                 </div>
@@ -520,6 +496,32 @@ export default function CategoryConsultingPage({
             </motion.div>
 
           </div>
+        </div>
+      </section>
+
+      {/* 3. CORE DIFFERENCE COMPARISON SECTION */}
+      <section id="category-core-comparison" className="py-20 bg-white w-full border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto relative z-10">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                CORE DIFFERENTIATION
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                核心差异对比
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              洛可可品类创新咨询与传统管理咨询、单一设计公司在战略定位、爆品研发及商业落地维度的深度差异对比。
+            </p>
+          </div>
+
+          {/* Large Image Frame matching ExperienceCard */}
+          <ExperienceCard
+            title="核心差异对比"
+            imgSrc="https://github.com/minaxyue-ops/MINA/releases/download/1/Group.72.jpg"
+          />
         </div>
       </section>
 

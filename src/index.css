@@ -393,7 +393,7 @@ body {
 }
 .case-card-v2:hover img,
 .case-card-v2.is-active img {
-  filter: grayscale(100%) brightness(0.55);
+  filter: grayscale(15%) brightness(0.9);
   transform: scale(1.05);
 }
 .case-summary-v2 {

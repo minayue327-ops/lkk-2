@@ -325,7 +325,7 @@ export default function BrandInnovationPage({
           transition: filter 0.5s ease, transform 0.5s ease;
         }
         .case-hover-card:hover .case-card-bg img {
-          filter: grayscale(100%) brightness(0.55);
+          filter: grayscale(15%) brightness(0.9);
           transform: scale(1.05);
         }
         .case-hover-card:hover .case-summary-v2 {

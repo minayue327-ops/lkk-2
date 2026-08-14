@@ -20,6 +20,9 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import LKKLogo from './components/LKKLogo';
 import CategoryConsultingPage from './components/CategoryConsultingPage';
+import ThreeInOneCategoryConsultingPage from './components/ThreeInOneCategoryConsultingPage';
+import ProductInnovationConsultingPage from './components/ProductInnovationConsultingPage';
+import BrandInnovationConsultingPage from './components/BrandInnovationConsultingPage';
 import ProductInnovationPage from './components/ProductInnovationPage';
 import BrandInnovationPage from './components/BrandInnovationPage';
 import ServiceDetailPage from './components/ServiceDetailPage';
@@ -183,6 +186,7 @@ const Counter: React.FC<{ target: number }> = ({ target }) => {
 type PageType = 
   | 'home' 
   | 'category' 
+  | 'three-in-one-category'
   | 'product' 
   | 'brand' 
   | 'industry'
@@ -255,6 +259,12 @@ export default function App() {
       setCurrentPage('brand');
     } else if (url === '/category-consulting') {
       setCurrentPage('category');
+    } else if (url === '/three-in-one-category' || url === '/three-in-one-category-consulting' || url === '/category-consulting/three-in-one') {
+      setCurrentPage('three-in-one-category');
+    } else if (url === '/product-innovation-consulting' || url === '/product-innovation-0-1' || url === '/category-consulting/product-innovation-0-1') {
+      setCurrentPage('product-innovation-consulting');
+    } else if (url === '/brand-innovation-consulting' || url === '/brand-innovation-0-1' || url === '/category-consulting/brand-innovation-0-1') {
+      setCurrentPage('brand-innovation-consulting');
     } else if (url.startsWith('/industry/') || url.startsWith('/hangye/')) {
       const parts = url.split('/');
       const key = parts[parts.length - 1];
@@ -896,7 +906,7 @@ export default function App() {
                     <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500 border-b border-neutral-100 pb-2">品类服务专区</div>
                     <div className="grid grid-cols-3 gap-4">
                       <button 
-                        onClick={() => { setCurrentPage('category'); setActiveMenu(null); }} 
+                        onClick={() => { setCurrentPage('three-in-one-category'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }} 
                         className="group/item text-left flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors cursor-pointer w-full"
                       >
                         <div>
@@ -908,7 +918,7 @@ export default function App() {
                         </div>
                       </button>
                       <button 
-                        onClick={() => { setCurrentPage('category'); setActiveMenu(null); }} 
+                        onClick={() => { setCurrentPage('product-innovation-consulting'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }} 
                         className="group/item text-left flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors cursor-pointer w-full"
                       >
                         <div>
@@ -920,7 +930,7 @@ export default function App() {
                         </div>
                       </button>
                       <button 
-                        onClick={() => { setCurrentPage('category'); setActiveMenu(null); }} 
+                        onClick={() => { setCurrentPage('brand-innovation-consulting'); setActiveMenu(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }} 
                         className="group/item text-left flex flex-col justify-between p-3 rounded-xl hover:bg-neutral-50 transition-colors cursor-pointer w-full"
                       >
                         <div>
@@ -1251,7 +1261,10 @@ export default function App() {
             
             <nav aria-label="手机端导航" className="grid gap-2">
               <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">业务专区</span>
-              <button onClick={() => { setCurrentPage('category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品类创新咨询</button>
+              <button onClick={() => { setCurrentPage('three-in-one-category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">三品合一品类创新咨询</button>
+              <button onClick={() => { setCurrentPage('product-innovation-consulting'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">产品创新 0–1 全案咨询</button>
+              <button onClick={() => { setCurrentPage('brand-innovation-consulting'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品牌创新 0–1 全案咨询</button>
+              <button onClick={() => { setCurrentPage('category'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品类创新咨询集合页</button>
               <button onClick={() => { setCurrentPage('product'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">产品创新</button>
               <button onClick={() => { setCurrentPage('brand'); setMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="py-2 px-3 hover:bg-neutral-50 rounded-lg text-sm font-medium text-neutral-800 text-left cursor-pointer">品牌创新</button>
               <button 
@@ -1603,7 +1616,7 @@ export default function App() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="max-w-[95%] w-full mx-auto mt-4 sm:mt-5 rounded-2xl bg-white border border-neutral-100 py-3.5 px-5 sm:py-4.5 sm:px-8 flex flex-col items-center justify-center text-center gap-2.5 sm:gap-3 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden"
+          className="max-w-[95%] w-full mx-auto mt-4 sm:mt-5 rounded-2xl bg-white border border-neutral-100 py-4 px-5 sm:py-5 sm:px-8 flex flex-col items-center justify-center text-center gap-[27px] sm:gap-[32px] shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden"
         >
           {/* 顶栏极细微光渐变边线 */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/5 h-[1px] bg-gradient-to-r from-transparent via-[#007BC7]/20 to-transparent pointer-events-none" />
@@ -1616,13 +1629,13 @@ export default function App() {
           {/* 2. 按钮：品牌蓝色质感胶囊 */}
           <button 
             onClick={() => setIsContactModalOpen(true)}
-            className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-[#007BC7] to-[#0284C7] hover:from-[#0066a5] hover:to-[#0270b2] text-white px-6 py-2 sm:px-7 sm:py-2.5 rounded-full text-sm sm:text-base font-semibold tracking-wide transition-all duration-300 shadow-xs hover:shadow-md hover:scale-[1.01] active:scale-95 cursor-pointer border border-sky-300/30 overflow-hidden"
+            className="group relative inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[#007BC7] to-[#0284C7] hover:from-[#0066a5] hover:to-[#0270b2] text-white px-5 py-2 sm:px-6 sm:py-2 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all duration-300 shadow-xs hover:shadow-md hover:scale-[1.01] active:scale-95 cursor-pointer border border-sky-300/30 overflow-hidden"
           >
             {/* 扫光流线 */}
             <span className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none" />
             
             <span>立即对接垂直专家</span>
-            <ArrowRight className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white transition-transform duration-300 group-hover:translate-x-1 shrink-0" />
           </button>
         </motion.div>
       </section>
@@ -1647,16 +1660,8 @@ export default function App() {
                 transition={{ duration: 0.3 }}
                 className="group bg-white rounded-3xl overflow-hidden border border-neutral-150 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between"
               >
-                {/* Product Image */}
-                <div className="h-64 relative overflow-hidden bg-neutral-100">
-                  <img 
-                    src={service.image} 
-                    alt={service.title} 
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/30 to-transparent"></div>
+                {/* Product Image Frame */}
+                <div className="h-64 relative overflow-hidden bg-neutral-100 border-b border-neutral-150 flex items-center justify-center">
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-[10px] font-bold text-neutral-800 px-3 py-1 rounded-full border border-neutral-200 uppercase tracking-wider font-mono">
                     {service.category}
                   </div>
@@ -1955,6 +1960,24 @@ export default function App() {
         <CategoryConsultingPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
           onSelectCase={(cs) => setSelectedCase(cs)}
+          onNavigateDetail={handleNavigateUrl}
+          CounterComponent={Counter}
+        />
+      ) : currentPage === 'three-in-one-category' ? (
+        <ThreeInOneCategoryConsultingPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onNavigateDetail={handleNavigateUrl}
+          CounterComponent={Counter}
+        />
+      ) : currentPage === 'product-innovation-consulting' ? (
+        <ProductInnovationConsultingPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onNavigateDetail={handleNavigateUrl}
+          CounterComponent={Counter}
+        />
+      ) : currentPage === 'brand-innovation-consulting' ? (
+        <BrandInnovationConsultingPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
           onNavigateDetail={handleNavigateUrl}
           CounterComponent={Counter}
         />

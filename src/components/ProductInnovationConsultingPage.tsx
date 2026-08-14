@@ -1,0 +1,1027 @@
+import React, { useState } from 'react';
+import { 
+  ArrowRight, 
+  Plus, 
+  Minus, 
+  Lightbulb, 
+  Rocket, 
+  RefreshCw, 
+  Cpu, 
+  CheckCircle2,
+  ChevronRight,
+  Layers,
+  Sparkles,
+  Settings,
+  ShieldCheck,
+  Zap,
+  Box
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+
+interface ProductInnovationConsultingPageProps {
+  onOpenContactModal: () => void;
+  onNavigateDetail?: (url: string) => void;
+  CounterComponent?: React.FC<{ target: number }>;
+}
+
+// Default Counter fallback if not provided
+const DefaultCounter: React.FC<{ target: number }> = ({ target }) => {
+  return <span>{target}</span>;
+};
+
+export default function ProductInnovationConsultingPage({
+  onOpenContactModal,
+  onNavigateDetail,
+  CounterComponent = DefaultCounter,
+}: ProductInnovationConsultingPageProps) {
+  // State for Section 1 (Pipeline Hover State)
+  const [hoveredModule, setHoveredModule] = useState<number | null>(null);
+
+  // State for Section 2 (Service Definition Cards Hover)
+  const [hoveredServiceCard, setHoveredServiceCard] = useState<number | null>(null);
+
+  // State for Section 7 (FAQ Accordion)
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  // ================= DATA DEFINITIONS =================
+
+  // SECTION 1: 产品落地全链路 (5个模块)
+  const PIPELINE_MODULES = [
+    {
+      num: '01',
+      title: '产品线规划',
+      desc: '规划产品矩阵的宽度、长度与深度，明确引流款、利润款、形象款等角色，构建有层次的产品组合。',
+      tags: ['矩阵宽度', '引流与利润款', '产品组合']
+    },
+    {
+      num: '02',
+      title: '产品家族化',
+      desc: '通过统一的视觉识别元素与交互规范串联产品线，形成具有家族感的产品阵列，强化品牌识别的一致性与系列感。',
+      tags: ['PI设计语言', '交互规范', '家族系列感']
+    },
+    {
+      num: '03',
+      title: '产品定义',
+      desc: '将核心价值主张转化为具体产品的场景体验、软硬件核心参数与核心卖点，以产品需求文档精准锁定开发方向。',
+      tags: ['场景体验', '核心卖点', 'PRD需求文档']
+    },
+    {
+      num: '04',
+      title: '产品美学',
+      desc: '从产品造型、色彩、材质到交互细节进行一体化设计，让产品体验与品牌价值保持一致。',
+      tags: ['工业造型', 'CMF工艺', '交互细节']
+    },
+    {
+      num: '05',
+      title: '产品落地',
+      desc: '协调供应链、制造与品控资源，将设计方案高效转化为可量产、可交付的实际产品。',
+      tags: ['供应链协同', '结构工程', '量产交付']
+    }
+  ];
+
+  // SECTION 2: 从想法到产品 (3项协同服务)
+  const THREE_PRODUCT_SERVICES = [
+    {
+      num: '01',
+      title: '产品策略',
+      desc: '市场机会、用户需求、产品定位与产品矩阵规划。',
+      tags: ['市场机会', '用户需求', '定位矩阵']
+    },
+    {
+      num: '02',
+      title: '创新设计',
+      desc: '产品定义、工业设计、交互体验、CMF 与产品美学。',
+      tags: ['工业设计', '交互体验', 'CMF美学']
+    },
+    {
+      num: '03',
+      title: '研发落地',
+      desc: '结构工程、打样测试、供应链协同与量产适配。',
+      tags: ['结构工程', '打样测试', '量产适配']
+    }
+  ];
+
+  // SECTION 3: 新品为什么做不出来 (4大问题)
+  const PRODUCT_CHALLENGES = [
+    {
+      num: '01',
+      title: '有想法，没有产品路径',
+      desc: '概念停留在脑中，缺少从需求到方案的定义过程。'
+    },
+    {
+      num: '02',
+      title: '产品缺少差异化',
+      desc: '外观、功能和体验趋同，上市后难以成为用户首选。'
+    },
+    {
+      num: '03',
+      title: '设计无法量产',
+      desc: '方案好看，但受工艺、成本、结构或供应链限制无法落地。'
+    },
+    {
+      num: '04',
+      title: '研发与市场脱节',
+      desc: '产品做出来了，却没有击中用户场景和真实购买理由。'
+    }
+  ];
+
+  // SECTION 4: 产品创新全案交付 (4行矩阵)
+  const DELIVERABLES_MATRIX = [
+    {
+      num: '01',
+      phase: '机会判断',
+      deliverable: '市场趋势、竞品分析、产品机会、概念原型',
+      outcome: '判断什么产品值得做'
+    },
+    {
+      num: '02',
+      phase: '产品定义',
+      deliverable: '用户研究、场景洞察、产品定位、需求文档',
+      outcome: '明确为谁做、解决什么'
+    },
+    {
+      num: '03',
+      phase: '创新设计',
+      deliverable: '产品策略、产品线规划、工业设计、交互与 CMF 方案',
+      outcome: '形成有竞争力的产品方案'
+    },
+    {
+      num: '04',
+      phase: '研发量产',
+      deliverable: '结构设计、打样测试、工艺与供应链协同、量产文件',
+      outcome: '让设计真正可生产、可交付'
+    }
+  ];
+
+  // SECTION 5: 哪些企业适合做 (5类企业 - 3+2 布局)
+  const TARGET_ENTERPRISES = [
+    {
+      icon: Lightbulb,
+      title: '从 0 孵化新品',
+      desc: '有产品方向或初步想法，需要从 0 开始系统孵化'
+    },
+    {
+      icon: Rocket,
+      title: '打造核心爆品',
+      desc: '需要开发新品、打造核心单品或爆款产品'
+    },
+    {
+      icon: RefreshCw,
+      title: '产品系统迭代',
+      desc: '老产品缺少竞争力，需要系统迭代升级'
+    },
+    {
+      icon: Cpu,
+      title: '补齐定义与设计',
+      desc: '有研发与供应链资源，但缺少产品定义和设计整合能力'
+    },
+    {
+      icon: CheckCircle2,
+      title: '兼顾体验与量产',
+      desc: '希望产品既有体验差异，又能顺利量产上市'
+    }
+  ];
+
+  // SECTION 6: 产品创新案例 (3个精选案例)
+  const CASES = [
+    {
+      id: 'case-charging-robot',
+      client: '智能移动充电机器人',
+      subtitle: '打破固定充电桩位限制，定义移动储能补电新形态',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.39.png',
+      defaultResult: '从概念定义到全功能量产，开创自主寻车储充一体化新标杆。',
+      painPoint: '传统车位固定充电桩受限于电网容量与固定车位，存在寻桩繁琐与油车占位问题。',
+      action: '完成全向自主移动底盘与柔性机械臂一体化定义，高防护工业美学与CMF工程落地。',
+      result: '打通“桩找车”智能化闭环，已在多个智慧园区及高速服务区规模化量产交付。',
+      url: '/case/estun'
+    },
+    {
+      id: 'case-geely-station',
+      client: '吉利智能充换电站',
+      subtitle: '模块化预制式换电架构，极速 60 秒全自动电池更换',
+      image: 'https://github.com/minaxyue-ops/MINA/releases/download/1/image.35.png',
+      defaultResult: '重构城市级换电基础设施体验，兼顾极速换电与模块化量产建站。',
+      painPoint: '传统换电站体积庞大、施工周期长且人机交互冰冷，缺乏城市基础设施级美学识别。',
+      action: '定义轻量化集装箱模块矩阵，一体化打通工业外壳防护、高精传感器与交互灯光。',
+      result: '单车换电缩短至60秒，大幅削减土建周期与工程成本，已在全国数十个核心城市布设。',
+      url: '/case/musinno'
+    },
+    {
+      id: 'case-musinno-workstation',
+      client: '慢阶「演奏家一号」智能音乐设备',
+      subtitle: '全球首款工作站属性乐谱台，从概念草图到红点至尊奖量产实体',
+      image: '/src/assets/images/musinno_hero_banner_1785826677156.jpg',
+      defaultResult: '打通消费电子与专业乐器界限，斩获2023红点至尊奖并实现批量量产。',
+      painPoint: '专业乐手排练设备繁琐杂乱，传统谱架无法承载现代数字乐谱与多接口音频交互。',
+      action: '完成硬件架构空间精密堆叠、航空级阻尼转轴机构研发与高精度压铸模具量产落地。',
+      result: '实现从0到1商业化量产交付，广泛进入国内外顶级交响乐团与专业音乐学院。',
+      url: '/case/musinno'
+    }
+  ];
+
+  // SECTION 7: FAQ (6个问题)
+  const FAQS = [
+    {
+      q: '1. 只有一个想法，没有图纸，可以启动吗？',
+      a: '完全可以。很多成功产品最初都只是一个模糊的需求或方向。我们会在项目第一阶段（机会判断与产品定义）协助您进行市场与用户场景调研，梳理功能清单与核心卖点，输出规范的产品需求文档（PRD），再逐步推进概念设计与工程图纸开发。'
+    },
+    {
+      q: '2. 从概念到量产通常需要多久？',
+      a: '根据产品复杂度和技术成熟度，通常周期为 3 至 6 个月。简单消费品或快消硬件约需 2-3 个月；涉及复杂精密机械结构、多层PCB硬件堆叠或高难度模具的智能硬件，一般需要 4-6 个月完成从概念设计、手板验证、T0-T3试模到小批量试产（NPI）。'
+    },
+    {
+      q: '3. 服务是否包含工业设计、结构设计与打样？',
+      a: '包含。产品创新0-1全案提供从外观工业设计、CMF材质选型、机械/结构工程设计、有限元FEA仿真到CNC手板打样、功能样机测试的全套交付物，确保设计方案在进入模具阶段前经过充分的物理与人机验证。'
+    },
+    {
+      q: '4. 是否协同供应链和工厂完成量产？',
+      a: '是的。洛可可拥有覆盖全国的制造供应链生态库，项目后期会协同驻厂工程师参与模具审查、试模监理（T0-T3）、SOP作业指导书制定，并协助对接匹配的注塑、钣金、电子贴片（SMT）及整机组装工厂，直至大批量产良率稳定。'
+    },
+    {
+      q: '5. 产品创新全案是否包含品牌设计？',
+      a: '本全案服务高度聚焦于“实体产品本身”的定义、设计、工程与量产落地，不包含完整的品牌战略定位与全套VI/品牌话语体系。但我们会在产品外观上包含产品LOGO丝印规范、产品名标识及基础包装盒刀版图设计。如需深度品牌战略与营销体系，可咨询我们的“品牌创新0-1”或“三品合一”全案。'
+    },
+    {
+      q: '6. 如何判断一个产品概念是否值得投入开发？',
+      a: '我们在项目启动初期会通过“三维过滤模型”进行严格评估：一是用户真实需求与痛点强度；二是市场竞争格局与定价天花板；三是现有供应链制造难度与目标BOM成本预估。只有通过可行性评估的产品概念，才会推进重资产的模具和量产投入。'
+    }
+  ];
+
+  return (
+    <div className="w-full bg-[#FFFFFF] text-[#4D4D4D] font-sans antialiased">
+      
+      {/* ================= HERO SECTION ================= */}
+      <section id="product-hero" className="py-16 md:py-24 text-center bg-[#FFFFFF] relative overflow-hidden border-b border-[#E5E5E5]">
+        <div className="max-w-4xl mx-auto px-[5%] relative z-10 flex flex-col items-center">
+          
+          {/* Eyebrow */}
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="h-[1.5px] w-8 bg-[#007BC7]"></span>
+            <span className="text-[12px] tracking-[0.3em] font-bold text-[#007BC7] font-mono">PRODUCT INNOVATION 0–1 CONSULTING</span>
+            <span className="h-[1.5px] w-8 bg-[#007BC7]"></span>
+          </div>
+
+          {/* Main Headline */}
+          <motion.h1 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-4xl md:text-5xl lg:text-[68px] font-black tracking-tight text-[#1A1A1A] leading-[1.15] font-display"
+          >
+            <span className="text-[#007BC7]">产品创新</span>
+            <span className="text-[#1A1A1A]"> · </span>
+            <span className="text-[#1A1A1A]">0–1 全案咨询</span>
+          </motion.h1>
+
+          <p className="text-xs md:text-sm font-semibold tracking-[0.3em] text-[#8C8C8C] uppercase mt-4 font-mono">
+            LKK Consulting & Design Group
+          </p>
+
+          <p className="text-sm md:text-base text-[#4D4D4D] max-w-3xl mt-8 leading-[1.8] font-normal text-center text-balance">
+            帮助企业将已有产品方向或初步想法，转化为可量产、可上市、具有市场竞争力的实体产品。聚焦产品定义、创新设计、研发协同与量产落地，打通从创意概念到商业交付的全流程闭环。
+          </p>
+
+          <div className="mt-8">
+            <button 
+              onClick={onOpenContactModal}
+              className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
+            >
+              预约产品创新专家咨询
+              <ArrowRight className="w-4 h-4 text-white" />
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= QUANTIFIED ACHIEVEMENTS SECTION ================= */}
+      <section className="achievement-section">
+        <div className="max-w-[95%] w-full mx-auto">
+          <div className="achievement-grid">
+            <div className="achievement-card">
+              <div className="achievement-number">
+                <CounterComponent target={22} />年
+              </div>
+              <div className="achievement-label">行业经验积淀</div>
+            </div>
+
+            <div className="achievement-card">
+              <div className="achievement-number">
+                <CounterComponent target={600} />+
+              </div>
+              <div className="achievement-label">专业奖项认证</div>
+            </div>
+
+            <div className="achievement-card">
+              <div className="achievement-number">
+                <CounterComponent target={1000} />+
+              </div>
+              <div className="achievement-label">行业头部客户认可</div>
+            </div>
+
+            <div className="achievement-card">
+              <div className="achievement-number">
+                <CounterComponent target={10000} />+
+              </div>
+              <div className="achievement-label">产品成功落地</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= SECTION 1: 产品落地全链路 (METHOD / 01) ================= */}
+      <section id="section-product-pipeline" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                METHOD / 01
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                产品落地全链路
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              从产品矩阵规划到量产交付，让产品价值成为用户可感知、市场可验证的真实体验。
+            </p>
+          </div>
+
+          {/* Big Container: Main Node + 5 Horizontal Modules */}
+          <div className="bg-[#F0F0F0] rounded-3xl p-6 lg:p-10 border border-[#E5E5E5]">
+            
+            {/* Desktop Layout */}
+            <div className="hidden lg:block">
+              
+              {/* Top Central Hub Node: 品类产品 */}
+              <div className="flex flex-col items-center relative">
+                <div className="bg-[#007BC7] text-white px-8 py-3 rounded-full font-display font-bold text-base tracking-wide shadow-xs flex items-center gap-2.5 z-20">
+                  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                  <span>品类产品</span>
+                  <span className="text-xs font-mono font-normal opacity-80 uppercase tracking-widest">PRODUCT ARCHITECTURE</span>
+                </div>
+
+                {/* Vertical Central Line from Top Node to Horizontal Rail */}
+                <div className="w-[1.5px] h-6 bg-[#E5E5E5]" />
+              </div>
+
+              {/* Branch Rail & Junctions Grid (Perfect 1:1 match with 5 cards below) */}
+              <div className="grid grid-cols-5 gap-4 lg:gap-5 mb-0">
+                {PIPELINE_MODULES.map((_, idx) => (
+                  <div key={idx} className="relative flex flex-col items-center h-7">
+                    {/* Horizontal Rail Segment (Left Half) */}
+                    {idx > 0 && (
+                      <div 
+                        className={`absolute top-0 right-1/2 left-[-16px] lg:left-[-20px] h-[1.5px] transition-colors duration-300 ${
+                          (hoveredModule === idx || hoveredModule === idx - 1) ? 'bg-[#007BC7]' : 'bg-[#E5E5E5]'
+                        }`} 
+                      />
+                    )}
+
+                    {/* Horizontal Rail Segment (Right Half) */}
+                    {idx < 4 && (
+                      <div 
+                        className={`absolute top-0 left-1/2 right-[-16px] lg:right-[-20px] h-[1.5px] transition-colors duration-300 ${
+                          (hoveredModule === idx || hoveredModule === idx + 1) ? 'bg-[#007BC7]' : 'bg-[#E5E5E5]'
+                        }`} 
+                      />
+                    )}
+
+                    {/* Junction Dot (Aligned directly above column card center) */}
+                    <div 
+                      className={`absolute top-0 -translate-y-1/2 w-2.5 h-2.5 rounded-full z-10 transition-all duration-300 ${
+                        hoveredModule === idx 
+                          ? 'bg-[#007BC7] ring-4 ring-[#007BC7]/20 scale-125' 
+                          : idx === 2 
+                            ? 'bg-[#007BC7]' 
+                            : 'bg-[#E5E5E5]'
+                      }`} 
+                    />
+
+                    {/* Vertical Stem from Dot directly down to the card */}
+                    <div 
+                      className={`w-[1.5px] h-full transition-colors duration-300 ${
+                        hoveredModule === idx ? 'bg-[#007BC7]' : 'bg-[#E5E5E5]'
+                      }`} 
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* 5 Equal-width Modules Grid */}
+              <div className="grid grid-cols-5 gap-4 lg:gap-5">
+                {PIPELINE_MODULES.map((item, idx) => {
+                  const isHovered = hoveredModule === idx;
+                  return (
+                    <motion.div
+                      key={item.num}
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: idx * 0.08 }}
+                      onMouseEnter={() => setHoveredModule(idx)}
+                      onMouseLeave={() => setHoveredModule(null)}
+                      className={`group relative p-6 rounded-2xl transition-all duration-300 bg-white border flex flex-col justify-between min-h-[280px] ${
+                        isHovered 
+                          ? 'border-[#007BC7] shadow-sm -translate-y-1' 
+                          : 'border-[#E5E5E5] hover:border-[#007BC7]'
+                      }`}
+                    >
+                      <div>
+                        {/* Number */}
+                        <div className={`font-mono text-3xl font-extrabold transition-colors duration-300 mb-3 ${
+                          isHovered ? 'text-[#007BC7]' : 'text-[#8C8C8C] group-hover:text-[#007BC7]'
+                        }`}>
+                          {item.num}
+                        </div>
+
+                        {/* Title */}
+                        <h3 className={`text-lg font-bold transition-colors duration-300 mb-3 font-display ${
+                          isHovered ? 'text-[#007BC7]' : 'text-[#1A1A1A] group-hover:text-[#007BC7]'
+                        }`}>
+                          {item.title}
+                        </h3>
+
+                        {/* Description */}
+                        <p className="text-xs text-[#4D4D4D] leading-relaxed mb-4">
+                          {item.desc}
+                        </p>
+                      </div>
+
+                      {/* Keywords List */}
+                      <div className="space-y-1 pt-3 border-t border-[#E5E5E5]">
+                        {item.tags.map((tag, tIdx) => (
+                          <div 
+                            key={tIdx} 
+                            className="text-[11px] text-[#8C8C8C] group-hover:text-[#1A1A1A] transition-colors"
+                          >
+                            • {tag}
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+            </div>
+
+            {/* Mobile Vertical Layout */}
+            <div className="block lg:hidden space-y-6">
+              
+              {/* Mobile Hub Node */}
+              <div className="bg-[#007BC7] text-white p-4 rounded-2xl text-center font-display font-bold text-base flex items-center justify-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <span>品类产品 · 全链路体系</span>
+              </div>
+
+              {/* Vertical Stems List */}
+              <div className="relative pl-6 border-l-2 border-[#E5E5E5] space-y-5 ml-4">
+                {PIPELINE_MODULES.map((item) => (
+                  <div 
+                    key={item.num} 
+                    className="relative bg-white p-5 rounded-2xl border border-[#E5E5E5] group"
+                  >
+                    {/* Node on left rail */}
+                    <div className="absolute -left-[31px] top-6 w-3.5 h-3.5 rounded-full border-2 bg-white border-[#007BC7]" />
+
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2.5">
+                        <span className="font-mono text-xl font-extrabold text-[#007BC7]">
+                          {item.num}
+                        </span>
+                        <h3 className="text-base font-bold text-[#1A1A1A] font-display">
+                          {item.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-[#4D4D4D] leading-relaxed mb-3">
+                      {item.desc}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[#E5E5E5]">
+                      {item.tags.map((tag, tIdx) => (
+                        <span key={tIdx} className="text-[11px] bg-[#F0F0F0] text-[#4D4D4D] px-2 py-0.5 rounded">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 2: 从想法到产品 (SERVICE / 02) ================= */}
+      <section id="section-product-service" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                SERVICE / 02
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                从想法到产品
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              从市场、用户与技术出发，完成产品定义、创新设计、研发协同与量产落地。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left Column: CTA & Overview Card */}
+            <div className="lg:col-span-4 bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] flex flex-col justify-between">
+              <div>
+                <span className="inline-block bg-[#007BC7] text-white text-xs font-mono font-bold px-3 py-1 rounded-full mb-4">
+                  PRODUCT 0–1
+                </span>
+                <h3 className="text-xl font-bold text-[#1A1A1A] font-display mb-3">
+                  全流程落地协同
+                </h3>
+                <p className="text-sm text-[#4D4D4D] leading-relaxed">
+                  打通产品定义、工业设计、结构工程与供应链量产，避免创意与制造脱节，确保产品高品质交付与商业成功。
+                </p>
+              </div>
+
+              <div className="pt-6 border-t border-[#E5E5E5]">
+                <button 
+                  onClick={onOpenContactModal}
+                  className="w-full bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-3.5 px-6 rounded-xl text-sm transition-all duration-300 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  预约产品创新专家咨询
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Right System Structure Cards Column (3 Services) */}
+            <div className="lg:col-span-8">
+              <div className="bg-[#F0F0F0] rounded-3xl p-6 lg:p-8 border border-[#E5E5E5] h-full flex flex-col justify-center">
+                
+                <div className="space-y-4">
+                  {THREE_PRODUCT_SERVICES.map((srv, idx) => {
+                    const isHovered = hoveredServiceCard === idx;
+                    return (
+                      <div
+                        key={srv.num}
+                        onMouseEnter={() => setHoveredServiceCard(idx)}
+                        onMouseLeave={() => setHoveredServiceCard(null)}
+                        className={`p-6 rounded-xl bg-white transition-all duration-300 border cursor-pointer relative ${
+                          isHovered ? 'border-[#007BC7] shadow-sm' : 'border-[#E5E5E5]'
+                        }`}
+                        style={{
+                          marginLeft: `${idx * 16}px` // Staggered indent for 3-layer structure
+                        }}
+                      >
+                        <div className="flex items-start gap-4">
+                          {/* Number Badge */}
+                          <span className="w-8 h-8 rounded-lg bg-[#007BC7] text-white font-mono font-bold text-sm flex items-center justify-center shrink-0">
+                            {srv.num}
+                          </span>
+
+                          <div className="flex-1">
+                            <h3 className="text-xl font-semibold text-[#1A1A1A] font-display mb-1">
+                              {srv.title}
+                            </h3>
+                            <p className="text-base text-[#4D4D4D] leading-relaxed">
+                              {srv.desc}
+                            </p>
+
+                            {/* Hover Expanded Keywords */}
+                            <div className={`flex flex-wrap gap-2 transition-all duration-300 overflow-hidden ${
+                              isHovered ? 'max-h-20 opacity-100 mt-4 pt-3 border-t border-[#E5E5E5]' : 'max-h-0 opacity-0'
+                            }`}>
+                              {srv.tags.map((tag, tIdx) => (
+                                <span key={tIdx} className="text-xs bg-[#F0F0F0] text-[#1A1A1A] px-2.5 py-1 rounded font-medium">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Connecting Line to next card */}
+                        {idx < THREE_PRODUCT_SERVICES.length - 1 && (
+                          <div className={`absolute left-10 -bottom-4 w-[2px] h-4 z-10 transition-colors ${
+                            isHovered ? 'bg-[#007BC7]' : 'bg-[#E5E5E5]'
+                          }`} />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 3: 新品为什么做不出来 (CHALLENGES / 03) ================= */}
+      <section id="section-product-challenges" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                CHALLENGES / 03
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                新品为什么做不出来
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              产品开发失败，往往不是因为缺少创意，而是缺少从用户需求到量产交付的完整路径。
+            </p>
+          </div>
+
+          {/* 4 Problem Columns Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {PRODUCT_CHALLENGES.map((item) => (
+              <div 
+                key={item.num}
+                className="group flex flex-col justify-between p-6 rounded-xl bg-[#FFFFFF] border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 relative min-h-[220px]"
+              >
+                <div>
+                  {/* Top Big Number */}
+                  <div className="font-mono text-3xl lg:text-4xl font-extrabold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300 mb-4">
+                    {item.num}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2 font-display">
+                    {item.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-base text-[#4D4D4D] leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+
+                {/* Bottom Fine Line with Hover Animation */}
+                <div className="mt-6 pt-4 border-t border-[#E5E5E5] relative overflow-hidden">
+                  <div className="w-full h-[2px] bg-[#E5E5E5]" />
+                  <div className="absolute top-4 left-0 w-full h-[2px] bg-[#007BC7] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 4: 产品创新全案交付 (DELIVERABLES / 04) ================= */}
+      <section id="section-product-deliverables" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                DELIVERABLES / 04
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                每一步都有明确交付
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              让产品从机会判断、产品定义、创新设计到研发量产，都有清晰的工作边界与成果标准。
+            </p>
+          </div>
+
+          {/* 4 Deliverable Matrix Rows */}
+          <div className="border-t border-[#E5E5E5] divide-y divide-[#E5E5E5]">
+            {DELIVERABLES_MATRIX.map((row) => (
+              <div 
+                key={row.num}
+                className="group py-6 lg:py-8 px-4 hover:bg-[#F0F0F0]/50 transition-colors duration-300 relative"
+              >
+                {/* Left Hover Accent Indicator Line */}
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#007BC7] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-center">
+                  
+                  {/* Col 1: Phase Number & Title */}
+                  <div className="lg:col-span-4 flex items-center gap-4">
+                    <span className="font-mono text-2xl font-bold text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors">
+                      {row.num}
+                    </span>
+                    <h3 className="text-xl font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors font-display">
+                      {row.phase}
+                    </h3>
+                  </div>
+
+                  {/* Col 2: Key Deliverables */}
+                  <div className="lg:col-span-5 text-base text-[#4D4D4D] leading-relaxed">
+                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">关键交付：</span>
+                    {row.deliverable}
+                  </div>
+
+                  {/* Col 3: Solution Outcome */}
+                  <div className="lg:col-span-3 text-base font-medium text-[#1A1A1A] group-hover:-translate-y-0.5 transition-transform duration-300">
+                    <span className="text-xs text-[#8C8C8C] block lg:hidden mb-1">解决结果：</span>
+                    {row.outcome}
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 5: 哪些企业适合做 (WHO IT IS FOR / 05) ================= */}
+      <section id="section-product-who-it-is-for" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                WHO IT IS FOR / 05
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                哪些企业适合做
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              适合已有产品方向，希望完成新品孵化、产品迭代或量产上市的企业。
+            </p>
+          </div>
+
+          {/* 5 Enterprise Cards (3+2 Layout for Desktop) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 lg:gap-8">
+            
+            {/* Top 3 Cards (Span 2 cols each in a 6-col grid = 3 equal columns) */}
+            {TARGET_ENTERPRISES.slice(0, 3).map((item, idx) => {
+              const IconComp = item.icon;
+              return (
+                <div 
+                  key={idx} 
+                  className="lg:col-span-2 group p-6 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Circle Icon */}
+                    <div className="w-12 h-12 rounded-full border border-[#E5E5E5] group-hover:border-[#007BC7] flex items-center justify-center mb-6 transition-colors duration-300">
+                      <IconComp className="w-6 h-6 text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300" />
+                    </div>
+
+                    <h3 className="text-xl font-semibold text-[#1A1A1A] mb-3 font-display">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-base text-[#4D4D4D] leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Bottom 2 Cards (Span 3 cols each in a 6-col grid = 2 equal wide columns) */}
+            {TARGET_ENTERPRISES.slice(3, 5).map((item, idx) => {
+              const IconComp = item.icon;
+              return (
+                <div 
+                  key={idx + 3} 
+                  className="lg:col-span-3 group p-6 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#007BC7] transition-all duration-300 flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Circle Icon */}
+                    <div className="w-12 h-12 rounded-full border border-[#E5E5E5] group-hover:border-[#007BC7] flex items-center justify-center mb-6 transition-colors duration-300">
+                      <IconComp className="w-6 h-6 text-[#8C8C8C] group-hover:text-[#007BC7] transition-colors duration-300" />
+                    </div>
+
+                    <h3 className="text-xl font-semibold text-[#1A1A1A] mb-3 font-display">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-base text-[#4D4D4D] leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 6: 产品创新案例 (CASE STUDIES / 06) ================= */}
+      <section id="section-product-cases" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                CASE STUDIES / 06
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                从概念到上市
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              选择真实的产品 0–1 孵化、产品迭代与量产落地案例，展示从产品机会到市场交付的完整能力。
+            </p>
+          </div>
+
+          {/* 3 Cases Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+            {CASES.map((item) => (
+              <div 
+                key={item.id}
+                onClick={() => onNavigateDetail && onNavigateDetail(item.url)}
+                className="group relative rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden cursor-pointer transition-all duration-300 hover:border-[#007BC7] hover:shadow-lg flex flex-col h-full"
+              >
+                {/* Image Container (4:3) */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F0F0F0]">
+                  <img 
+                    src={item.image} 
+                    alt={item.client}
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 group-hover:brightness-90"
+                  />
+
+                  {/* Dark Semi-transparent Overlay on Hover (Desktop) */}
+                  <div className="absolute inset-0 bg-[#1A1A1A]/90 p-6 lg:p-7 text-white flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex">
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[#8C8C8C] mb-1">产品机会与用户问题</div>
+                        <p className="text-xs md:text-sm leading-relaxed text-neutral-200">{item.painPoint}</p>
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-mono font-semibold uppercase tracking-wider text-[#007BC7] mb-1">洛可可定义与设计动作</div>
+                        <p className="text-xs md:text-sm leading-relaxed text-white">{item.action}</p>
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-mono font-semibold uppercase tracking-wider text-emerald-400 mb-1">量产与市场结果</div>
+                        <p className="text-xs md:text-sm leading-relaxed text-neutral-200">{item.result}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card Content Footer */}
+                <div className="p-6 lg:p-7 flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Top Line: Client Title & Category Tag */}
+                    <div className="flex items-start justify-between gap-3 mb-2.5">
+                      <h3 className="text-xl md:text-2xl font-bold text-[#1A1A1A] font-display tracking-tight group-hover:text-[#007BC7] transition-colors leading-snug line-clamp-1">
+                        {item.client}
+                      </h3>
+                      <span className="shrink-0 text-xs font-mono font-medium px-2.5 py-0.5 rounded bg-[#007BC7]/10 text-[#007BC7] border border-[#007BC7]/20">
+                        产品全案
+                      </span>
+                    </div>
+
+                    {/* Subtitle / Positioning (1 line fixed height for perfect desktop row alignment) */}
+                    <p className="text-xs md:text-sm text-[#8C8C8C] mb-3 font-medium line-clamp-1">
+                      {item.subtitle}
+                    </p>
+
+                    {/* Default Result Description (2 lines clamp with min-h for perfect vertical alignment across 3 parallel cards) */}
+                    <p className="text-sm text-[#4D4D4D] leading-relaxed line-clamp-2 min-h-[44px]">
+                      {item.defaultResult}
+                    </p>
+                  </div>
+
+                  {/* Mobile Summary */}
+                  <div className="block lg:hidden mt-4 pt-3.5 border-t border-[#E5E5E5] text-xs space-y-1.5 text-[#4D4D4D]">
+                    <div><span className="text-[#8C8C8C] font-mono">动作：</span>{item.action}</div>
+                    <div><span className="text-emerald-600 font-mono font-medium">结果：</span>{item.result}</div>
+                  </div>
+
+                  {/* Card Bottom: Clear visual divider & CTA indicator aligned across the row */}
+                  <div className="mt-5 pt-4 border-t border-[#E5E5E5] flex items-center justify-between">
+                    <span className="text-xs font-mono font-semibold text-[#8C8C8C] group-hover:text-[#007BC7] tracking-wider uppercase transition-colors">
+                      VIEW CASE STUDY
+                    </span>
+                    <div className="w-8 h-8 rounded-full border border-[#E5E5E5] group-hover:border-[#007BC7] group-hover:bg-[#007BC7] flex items-center justify-center transition-all duration-300">
+                      <ArrowRight className="w-4 h-4 text-[#8C8C8C] group-hover:text-white group-hover:translate-x-0.5 transition-all duration-300" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= SECTION 7: 常见问题 (FAQ / 07) ================= */}
+      <section id="section-product-faq" className="py-20 lg:py-24 bg-[#FFFFFF]">
+        <div className="max-w-[95%] w-full mx-auto">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-4">
+            <div>
+              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
+                FAQ / 07
+              </span>
+              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1a1a] font-display">
+                合作前，先把问题说清
+              </h2>
+            </div>
+            <p className="text-xs md:text-sm text-neutral-500 max-w-md leading-relaxed font-normal">
+              围绕产品开发、量产落地与合作方式，提前回答企业最常见的问题。
+            </p>
+          </div>
+
+          {/* Accordion List (2 Columns on Desktop) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+            {FAQS.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <div 
+                  key={idx}
+                  className={`rounded-xl border transition-all duration-300 overflow-hidden ${
+                    isOpen ? 'border-[#007BC7] bg-white shadow-sm' : 'border-[#E5E5E5] bg-white hover:border-[#8C8C8C]'
+                  }`}
+                >
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    className="w-full text-left p-6 flex items-center justify-between gap-4 cursor-pointer relative"
+                  >
+                    {/* Active Left Indicator Bar */}
+                    {isOpen && (
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#007BC7]" />
+                    )}
+
+                    <h3 className="text-base md:text-lg font-semibold text-[#1A1A1A] font-display pr-4">
+                      {faq.q}
+                    </h3>
+
+                    <div className="w-6 h-6 rounded-full bg-[#F0F0F0] flex items-center justify-center shrink-0">
+                      {isOpen ? (
+                        <Minus className="w-4 h-4 text-[#007BC7]" />
+                      ) : (
+                        <Plus className="w-4 h-4 text-[#8C8C8C]" />
+                      )}
+                    </div>
+                  </button>
+
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="px-6 pb-6 pt-0 text-sm md:text-base text-[#4D4D4D] leading-relaxed border-t border-[#E5E5E5]/60 mt-1">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= BOTTOM CTA BANNER ================= */}
+      <section className="py-16 md:py-20 bg-[#F0F0F0] border-t border-[#E5E5E5]">
+        <div className="max-w-[95%] w-full mx-auto text-center flex flex-col items-center">
+          <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono mb-3 block">
+            GET STARTED WITH PRODUCT INNOVATION
+          </span>
+          <h2 className="text-2xl md:text-4xl font-extrabold text-[#1A1A1A] font-display mb-4">
+            准备好将您的产品想法转化为市场爆品了吗？
+          </h2>
+          <p className="text-sm md:text-base text-[#4D4D4D] max-w-2xl mb-8 leading-relaxed">
+            与洛可可资深产品架构师和工业工程专家团队深入探讨，获取定制化产品 0–1 落地全案规划。
+          </p>
+          <button 
+            onClick={onOpenContactModal}
+            className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
+          >
+            预约产品创新专家咨询
+            <ArrowRight className="w-4 h-4 text-white" />
+          </button>
+        </div>
+      </section>
+
+    </div>
+  );
+}

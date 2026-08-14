@@ -9,7 +9,7 @@ export interface ProfessionalService {
   category: string;
   title: string;
   bullets: string[];
-  image: string;
+  image?: string;
 }
 
 export interface CaseStudy {
@@ -80,8 +80,7 @@ export const PROFESSIONAL_SERVICES: ProfessionalService[] = [
       '三品合一品类创新咨询',
       '产品创新0-1全案咨询',
       '品牌创新0-1全案咨询'
-    ],
-    image: '/src/assets/images/lkk_cosmetics_jars_1783302947995.jpg'
+    ]
   },
   {
     id: 'service-2',
@@ -91,8 +90,7 @@ export const PROFESSIONAL_SERVICES: ProfessionalService[] = [
       '工业设计',
       '结构设计',
       '生产落地'
-    ],
-    image: '/src/assets/images/lkk_humanoid_robot_1783302961282.jpg'
+    ]
   },
   {
     id: 'service-3',
@@ -102,8 +100,7 @@ export const PROFESSIONAL_SERVICES: ProfessionalService[] = [
       '全案设计',
       '包装设计',
       'IP设计'
-    ],
-    image: '/src/assets/images/lkk_coffee_mockup_1783302972120.jpg'
+    ]
   }
 ];
 
