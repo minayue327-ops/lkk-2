@@ -2074,26 +2074,29 @@ export default function App() {
           
           {/* Merged Consultation Area */}
           <div className="rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-12 relative overflow-hidden bg-[#007BC7] text-white">
-            {/* Radial visual decor overlay */}
-            <div className="absolute right-0 top-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+            {/* Subtle light overlay */}
+            <div className="absolute right-0 top-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
-              {/* Left Column (Logo, Title, Text, Contact details) - lg:col-span-5 (~40%) */}
-              <div className="lg:col-span-5 flex flex-col gap-4 text-left">
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full border w-fit text-xs font-semibold tracking-wider bg-white/15 text-white border-white/10">
-                  洛可可官方品质保障 · 一对一专家咨询
+              
+              {/* Left Column (Brand Value, Title, Text, Logo, Hotline) - lg:col-span-5 (~40%) */}
+              <div className="lg:col-span-5 flex flex-col justify-between text-left h-full">
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full border w-fit text-xs font-semibold tracking-wider bg-white/15 text-white border-white/10">
+                    洛可可官方品质保障 · 一对一专家咨询
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl font-extrabold leading-snug tracking-tight text-left text-white font-display">
+                    让设计助力你的品类突围
+                  </h2>
+
+                  <p className="text-xs sm:text-sm leading-relaxed text-left text-white/80">
+                    洛可可是一家用咨询设计的能力，为垂直行业客户，提供产品创新价值的公司。我们坚持以用户体验为核心，致力于为企业提供行业整体创新解决方案。如需创新设计咨询，请联系专家团队。
+                  </p>
                 </div>
 
-                <h2 className="text-2xl md:text-3xl font-extrabold leading-snug text-left text-white">
-                  让设计助力你的品类突围
-                </h2>
-
-                <p className="text-xs md:text-sm leading-relaxed text-left text-white/80">
-                  洛可可是一家用咨询设计的能力，为垂直行业客户，提供产品创新价值的公司。我们坚持以用户体验为核心，致力于为企业提供行业整体创新解决方案。如需创新设计咨询，请联系专家团队。
-                </p>
-
                 {/* Footer Logo and Hotline info */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-4 border-t mt-1 border-white/15">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-4 border-t mt-5 border-white/15">
                   <LKKLogo isLight={true} />
                   <div className="h-8 w-px hidden sm:block bg-white/20"></div>
                   <div className="text-left">
@@ -2103,99 +2106,124 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Right Column (Unified Action Area: Form + WeChat Entry) - lg:col-span-7 (~60%) */}
-              <div className="lg:col-span-7 w-full flex-shrink-0">
+              {/* Right Column (Conversion Area: Form + WeChat Entry) - lg:col-span-7 (~60%) */}
+              <div className="lg:col-span-7 w-full flex flex-col justify-center">
                 {footerFormSuccess ? (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="border rounded-2xl p-6 bg-white/10 border-white/20 text-white h-full flex flex-col justify-center text-left"
+                    className="border rounded-2xl p-8 bg-white/10 border-white/20 text-white h-full min-h-[250px] flex flex-col justify-center text-left"
                   >
                     <div className="flex items-center gap-3">
-                      <Check className="w-5 h-5 shrink-0 rounded-full p-0.5 bg-white text-[#007BC7]" />
-                      <span className="font-bold text-sm text-white">预约提交成功！</span>
+                      <Check className="w-6 h-6 shrink-0 rounded-full p-1 bg-white text-[#007BC7]" />
+                      <span className="font-bold text-base text-white">预约提交成功！</span>
                     </div>
-                    <p className="text-xs mt-2 leading-relaxed text-left text-white/80">
+                    <p className="text-sm mt-3 leading-relaxed text-left text-white/85">
                       洛可可品类专家将在 1 小时内给您致电，为您提供免费的商业创新评估。
                     </p>
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleFooterSubmit} className="flex flex-col gap-3">
-                    {/* 2x2 Field Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      <input 
-                        type="text" 
-                        required
-                        placeholder="姓名" 
-                        aria-label="您的姓名"
-                        value={footerForm.name}
-                        onChange={(e) => setFooterForm({ ...footerForm, name: e.target.value })}
-                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
-                      />
-                      <input 
-                        type="tel" 
-                        required
-                        placeholder="电话" 
-                        aria-label="您的电话"
-                        value={footerForm.phone}
-                        onChange={(e) => setFooterForm({ ...footerForm, phone: e.target.value })}
-                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
-                      />
-                      <input 
-                        type="text" 
-                        required
-                        placeholder="企业名称" 
-                        aria-label="企业名称"
-                        value={footerForm.company}
-                        onChange={(e) => setFooterForm({ ...footerForm, company: e.target.value })}
-                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
-                      />
-                      <input 
-                        type="text" 
-                        required
-                        placeholder="所在城市" 
-                        aria-label="所在城市"
-                        value={footerForm.city}
-                        onChange={(e) => setFooterForm({ ...footerForm, city: e.target.value })}
-                        className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
-                      />
-                    </div>
+                  <div className="flex flex-col gap-3.5">
+                    
+                    {/* Information Input Area + Right Side Action Button */}
+                    <form onSubmit={handleFooterSubmit} className="flex flex-col sm:flex-row gap-2.5 items-stretch w-full">
+                      {/* 2x2 Inputs Grid */}
+                      <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="姓名" 
+                          aria-label="您的姓名"
+                          value={footerForm.name}
+                          onChange={(e) => setFooterForm({ ...footerForm, name: e.target.value })}
+                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                        />
+                        <input 
+                          type="tel" 
+                          required
+                          placeholder="电话" 
+                          aria-label="您的电话"
+                          value={footerForm.phone}
+                          onChange={(e) => setFooterForm({ ...footerForm, phone: e.target.value })}
+                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                        />
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="企业名称" 
+                          aria-label="企业名称"
+                          value={footerForm.company}
+                          onChange={(e) => setFooterForm({ ...footerForm, company: e.target.value })}
+                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                        />
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="所在城市" 
+                          aria-label="所在城市"
+                          value={footerForm.city}
+                          onChange={(e) => setFooterForm({ ...footerForm, city: e.target.value })}
+                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                        />
+                      </div>
 
-                    {/* Bottom Compact Action Row: QR Code + Text on Left, Normal Button on Right */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-1 pt-1">
-                      {/* Left: WeChat QR Code + Text (directly on blue background) */}
-                      <div className="flex items-center gap-3.5 text-left min-w-0 flex-1">
-                        <div className="w-[100px] h-[100px] min-w-[100px] bg-white rounded-xl p-1.5 flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
-                          <img 
-                            src="https://github.com/minaxyue-ops/MINA/releases/download/1/3.png" 
-                            alt="洛可可官方企业微信二维码" 
-                            loading="lazy"
-                            className="w-full h-full object-contain"
-                          />
+                      {/* Side-aligned Compact Vertical Consultation Button */}
+                      <button 
+                        type="submit"
+                        className="w-full sm:w-[72px] md:w-[80px] shrink-0 py-3 sm:py-0 bg-white hover:bg-neutral-100 active:scale-[0.98] text-[#007BC7] rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center justify-center cursor-pointer group"
+                      >
+                        {/* Mobile horizontal text */}
+                        <div className="sm:hidden flex items-center justify-center gap-1.5 font-extrabold text-sm">
+                          <span>咨询我们</span>
+                          <ArrowRight className="w-4 h-4 text-[#007BC7]" />
                         </div>
-                        <div className="flex flex-col justify-center min-w-0 pr-2">
-                          <span className="text-[11px] font-mono tracking-widest text-white/70 uppercase block">
-                            WECHAT CONSULTATION
-                          </span>
-                          <h4 className="font-bold text-sm text-white mt-0.5">添加洛可可官方企业微信</h4>
-                          <p className="text-xs text-white/80 leading-snug mt-1">
+
+                        {/* Desktop stacked vertical text */}
+                        <div className="hidden sm:flex flex-col items-center justify-center gap-0.5 text-[#007BC7]">
+                          <span className="text-[13px] md:text-sm font-black leading-tight tracking-wider">咨询</span>
+                          <span className="text-[13px] md:text-sm font-black leading-tight tracking-wider">我们</span>
+                          <ArrowRight className="w-3.5 h-3.5 text-[#007BC7] mt-1 transition-transform duration-200 group-hover:translate-y-0.5" />
+                        </div>
+                      </button>
+                    </form>
+
+                    {/* WeChat QR Code Consultation Area (Horizontal alignment with 3-tier information hierarchy) */}
+                    <div className="bg-white/10 border border-white/15 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-left">
+                      {/* QR Code Container */}
+                      <div className="w-[110px] h-[110px] sm:w-[124px] sm:h-[124px] min-w-[110px] sm:min-w-[124px] bg-white rounded-2xl p-2 flex items-center justify-center shrink-0 shadow-md overflow-hidden self-center sm:self-auto">
+                        <img 
+                          src="https://github.com/minaxyue-ops/MINA/releases/download/1/3.png" 
+                          alt="洛可可官方企业微信二维码" 
+                          loading="lazy"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+
+                      {/* WeChat text details with 3-tier hierarchy */}
+                      <div className="flex flex-col justify-center min-w-0 flex-1">
+                        {/* Tier 1: English Category Tag */}
+                        <span className="text-[11px] font-mono tracking-widest text-white/70 uppercase block font-semibold">
+                          WECHAT CONSULTATION
+                        </span>
+                        
+                        {/* Tier 2: Core Headline */}
+                        <h4 className="font-bold text-sm sm:text-base text-white mt-0.5 tracking-tight">
+                          添加洛可可官方企业微信
+                        </h4>
+                        
+                        {/* Tier 3: Explanatory & Brand Value Text */}
+                        <div className="mt-1 flex flex-col gap-1.5 text-xs text-white/80 leading-relaxed">
+                          <p>
                             微信扫码添加，掌握行业爆品打造逻辑、最前沿设计趋势及精选案例拆解。
+                          </p>
+                          <p className="text-white/70 pt-1 border-t border-white/10 text-[11px] sm:text-xs">
+                            作为国家级工业设计示范企业，洛可可坚持探索数字化设计与品类定位的高效整合，驱动中国制造迈向中国创造。
                           </p>
                         </div>
                       </div>
-
-                      {/* Right: Normal-sized CTA button */}
-                      <div className="shrink-0 w-full sm:w-auto">
-                        <button 
-                          type="submit"
-                          className="w-full sm:w-[160px] h-[50px] bg-white hover:bg-[#F0F0F0] text-[#007BC7] font-bold px-5 rounded-full text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer shrink-0"
-                        >
-                          咨询我们
-                          <ArrowRight className="w-4 h-4 text-[#007BC7]" />
-                        </button>
-                      </div>
                     </div>
-                  </form>
+
+                  </div>
                 )}
               </div>
 
@@ -2203,79 +2231,98 @@ export default function App() {
           </div>
 
           {/* Directory links */}
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-12 mb-10">
-            
-            {/* Left Company Intro text (Top aligned with right nav links) */}
-            <div className="w-full lg:w-[380px] shrink-0 text-left">
-              <p className="text-xs text-neutral-400 leading-relaxed">
-                作为国家级工业设计示范企业，洛可可坚持探索数字化设计与品类定位的高效整合，驱动中国制造迈向中国创造。
-              </p>
-            </div>
-
-            {/* Right Nav Links: Compact 4-group grid */}
-            <div className="flex-1 w-full grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 lg:gap-12 justify-start">
-              {/* Cases columns */}
-              <div className="text-left">
-                <h5 className={`font-bold text-xs uppercase tracking-wider mb-3 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>案例</h5>
-                <ul className="grid grid-cols-2 gap-y-1.5 gap-x-3 text-xs">
-                  <li><button onClick={() => handleNavigateUrl('/industry/robotics')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>机器人</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/smart-3c')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能3C</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/home-appliances')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能家电</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/healthcare')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能医疗</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/industrial-equipment')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能装备</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/new-energy')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能能源</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/transportation')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能交通</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/food-beverage')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>食品酒饮</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/pet-economy')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>宠物经济</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/cultural-creative')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>文化创意</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/home-apparel')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>家居鞋服</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/wellness-health')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>大健康</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/retail')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>连锁零售</button></li>
-                  <li><button onClick={() => handleNavigateUrl('/industry/beauty-personal-care')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>美妆个护</button></li>
-                </ul>
+          <div className="mb-12">
+            {/* Nav Links: 4-Column balanced layout across 12-column grid */}
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-10">
+              
+              {/* 1. 案例 (Cases / Industries) - lg:col-span-5 with 2 neat sub-columns */}
+              <div className="text-left lg:col-span-5">
+                <h5 className={`font-bold text-xs uppercase tracking-wider mb-3.5 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>
+                  案例
+                </h5>
+                <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-1.5 text-xs">
+                  <ul className="grid gap-1.5">
+                    <li><button onClick={() => handleNavigateUrl('/industry/robotics')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>机器人</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/smart-3c')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能3C</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/home-appliances')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能家电</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/healthcare')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能医疗</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/industrial-equipment')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能装备</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/new-energy')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能能源</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/transportation')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>智能交通</button></li>
+                  </ul>
+                  <ul className="grid gap-1.5">
+                    <li><button onClick={() => handleNavigateUrl('/industry/food-beverage')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>食品酒饮</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/pet-economy')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>宠物经济</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/cultural-creative')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>文化创意</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/home-apparel')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>家居鞋服</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/wellness-health')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>大健康</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/retail')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>连锁零售</button></li>
+                    <li><button onClick={() => handleNavigateUrl('/industry/beauty-personal-care')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>美妆个护</button></li>
+                  </ul>
+                </div>
               </div>
 
-              {/* Services columns */}
-              <div className="text-left">
-                <h5 className={`font-bold text-xs uppercase tracking-wider mb-3 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>服务</h5>
+              {/* 2. 服务 (Services) - lg:col-span-2 */}
+              <div className="text-left lg:col-span-2">
+                <h5 className={`font-bold text-xs uppercase tracking-wider mb-3.5 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>
+                  服务
+                </h5>
                 <ul className="grid gap-1.5 text-xs">
-                  <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>工业设计</a></li>
-                  <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>结构设计</a></li>
-                  <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>生产落地</a></li>
-                  <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>品牌全案设计</a></li>
-                  <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>IP设计</a></li>
-                  <li><a href="#professional-services" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>包装设计</a></li>
+                  <li><button onClick={() => handleNavigateUrl('/product-innovation/industrial-design')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>工业设计</button></li>
+                  <li><button onClick={() => handleNavigateUrl('/product-innovation/structural-design')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>结构设计</button></li>
+                  <li><button onClick={() => handleNavigateUrl('/product-innovation/production-landing')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>生产落地</button></li>
+                  <li><button onClick={() => handleNavigateUrl('/brand-innovation/full-case-design')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>品牌全案设计</button></li>
+                  <li><button onClick={() => handleNavigateUrl('/brand-innovation/ip-design')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>IP设计</button></li>
+                  <li><button onClick={() => handleNavigateUrl('/brand-innovation/packaging-design')} className={`text-left border-none bg-transparent p-0 cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>包装设计</button></li>
                 </ul>
               </div>
 
-              {/* Contact Columns */}
-              <div className="text-left">
-                <h5 className={`font-bold text-xs uppercase tracking-wider mb-3 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>联系</h5>
+              {/* 3. 联系 (Contact / Regional branches) - lg:col-span-2 */}
+              <div className="text-left lg:col-span-2">
+                <h5 className={`font-bold text-xs uppercase tracking-wider mb-3.5 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>
+                  联系
+                </h5>
                 <ul className={`grid gap-1.5 text-xs transition-colors duration-300 ${isFooterLight ? 'text-neutral-500' : 'text-neutral-400'}`}>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>北京·总部</li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>深圳</li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>上海</li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>苏州</li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>杭州</li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>南京</li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>成都</li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>佛山</li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>南昌</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>北京·总部</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>深圳</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>上海</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>苏州</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>杭州</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>南京</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>成都</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>佛山</li>
+                  <li onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'hover:text-[#007BC7]' : 'hover:text-white'}`}>南昌</li>
                 </ul>
               </div>
 
-              {/* About us columns */}
-              <div className="text-left">
-                <h5 className={`font-bold text-xs uppercase tracking-wider mb-3 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>我们</h5>
-                <ul className="grid gap-1.5 text-xs">
-                  <li><button onClick={() => { handleNavigateUrl('/about'); }} className={`cursor-pointer border-none bg-transparent p-0 text-left transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>公司简介</button></li>
-                  <li><a href="#news-center" className={`transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>新闻中心</a></li>
-                  <li><button onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer text-left focus:outline-none transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>联系我们</button></li>
-                  <li className={`cursor-pointer transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>常见问题</li>
-                </ul>
+              {/* 4. 我们 (About Us & Corporate Info) - lg:col-span-3 */}
+              <div className="text-left lg:col-span-3 flex flex-col justify-between">
+                <div>
+                  <h5 className={`font-bold text-xs uppercase tracking-wider mb-3.5 border-l-2 border-[#007BC7] pl-2 transition-colors duration-300 ${isFooterLight ? 'text-neutral-800' : 'text-white'}`}>
+                    我们
+                  </h5>
+                  <ul className="grid gap-1.5 text-xs">
+                    <li><button onClick={() => { handleNavigateUrl('/about'); }} className={`cursor-pointer border-none bg-transparent p-0 text-left transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>公司简介</button></li>
+                    <li><button onClick={() => { handleNavigateUrl('/news'); }} className={`cursor-pointer border-none bg-transparent p-0 text-left transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>新闻中心</button></li>
+                    <li><button onClick={() => setIsContactModalOpen(true)} className={`cursor-pointer border-none bg-transparent p-0 text-left focus:outline-none transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>联系我们</button></li>
+                    <li><button onClick={() => { handleNavigateUrl('/about'); }} className={`cursor-pointer border-none bg-transparent p-0 text-left transition-colors duration-300 ${isFooterLight ? 'text-neutral-500 hover:text-[#007BC7]' : 'text-neutral-400 hover:text-white'}`}>常见问题</button></li>
+                  </ul>
+                </div>
+
+                {/* Corporate qualification block filling the right side naturally */}
+                <div className={`mt-5 pt-3.5 border-t text-[11px] leading-relaxed transition-colors duration-300 ${
+                  isFooterLight ? 'border-neutral-200/80 text-neutral-500' : 'border-neutral-800 text-neutral-400'
+                }`}>
+                  <p className={`font-semibold mb-1 ${isFooterLight ? 'text-neutral-700' : 'text-neutral-300'}`}>
+                    国家级工业设计示范企业
+                  </p>
+                  <p className="opacity-80">
+                    22年行业沉淀，深度赋能垂直产业爆品孵化与品牌升级。
+                  </p>
+                </div>
               </div>
+
             </div>
-
           </div>
 
           {/* Legal bottom row */}

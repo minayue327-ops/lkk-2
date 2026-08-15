@@ -1135,8 +1135,8 @@ export default function CategoryConsultingPage({
               key={index} 
               className="w-full border-b border-[#E5E5E5]"
             >
-              {/* Centered item content */}
-              <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 py-6 flex flex-col text-left group">
+              {/* Centered item content with 50% reduced side margins */}
+              <div className="max-w-[92.5%] lg:max-w-[85%] w-full mx-auto px-3 py-6 flex flex-col text-left group">
                 <h4 className="text-[16px] font-semibold text-[#1a1a1a] group-hover:text-[#007BC7] transition-colors duration-300">
                   {item.q}
                 </h4>

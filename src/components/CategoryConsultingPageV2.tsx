@@ -508,7 +508,7 @@ export default function CategoryConsultingPageV2({
       <section id="service-matching" className="bg-[#FAFAFA] w-full border-b border-[#E5E5E5] relative">
         
         {/* Sticky/Top Overall Section Header & Strategic Diagnosis Controller */}
-        <div className="pt-24 lg:pt-32 pb-14 max-w-[95%] xl:max-w-[1440px] w-full mx-auto relative z-10 border-b border-[#E5E5E5]/80">
+        <div className="pt-24 lg:pt-32 pb-16 max-w-[95%] xl:max-w-[1440px] w-full mx-auto relative z-10 border-b border-[#E5E5E5]/80">
           
           {/* Header */}
           <motion.div 
@@ -519,7 +519,7 @@ export default function CategoryConsultingPageV2({
             className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-8"
           >
             <div className="max-w-2xl text-left">
-              <div className="flex items-center gap-2.5 mb-3">
+              <div className="flex items-center gap-2.5 mb-3.5">
                 <span className="inline-block w-2 h-2 rounded-full bg-[#007BC7] animate-pulse"></span>
                 <span className="text-xs font-bold text-[#007BC7] uppercase tracking-[0.25em] font-mono">
                   SERVICE MATCHING / 01
@@ -535,25 +535,36 @@ export default function CategoryConsultingPageV2({
               <p className="text-sm md:text-base text-[#4D4D4D] font-normal leading-relaxed">
                 根据你的品类阶段、用户心智与业务问题，匹配更适合你的创新服务。
               </p>
-              <div className="mt-3 flex items-center gap-2 text-xs font-mono text-[#007BC7] font-semibold">
-                <span>01 品类问题</span>
-                <span className="text-[#8C8C8C]">↓</span>
-                <span>02 产品问题</span>
-                <span className="text-[#8C8C8C]">↓</span>
-                <span>03 品牌问题</span>
+              
+              {/* Refined Process Navigation Track */}
+              <div className="mt-4 pt-3 border-t border-[#E5E5E5]/70 flex items-center gap-3 text-xs font-mono">
+                <div className="flex items-center gap-1.5 text-[#007BC7] font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]" />
+                  <span>01 品类问题</span>
+                </div>
+                <span className="text-[#D9D9D9] font-sans">→</span>
+                <div className="flex items-center gap-1.5 text-[#4D4D4D] font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#8C8C8C]" />
+                  <span>02 产品问题</span>
+                </div>
+                <span className="text-[#D9D9D9] font-sans">→</span>
+                <div className="flex items-center gap-1.5 text-[#4D4D4D] font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#8C8C8C]" />
+                  <span>03 品牌问题</span>
+                </div>
               </div>
             </div>
           </motion.div>
 
           {/* 阶段诊断联动提示条 (Interactive Diagnosis State Indicator) */}
-          <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 sm:p-6 shadow-xs transition-all duration-300">
+          <div className="bg-white border border-[#E5E5E5] rounded-2xl p-6 sm:p-7 shadow-xs hover:border-[#007BC7]/30 transition-all duration-300">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="flex items-start sm:items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-[#007BC7]/10 text-[#007BC7] flex items-center justify-center font-mono font-bold text-sm shrink-0 border border-[#007BC7]/20">
+                <div className="w-11 h-11 rounded-xl bg-[#007BC7]/10 text-[#007BC7] flex items-center justify-center font-mono font-bold text-base shrink-0 border border-[#007BC7]/20">
                   {hoveredStage !== null ? `0${hoveredStage + 1}` : '★'}
                 </div>
                 <div className="text-left">
-                  <div className="text-sm sm:text-base font-bold text-[#1A1A1A] flex items-center gap-2 flex-wrap">
+                  <div className="text-sm sm:text-base font-bold text-[#1A1A1A] flex items-center gap-2.5 flex-wrap">
                     <span>
                       {hoveredStage === 0 && '当前诊断阶段：01 导入期'}
                       {hoveredStage === 1 && '当前诊断阶段：02 成长期'}
@@ -562,12 +573,12 @@ export default function CategoryConsultingPageV2({
                       {hoveredStage === null && '全景战略诊断：请沿下方三屏深度诊断路径向下浏览'}
                     </span>
                     {hoveredStage !== null && (
-                      <span className="px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-[#007BC7] text-white">
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-[#007BC7] text-white">
                         已激活重点匹配
                       </span>
                     )}
                   </div>
-                  <div className="text-xs sm:text-sm text-[#8C8C8C] mt-1 leading-relaxed">
+                  <div className="text-xs sm:text-sm text-[#8C8C8C] mt-1.5 leading-relaxed">
                     {hoveredStage === 0 && '核心挑战：品类认知模糊 · 价值标准未立 · 需明确赛道与原型 · 重点关注第一屏【品类问题】'}
                     {hoveredStage === 1 && '核心挑战：竞争对手跟进 · 需做强产品体验与产品线 · 抢占品牌第一记忆 · 重点关注第二屏【产品】与第三屏【品牌】'}
                     {hoveredStage === 2 && '核心挑战：同质化竞争加剧 · 增长见顶 · 需价值重构或分化新品类 · 重点关注【品类 / 产品 / 品牌】综合破局'}
@@ -589,10 +600,10 @@ export default function CategoryConsultingPageV2({
                   <button
                     key={st.id}
                     onClick={() => setHoveredStage(hoveredStage === st.id ? null : st.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer ${
+                    className={`px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all duration-200 cursor-pointer ${
                       hoveredStage === st.id
-                        ? 'bg-[#007BC7] text-white font-bold'
-                        : 'bg-neutral-100 text-[#4D4D4D] hover:bg-neutral-200'
+                        ? 'bg-[#007BC7] text-white font-bold shadow-xs'
+                        : 'bg-neutral-100 text-[#4D4D4D] hover:bg-neutral-200 hover:text-[#1A1A1A]'
                     }`}
                   >
                     {st.label}
@@ -601,7 +612,7 @@ export default function CategoryConsultingPageV2({
                 {hoveredStage !== null && (
                   <button
                     onClick={() => setHoveredStage(null)}
-                    className="px-2 py-1 text-xs text-[#8C8C8C] hover:text-[#1A1A1A] underline font-mono cursor-pointer"
+                    className="px-2 py-1 text-xs text-[#8C8C8C] hover:text-[#007BC7] underline font-mono cursor-pointer transition-colors"
                   >
                     重置
                   </button>
@@ -614,21 +625,21 @@ export default function CategoryConsultingPageV2({
           <div className="mt-8 flex items-center justify-start sm:justify-center gap-3 overflow-x-auto pb-2 scrollbar-none">
             <a 
               href="#screen-category-problem"
-              className="px-4 py-2 rounded-full bg-white border border-[#E5E5E5] hover:border-[#007BC7] text-xs font-mono font-semibold text-[#1A1A1A] hover:text-[#007BC7] transition-colors shrink-0 flex items-center gap-2 shadow-xs"
+              className="px-4 py-2 rounded-full bg-white border border-[#E5E5E5] hover:border-[#007BC7] text-xs font-mono font-semibold text-[#1A1A1A] hover:text-[#007BC7] transition-all shrink-0 flex items-center gap-2 shadow-xs"
             >
               <span className="w-2 h-2 rounded-full bg-[#007BC7]"></span>
               <span>第一屏：01 品类问题 · 方向判断</span>
             </a>
             <a 
               href="#screen-product-problem"
-              className="px-4 py-2 rounded-full bg-white border border-[#E5E5E5] hover:border-[#007BC7] text-xs font-mono font-semibold text-[#1A1A1A] hover:text-[#007BC7] transition-colors shrink-0 flex items-center gap-2 shadow-xs"
+              className="px-4 py-2 rounded-full bg-white border border-[#E5E5E5] hover:border-[#007BC7] text-xs font-mono font-semibold text-[#1A1A1A] hover:text-[#007BC7] transition-all shrink-0 flex items-center gap-2 shadow-xs"
             >
               <span className="w-2 h-2 rounded-full bg-neutral-400"></span>
               <span>第二屏：02 产品问题 · 从机会到落地</span>
             </a>
             <a 
               href="#screen-brand-problem"
-              className="px-4 py-2 rounded-full bg-white border border-[#E5E5E5] hover:border-[#007BC7] text-xs font-mono font-semibold text-[#1A1A1A] hover:text-[#007BC7] transition-colors shrink-0 flex items-center gap-2 shadow-xs"
+              className="px-4 py-2 rounded-full bg-white border border-[#E5E5E5] hover:border-[#007BC7] text-xs font-mono font-semibold text-[#1A1A1A] hover:text-[#007BC7] transition-all shrink-0 flex items-center gap-2 shadow-xs"
             >
               <span className="w-2 h-2 rounded-full bg-neutral-400"></span>
               <span>第三屏：03 品牌问题 · 选择理由</span>
@@ -642,24 +653,19 @@ export default function CategoryConsultingPageV2({
         {/* ============================================================ */}
         <section 
           id="screen-category-problem" 
-          className="min-h-[90vh] lg:min-h-screen py-24 lg:py-32 w-full flex items-center relative border-b border-[#E5E5E5] bg-white overflow-hidden"
+          className="min-h-[85vh] lg:min-h-screen py-24 lg:py-32 w-full flex items-center relative border-b border-[#E5E5E5] bg-white overflow-hidden"
         >
           {/* Subtle Background Elements: Strategic Category Waves & Coordinate Grid */}
-          <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
+          <div className="absolute inset-0 pointer-events-none opacity-[0.025]">
             <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(#1A1A1A 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
           </div>
           <div className="absolute -right-20 top-1/4 w-96 h-96 bg-[#007BC7]/5 rounded-full blur-3xl pointer-events-none" />
-          
-          {/* Giant Background Number Watermark */}
-          <div className="absolute right-6 lg:right-16 top-12 lg:top-20 text-[160px] sm:text-[220px] lg:text-[320px] font-black font-mono text-neutral-100/70 select-none pointer-events-none leading-none z-0">
-            01
-          </div>
 
           <div className="max-w-[95%] xl:max-w-[1440px] w-full mx-auto relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               
-              {/* Left Column: Huge Headline & Problem Identification */}
-              <div className="lg:col-span-7 text-left space-y-8">
+              {/* Left Column: Huge Headline & Problem Identification (58% visual weight) */}
+              <div className="lg:col-span-7 text-left space-y-7">
                 
                 {/* Step Marker */}
                 <div className="flex items-center gap-3">
@@ -688,13 +694,13 @@ export default function CategoryConsultingPageV2({
                   </div>
                 )}
 
-                {/* Core Problem Identification Container */}
-                <div className="bg-[#FAFAFA] rounded-3xl p-6 sm:p-8 lg:p-10 border border-[#E5E5E5] relative">
-                  <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-5">
+                {/* Core Problem Identification Container - Refined 2x2 Problem Grid */}
+                <div className="bg-[#F8F9FA] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] relative">
+                  <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-4">
                     当你的核心问题是：
                   </span>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     {[
                       '只能打价格战',
                       '增长没有新方向',
@@ -703,7 +709,7 @@ export default function CategoryConsultingPageV2({
                     ].map((item, idx) => (
                       <div 
                         key={idx}
-                        className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-neutral-200/80 shadow-2xs"
+                        className="flex items-center gap-3.5 p-4 sm:p-4.5 rounded-xl sm:rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#007BC7]/40 hover:shadow-xs transition-all duration-200"
                       >
                         <div className="w-2 h-2 rounded-full bg-[#007BC7] shrink-0" />
                         <span className="text-sm sm:text-base font-semibold text-[#1A1A1A]">
@@ -716,67 +722,76 @@ export default function CategoryConsultingPageV2({
 
               </div>
 
-              {/* Right Column: Visual Focus Solution Panel & Action Entrance */}
-              <div className="lg:col-span-5">
+              {/* Right Column: Visual Focus Solution Panel & Action Entrance (42% visual weight) */}
+              <div className="lg:col-span-5 relative">
+                {/* Refined Card Backdrop Number Watermark */}
+                <div className="absolute -top-12 lg:-top-16 -right-4 sm:-right-8 lg:-right-10 text-[180px] sm:text-[240px] font-black font-mono text-[#007BC7]/[0.07] select-none pointer-events-none leading-none z-0 tracking-tighter">
+                  01
+                </div>
+
                 <motion.div 
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="bg-white rounded-3xl p-8 sm:p-10 lg:p-12 border-2 border-[#007BC7] shadow-xl relative overflow-hidden text-left"
+                  transition={{ duration: 0.5 }}
+                  className="relative z-10 bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-10 lg:p-11 border border-[#E5E5E5] hover:border-[#007BC7]/40 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden text-left flex flex-col justify-between"
                 >
-                  {/* Subtle top gradient accent */}
-                  <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#007BC7] via-[#005F96] to-[#007BC7]" />
+                  {/* Unified Top Blue Accent Border */}
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#007BC7] via-[#005F96] to-[#007BC7]" />
                   
-                  <span className="text-xs font-mono font-bold tracking-widest text-[#007BC7] uppercase block mb-3">
-                    推荐服务
-                  </span>
-                  
-                  <h4 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] font-display mb-3">
-                    三品合一—品类咨询
-                  </h4>
-
-                  <div className="p-4 sm:p-5 rounded-2xl bg-[#007BC7]/5 border border-[#007BC7]/15 mb-6">
-                    <p className="text-sm sm:text-base text-[#007BC7] font-bold leading-relaxed">
-                      核心解决：“我的产品应该进入什么方向？”
-                    </p>
-                  </div>
-
-                  {/* Core Capabilities */}
-                  <div className="mb-8">
-                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C8C8C] uppercase block mb-3">
-                      核心赋能
+                  <div>
+                    <span className="text-xs font-mono font-bold tracking-widest text-[#007BC7] uppercase block mb-2.5">
+                      推荐服务
                     </span>
-                    <div className="flex flex-wrap gap-2.5">
-                      {['品类战略', '用户洞察', '品类定位', '品类品牌'].map((kw, i) => (
-                        <span 
-                          key={i} 
-                          className="px-3.5 py-1.5 bg-[#FAFAFA] border border-[#E5E5E5] text-[#1A1A1A] rounded-xl text-xs sm:text-sm font-mono font-medium hover:border-[#007BC7] transition-colors"
-                        >
-                          {kw}
-                        </span>
-                      ))}
+                    
+                    <h4 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] font-display mb-4">
+                      三品合一—品类咨询
+                    </h4>
+
+                    <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-[#007BC7]/5 border border-[#007BC7]/15 mb-6">
+                      <p className="text-sm sm:text-base text-[#007BC7] font-bold leading-relaxed">
+                        核心解决：“我的产品应该进入什么方向？”
+                      </p>
+                    </div>
+
+                    {/* Core Capabilities */}
+                    <div className="mb-8">
+                      <span className="text-xs font-mono font-bold tracking-wider text-[#8C8C8C] uppercase block mb-3">
+                        核心赋能
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {['品类战略', '用户洞察', '品类定位', '品类品牌'].map((kw, i) => (
+                          <span 
+                            key={i} 
+                            className="px-3.5 py-1.5 bg-[#FAFAFA] border border-[#E5E5E5] text-[#1A1A1A] rounded-xl text-xs sm:text-sm font-mono font-medium hover:border-[#007BC7] hover:bg-white transition-all"
+                          >
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Action Button */}
-                  <button 
-                    onClick={() => onNavigateDetail?.('/three-in-one-category')}
-                    className="w-full h-14 px-6 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm sm:text-base font-bold rounded-2xl transition-all duration-300 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-lg"
-                  >
-                    <span>了解品类咨询</span>
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                      <ArrowRight className="w-4 h-4 text-white" />
-                    </div>
-                  </button>
+                  <div>
+                    {/* Unified Blue Action Button */}
+                    <button 
+                      onClick={() => onNavigateDetail?.('/three-in-one-category')}
+                      className="w-full h-13 sm:h-14 px-6 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm sm:text-base font-bold rounded-xl sm:rounded-2xl transition-all duration-300 flex items-center justify-between group cursor-pointer shadow-sm hover:shadow-md"
+                    >
+                      <span>了解品类咨询</span>
+                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                        <ArrowRight className="w-4 h-4 text-white" />
+                      </div>
+                    </button>
 
-                  {/* Scroll Down Prompt */}
-                  <div className="mt-6 pt-5 border-t border-[#E5E5E5] flex items-center justify-between text-xs text-[#8C8C8C] font-mono">
-                    <span>战略诊断递进</span>
-                    <a href="#screen-product-problem" className="text-[#007BC7] font-semibold hover:underline flex items-center gap-1">
-                      <span>下一屏：02 产品问题</span>
-                      <span>↓</span>
-                    </a>
+                    {/* Scroll Down Prompt */}
+                    <div className="mt-6 pt-5 border-t border-[#E5E5E5] flex items-center justify-between text-xs text-[#8C8C8C] font-mono">
+                      <span>战略诊断递进</span>
+                      <a href="#screen-product-problem" className="text-[#007BC7] font-semibold hover:underline flex items-center gap-1">
+                        <span>下一屏：02 产品问题</span>
+                        <span>↓</span>
+                      </a>
+                    </div>
                   </div>
                 </motion.div>
               </div>
@@ -790,28 +805,23 @@ export default function CategoryConsultingPageV2({
         {/* ============================================================ */}
         <section 
           id="screen-product-problem" 
-          className="min-h-[90vh] lg:min-h-screen py-24 lg:py-32 w-full flex items-center relative border-b border-[#E5E5E5] bg-[#F8F9FA] overflow-hidden"
+          className="min-h-[85vh] lg:min-h-screen py-24 lg:py-32 w-full flex items-center relative border-b border-[#E5E5E5] bg-[#F8F9FA] overflow-hidden"
         >
           {/* Subtle Background Elements: Product Blueprint Contour Lines & Architectural Coordinate Grid */}
-          <div className="absolute inset-0 pointer-events-none opacity-[0.035]">
+          <div className="absolute inset-0 pointer-events-none opacity-[0.025]">
             <div className="w-full h-full" style={{ backgroundImage: 'linear-gradient(to right, #1A1A1A 1px, transparent 1px), linear-gradient(to bottom, #1A1A1A 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
           </div>
           <div className="absolute -left-20 top-1/3 w-96 h-96 bg-[#007BC7]/5 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Giant Background Number Watermark */}
-          <div className="absolute right-6 lg:right-16 top-12 lg:top-20 text-[160px] sm:text-[220px] lg:text-[320px] font-black font-mono text-neutral-200/60 select-none pointer-events-none leading-none z-0">
-            02
-          </div>
-
           <div className="max-w-[95%] xl:max-w-[1440px] w-full mx-auto relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               
               {/* Left Column: Huge Headline & Problem Identification */}
-              <div className="lg:col-span-7 text-left space-y-8">
+              <div className="lg:col-span-7 text-left space-y-7">
                 
                 {/* Step Marker */}
                 <div className="flex items-center gap-3">
-                  <span className="px-3.5 py-1 rounded-full bg-[#1A1A1A] text-white font-mono font-bold text-xs tracking-widest uppercase">
+                  <span className="px-3.5 py-1 rounded-full bg-[#007BC7]/10 text-[#007BC7] font-mono font-bold text-xs tracking-widest uppercase border border-[#007BC7]/20">
                     02 / 问题类型
                   </span>
                   <span className="text-xs font-mono text-[#8C8C8C] uppercase tracking-wider">
@@ -837,12 +847,12 @@ export default function CategoryConsultingPageV2({
                 )}
 
                 {/* Core Problem Identification Container */}
-                <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-[#E5E5E5] shadow-xs relative">
-                  <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-5">
+                <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] shadow-xs relative">
+                  <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-4">
                     当你的核心问题是：
                   </span>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     {[
                       '有想法，没有产品路径',
                       '产品缺少差异化',
@@ -851,7 +861,7 @@ export default function CategoryConsultingPageV2({
                     ].map((item, idx) => (
                       <div 
                         key={idx}
-                        className="flex items-center gap-3 p-4 rounded-2xl bg-[#FAFAFA] border border-neutral-200/80 shadow-2xs"
+                        className="flex items-center gap-3.5 p-4 sm:p-4.5 rounded-xl sm:rounded-2xl bg-[#FAFAFA] border border-[#E5E5E5] hover:border-[#007BC7]/40 hover:shadow-xs transition-all duration-200"
                       >
                         <div className="w-2 h-2 rounded-full bg-[#007BC7] shrink-0" />
                         <span className="text-sm sm:text-base font-semibold text-[#1A1A1A]">
@@ -865,66 +875,75 @@ export default function CategoryConsultingPageV2({
               </div>
 
               {/* Right Column: Visual Focus Solution Panel & Action Entrance */}
-              <div className="lg:col-span-5">
+              <div className="lg:col-span-5 relative">
+                {/* Refined Card Backdrop Number Watermark */}
+                <div className="absolute -top-12 lg:-top-16 -right-4 sm:-right-8 lg:-right-10 text-[180px] sm:text-[240px] font-black font-mono text-[#007BC7]/[0.07] select-none pointer-events-none leading-none z-0 tracking-tighter">
+                  02
+                </div>
+
                 <motion.div 
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="bg-white rounded-3xl p-8 sm:p-10 lg:p-12 border-2 border-neutral-800 shadow-xl relative overflow-hidden text-left"
+                  transition={{ duration: 0.5 }}
+                  className="relative z-10 bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-10 lg:p-11 border border-[#E5E5E5] hover:border-[#007BC7]/40 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden text-left flex flex-col justify-between"
                 >
-                  {/* Top dark accent */}
-                  <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-neutral-800 via-[#007BC7] to-neutral-800" />
+                  {/* Unified Top Blue Accent Border */}
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#007BC7] via-[#005F96] to-[#007BC7]" />
                   
-                  <span className="text-xs font-mono font-bold tracking-widest text-[#007BC7] uppercase block mb-3">
-                    推荐服务
-                  </span>
-                  
-                  <h4 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] font-display mb-3">
-                    产品创新0-1全案咨询
-                  </h4>
-
-                  <div className="p-4 sm:p-5 rounded-2xl bg-neutral-100 border border-neutral-200 mb-6">
-                    <p className="text-sm sm:text-base text-[#1A1A1A] font-bold leading-relaxed">
-                      核心解决：“我应该打造什么产品？”
-                    </p>
-                  </div>
-
-                  {/* Core Capabilities */}
-                  <div className="mb-8">
-                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C8C8C] uppercase block mb-3">
-                      核心赋能
+                  <div>
+                    <span className="text-xs font-mono font-bold tracking-widest text-[#007BC7] uppercase block mb-2.5">
+                      推荐服务
                     </span>
-                    <div className="flex flex-wrap gap-2.5">
-                      {['产品规划', '产品定义', '产品落地', '产品美学'].map((kw, i) => (
-                        <span 
-                          key={i} 
-                          className="px-3.5 py-1.5 bg-[#FAFAFA] border border-[#E5E5E5] text-[#1A1A1A] rounded-xl text-xs sm:text-sm font-mono font-medium hover:border-[#007BC7] transition-colors"
-                        >
-                          {kw}
-                        </span>
-                      ))}
+                    
+                    <h4 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] font-display mb-4">
+                      产品创新0-1全案咨询
+                    </h4>
+
+                    <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-[#007BC7]/5 border border-[#007BC7]/15 mb-6">
+                      <p className="text-sm sm:text-base text-[#007BC7] font-bold leading-relaxed">
+                        核心解决：“我应该打造什么产品？”
+                      </p>
+                    </div>
+
+                    {/* Core Capabilities */}
+                    <div className="mb-8">
+                      <span className="text-xs font-mono font-bold tracking-wider text-[#8C8C8C] uppercase block mb-3">
+                        核心赋能
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {['产品规划', '产品定义', '产品落地', '产品美学'].map((kw, i) => (
+                          <span 
+                            key={i} 
+                            className="px-3.5 py-1.5 bg-[#FAFAFA] border border-[#E5E5E5] text-[#1A1A1A] rounded-xl text-xs sm:text-sm font-mono font-medium hover:border-[#007BC7] hover:bg-white transition-all"
+                          >
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Action Button */}
-                  <button 
-                    onClick={() => onNavigateDetail?.('/product-innovation-consulting')}
-                    className="w-full h-14 px-6 bg-[#1A1A1A] hover:bg-[#007BC7] text-white text-sm sm:text-base font-bold rounded-2xl transition-all duration-300 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-lg"
-                  >
-                    <span>了解产品创新</span>
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                      <ArrowRight className="w-4 h-4 text-white" />
-                    </div>
-                  </button>
+                  <div>
+                    {/* Unified Blue Action Button */}
+                    <button 
+                      onClick={() => onNavigateDetail?.('/product-innovation-consulting')}
+                      className="w-full h-13 sm:h-14 px-6 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm sm:text-base font-bold rounded-xl sm:rounded-2xl transition-all duration-300 flex items-center justify-between group cursor-pointer shadow-sm hover:shadow-md"
+                    >
+                      <span>了解产品创新</span>
+                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                        <ArrowRight className="w-4 h-4 text-white" />
+                      </div>
+                    </button>
 
-                  {/* Scroll Down Prompt */}
-                  <div className="mt-6 pt-5 border-t border-[#E5E5E5] flex items-center justify-between text-xs text-[#8C8C8C] font-mono">
-                    <span>战略诊断递进</span>
-                    <a href="#screen-brand-problem" className="text-[#007BC7] font-semibold hover:underline flex items-center gap-1">
-                      <span>下一屏：03 品牌问题</span>
-                      <span>↓</span>
-                    </a>
+                    {/* Scroll Down Prompt */}
+                    <div className="mt-6 pt-5 border-t border-[#E5E5E5] flex items-center justify-between text-xs text-[#8C8C8C] font-mono">
+                      <span>战略诊断递进</span>
+                      <a href="#screen-brand-problem" className="text-[#007BC7] font-semibold hover:underline flex items-center gap-1">
+                        <span>下一屏：03 品牌问题</span>
+                        <span>↓</span>
+                      </a>
+                    </div>
                   </div>
                 </motion.div>
               </div>
@@ -938,24 +957,19 @@ export default function CategoryConsultingPageV2({
         {/* ============================================================ */}
         <section 
           id="screen-brand-problem" 
-          className="min-h-[90vh] lg:min-h-screen py-24 lg:py-32 w-full flex items-center relative border-b border-[#E5E5E5] bg-white overflow-hidden"
+          className="min-h-[85vh] lg:min-h-screen py-24 lg:py-32 w-full flex items-center relative border-b border-[#E5E5E5] bg-white overflow-hidden"
         >
           {/* Subtle Background Elements: Brand Resonance Concentric Radii */}
-          <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
+          <div className="absolute inset-0 pointer-events-none opacity-[0.025]">
             <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(#007BC7 1px, transparent 1px)', backgroundSize: '36px 36px' }} />
           </div>
           <div className="absolute right-0 bottom-10 w-96 h-96 bg-[#007BC7]/5 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Giant Background Number Watermark */}
-          <div className="absolute right-6 lg:right-16 top-12 lg:top-20 text-[160px] sm:text-[220px] lg:text-[320px] font-black font-mono text-neutral-100/70 select-none pointer-events-none leading-none z-0">
-            03
-          </div>
-
           <div className="max-w-[95%] xl:max-w-[1440px] w-full mx-auto relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               
               {/* Left Column: Huge Headline & Problem Identification */}
-              <div className="lg:col-span-7 text-left space-y-8">
+              <div className="lg:col-span-7 text-left space-y-7">
                 
                 {/* Step Marker */}
                 <div className="flex items-center gap-3">
@@ -985,12 +999,12 @@ export default function CategoryConsultingPageV2({
                 )}
 
                 {/* Core Problem Identification Container */}
-                <div className="bg-[#FAFAFA] rounded-3xl p-6 sm:p-8 lg:p-10 border border-[#E5E5E5] relative">
-                  <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-5">
+                <div className="bg-[#F8F9FA] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] relative">
+                  <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-4">
                     当你的核心问题是：
                   </span>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     {[
                       '品牌定位不清',
                       '视觉缺少统一性',
@@ -999,7 +1013,7 @@ export default function CategoryConsultingPageV2({
                     ].map((item, idx) => (
                       <div 
                         key={idx}
-                        className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-neutral-200/80 shadow-2xs"
+                        className="flex items-center gap-3.5 p-4 sm:p-4.5 rounded-xl sm:rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#007BC7]/40 hover:shadow-xs transition-all duration-200"
                       >
                         <div className="w-2 h-2 rounded-full bg-[#007BC7] shrink-0" />
                         <span className="text-sm sm:text-base font-semibold text-[#1A1A1A]">
@@ -1013,66 +1027,75 @@ export default function CategoryConsultingPageV2({
               </div>
 
               {/* Right Column: Visual Focus Solution Panel & Action Entrance */}
-              <div className="lg:col-span-5">
+              <div className="lg:col-span-5 relative">
+                {/* Refined Card Backdrop Number Watermark */}
+                <div className="absolute -top-12 lg:-top-16 -right-4 sm:-right-8 lg:-right-10 text-[180px] sm:text-[240px] font-black font-mono text-[#007BC7]/[0.07] select-none pointer-events-none leading-none z-0 tracking-tighter">
+                  03
+                </div>
+
                 <motion.div 
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="bg-white rounded-3xl p-8 sm:p-10 lg:p-12 border-2 border-[#007BC7] shadow-xl relative overflow-hidden text-left"
+                  transition={{ duration: 0.5 }}
+                  className="relative z-10 bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-10 lg:p-11 border border-[#E5E5E5] hover:border-[#007BC7]/40 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden text-left flex flex-col justify-between"
                 >
-                  {/* Top accent */}
-                  <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#007BC7] via-[#005F96] to-[#007BC7]" />
+                  {/* Unified Top Blue Accent Border */}
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#007BC7] via-[#005F96] to-[#007BC7]" />
                   
-                  <span className="text-xs font-mono font-bold tracking-widest text-[#007BC7] uppercase block mb-3">
-                    推荐服务
-                  </span>
-                  
-                  <h4 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] font-display mb-3">
-                    品牌创新0-1全案咨询
-                  </h4>
-
-                  <div className="p-4 sm:p-5 rounded-2xl bg-[#007BC7]/5 border border-[#007BC7]/15 mb-6">
-                    <p className="text-sm sm:text-base text-[#007BC7] font-bold leading-relaxed">
-                      核心解决：“用户为什么选择我？”
-                    </p>
-                  </div>
-
-                  {/* Core Capabilities */}
-                  <div className="mb-8">
-                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C8C8C] uppercase block mb-3">
-                      核心赋能
+                  <div>
+                    <span className="text-xs font-mono font-bold tracking-widest text-[#007BC7] uppercase block mb-2.5">
+                      推荐服务
                     </span>
-                    <div className="flex flex-wrap gap-2.5">
-                      {['品牌价值', '品牌定位', '品牌话语', '品牌美学'].map((kw, i) => (
-                        <span 
-                          key={i} 
-                          className="px-3.5 py-1.5 bg-[#FAFAFA] border border-[#E5E5E5] text-[#1A1A1A] rounded-xl text-xs sm:text-sm font-mono font-medium hover:border-[#007BC7] transition-colors"
-                        >
-                          {kw}
-                        </span>
-                      ))}
+                    
+                    <h4 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] font-display mb-4">
+                      品牌创新0-1全案咨询
+                    </h4>
+
+                    <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-[#007BC7]/5 border border-[#007BC7]/15 mb-6">
+                      <p className="text-sm sm:text-base text-[#007BC7] font-bold leading-relaxed">
+                        核心解决：“用户为什么选择我？”
+                      </p>
+                    </div>
+
+                    {/* Core Capabilities */}
+                    <div className="mb-8">
+                      <span className="text-xs font-mono font-bold tracking-wider text-[#8C8C8C] uppercase block mb-3">
+                        核心赋能
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {['品牌价值', '品牌定位', '品牌话语', '品牌美学'].map((kw, i) => (
+                          <span 
+                            key={i} 
+                            className="px-3.5 py-1.5 bg-[#FAFAFA] border border-[#E5E5E5] text-[#1A1A1A] rounded-xl text-xs sm:text-sm font-mono font-medium hover:border-[#007BC7] hover:bg-white transition-all"
+                          >
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Action Button */}
-                  <button 
-                    onClick={() => onNavigateDetail?.('/brand-innovation-consulting')}
-                    className="w-full h-14 px-6 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm sm:text-base font-bold rounded-2xl transition-all duration-300 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-lg"
-                  >
-                    <span>了解品牌创新</span>
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                      <ArrowRight className="w-4 h-4 text-white" />
-                    </div>
-                  </button>
+                  <div>
+                    {/* Unified Blue Action Button */}
+                    <button 
+                      onClick={() => onNavigateDetail?.('/brand-innovation-consulting')}
+                      className="w-full h-13 sm:h-14 px-6 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm sm:text-base font-bold rounded-xl sm:rounded-2xl transition-all duration-300 flex items-center justify-between group cursor-pointer shadow-sm hover:shadow-md"
+                    >
+                      <span>了解品牌创新</span>
+                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                        <ArrowRight className="w-4 h-4 text-white" />
+                      </div>
+                    </button>
 
-                  {/* Diagnosis Completion Prompt */}
-                  <div className="mt-6 pt-5 border-t border-[#E5E5E5] flex items-center justify-between text-xs text-[#8C8C8C] font-mono">
-                    <span>战略诊断流程完成</span>
-                    <span className="text-[#007BC7] font-semibold flex items-center gap-1">
-                      <span>三品合一闭环达成</span>
-                      <span>✓</span>
-                    </span>
+                    {/* Diagnosis Completion Prompt */}
+                    <div className="mt-6 pt-5 border-t border-[#E5E5E5] flex items-center justify-between text-xs text-[#8C8C8C] font-mono">
+                      <span>战略诊断流程完成</span>
+                      <span className="text-[#007BC7] font-semibold flex items-center gap-1">
+                        <span>三品合一闭环达成</span>
+                        <span>✓</span>
+                      </span>
+                    </div>
                   </div>
                 </motion.div>
               </div>
@@ -1083,7 +1106,7 @@ export default function CategoryConsultingPageV2({
 
         {/* 七、底部行动建议引导 (Strategic Consultation Guidance Banner) */}
         <div className="py-20 lg:py-28 max-w-[95%] xl:max-w-[1440px] mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto bg-white border border-[#E5E5E5] rounded-3xl p-8 sm:p-12 lg:p-16 text-center shadow-sm relative overflow-hidden">
+          <div className="max-w-4xl mx-auto bg-white border border-[#E5E5E5] rounded-3xl p-8 sm:p-12 lg:p-14 text-center shadow-md relative overflow-hidden">
             {/* Background glow */}
             <div className="absolute -right-16 -bottom-16 w-80 h-80 bg-[#007BC7]/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -left-16 -top-16 w-80 h-80 bg-[#007BC7]/5 rounded-full blur-3xl pointer-events-none" />
@@ -1101,7 +1124,7 @@ export default function CategoryConsultingPageV2({
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button
                   onClick={onOpenContactModal}
-                  className="w-full sm:w-auto h-13 px-8 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-lg"
+                  className="w-full sm:w-auto h-13 px-8 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-md"
                 >
                   <span>预约专家品类诊断</span>
                   <ArrowRight className="w-4 h-4" />
@@ -1228,8 +1251,8 @@ export default function CategoryConsultingPageV2({
               key={index} 
               className="w-full border-b border-[#E5E5E5]"
             >
-              {/* Centered item content */}
-              <div className="max-w-[85%] lg:max-w-[70%] w-full mx-auto px-6 py-6 flex flex-col text-left group">
+              {/* Centered item content with 50% reduced side margins */}
+              <div className="max-w-[92.5%] lg:max-w-[85%] w-full mx-auto px-3 py-6 flex flex-col text-left group">
                 <h4 className="text-[16px] font-semibold text-[#1a1a1a] group-hover:text-[#007BC7] transition-colors duration-300">
                   {item.q}
                 </h4>
