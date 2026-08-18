@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, Search } from 'lucide-react';
+import { ArrowUpRight, Search, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ScrollSectionTitle } from './ScrollSectionTitle';
 
 interface CaseDetailPageProps {
@@ -131,6 +132,7 @@ export default function CaseDetailPage({
   const [searchQuery, setSearchQuery] = useState('');
   const [activeIndustryTag, setActiveIndustryTag] = useState('全部');
   const [activeCategoryTag, setActiveCategoryTag] = useState('全部');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const filteredRelatedCases = EXACT_RELATED_CASES.filter((item) => {
     const matchesIndustry =
@@ -162,128 +164,176 @@ export default function CaseDetailPage({
       </div>
 
       {/* 主内容区域 */}
-      <div className="max-w-[95%] w-full mx-auto pt-6 md:pt-8 pb-12 md:pb-16">
-        <div className="anli-content-container relative grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+      <div className="max-w-[95%] w-full mx-auto pt-6 md:pt-8 pb-12 md:pb-16 transition-all duration-300">
+        
+        {/* 折叠后的悬浮展开入口 (ChatGPT 风格浮动入口) */}
+        <AnimatePresence>
+          {isSidebarCollapsed && (
+            <motion.button
+              initial={{ opacity: 0, x: -20, scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: -20, scale: 0.95 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              onClick={() => setIsSidebarCollapsed(false)}
+              title="展开探索相关案例侧栏"
+              aria-label="展开探索相关案例侧栏"
+              className="fixed left-3 sm:left-6 top-[88px] sm:top-[96px] z-30 flex items-center gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 bg-white/95 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_28px_rgba(0,123,199,0.18)] border border-neutral-200/90 text-[#1A1A1A] hover:text-[#007BC7] rounded-2xl text-xs sm:text-sm font-semibold cursor-pointer transition-all duration-200 group"
+            >
+              <PanelLeftOpen className="w-4 h-4 text-[#007BC7] group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline font-medium">探索相关案例</span>
+            </motion.button>
+          )}
+        </AnimatePresence>
+
+        <div className={`anli-content-container relative transition-all duration-300 ${
+          isSidebarCollapsed 
+            ? 'w-full block' 
+            : 'grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start'
+        }`}>
           
-          {/* 左侧筛选与相关案例栏 */}
-          <aside className="lg:col-span-3 w-full relative">
-            <div className="anli-content-left space-y-6 bg-white p-4 sm:p-5 rounded-3xl border border-neutral-200/60 shadow-xs lg:sticky lg:top-[20px] z-10 lg:max-h-[calc(100vh-40px)] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-neutral-200 hover:[&::-webkit-scrollbar-thumb]:bg-neutral-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
-              <div>
-                <h3 className="text-base font-bold text-[#1A1A1A] mb-4 font-display flex items-center justify-between">
-                  <span>探索相关案例</span>
-                  <span className="text-xs font-mono text-[#007BC7] font-semibold">RELATED</span>
-                </h3>
-
-                <div className="relative mb-5">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
-                  <input 
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="搜索案例..."
-                    className="w-full pl-10 pr-3 py-2 bg-neutral-50/80 focus:bg-white text-xs sm:text-sm text-[#1A1A1A] placeholder-neutral-400 rounded-xl border border-[#E5E5E5] focus:border-[#007BC7] focus:shadow-[0_0_0_3px_rgba(0,123,199,0.12)] outline-none transition-all duration-200"
-                  />
-                </div>
-
-                <div className="space-y-4 mb-6">
+          {/* 左侧筛选与相关案例栏 (展开状态固定悬浮，不随右侧正文滚动移动) */}
+          <AnimatePresence initial={false}>
+            {!isSidebarCollapsed && (
+              <motion.aside 
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                className="lg:col-span-3 w-full lg:sticky lg:top-6 lg:self-start z-20"
+              >
+                <div className="anli-content-left space-y-6 bg-white p-4 sm:p-5 rounded-3xl border border-neutral-200/60 shadow-xs max-h-[calc(100vh-48px)] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-neutral-200 hover:[&::-webkit-scrollbar-thumb]:bg-neutral-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
                   <div>
-                    <div className="text-[12px] text-[#8C8C8C] font-medium mb-2">
-                      垂直行业：
-                    </div>
-                    <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                      {INDUSTRY_TAGS.map((tag) => {
-                        const isActive = activeIndustryTag === tag;
-                        return (
-                          <button
-                            key={tag}
-                            onClick={() => {
-                              setActiveIndustryTag(tag);
-                              if (tag !== '全部') setActiveCategoryTag('全部');
-                            }}
-                            className={`px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium shrink-0 transition-all cursor-pointer border-none ${
-                              isActive
-                                ? 'bg-[#E8F0FF] text-[#007BC7] font-semibold'
-                                : 'bg-[#F5F5F5] text-[#8C8C8C] hover:text-neutral-700 hover:bg-neutral-200/60'
-                            }`}
-                          >
-                            {tag}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+                    <h3 className="text-base font-bold text-[#1A1A1A] mb-4 font-display flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <span>探索相关案例</span>
+                        <span className="text-xs font-mono text-[#007BC7] font-semibold">RELATED</span>
+                      </span>
+                      <button
+                        onClick={() => setIsSidebarCollapsed(true)}
+                        title="收起侧栏"
+                        aria-label="收起侧栏"
+                        className="p-1.5 text-neutral-400 hover:text-[#007BC7] hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
+                      >
+                        <PanelLeftClose className="w-4 h-4" />
+                      </button>
+                    </h3>
 
-                  <div>
-                    <div className="text-[12px] text-[#8C8C8C] font-medium mb-2">
-                      产品分类：
+                    <div className="relative mb-5">
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400 pointer-events-none" />
+                      <input 
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="搜索案例..."
+                        className="w-full pl-10 pr-3 py-2 bg-neutral-50/80 focus:bg-white text-xs sm:text-sm text-[#1A1A1A] placeholder-neutral-400 rounded-xl border border-[#E5E5E5] focus:border-[#007BC7] focus:shadow-[0_0_0_3px_rgba(0,123,199,0.12)] outline-none transition-all duration-200"
+                      />
                     </div>
-                    <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                      {CATEGORY_TAGS.map((tag) => {
-                        const isActive = activeCategoryTag === tag;
-                        return (
-                          <button
-                            key={tag}
-                            onClick={() => {
-                              setActiveCategoryTag(tag);
-                              if (tag !== '全部') setActiveIndustryTag('全部');
-                            }}
-                            className={`px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium shrink-0 transition-all cursor-pointer border-none ${
-                              isActive
-                                ? 'bg-[#E8F0FF] text-[#007BC7] font-semibold'
-                                : 'bg-[#F5F5F5] text-[#8C8C8C] hover:text-neutral-700 hover:bg-neutral-200/60'
-                            }`}
-                          >
-                            {tag}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="divide-y divide-[#E5E5E5] border-t border-[#E5E5E5]">
-                {filteredRelatedCases.length > 0 ? (
-                  filteredRelatedCases.map((item) => (
-                    <div 
-                      key={item.id}
-                      onClick={() => {
-                        if (onSelectRelatedCase) {
-                          onSelectRelatedCase(item.id);
-                        } else {
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }
-                      }}
-                      className="py-3.5 group cursor-pointer text-left block"
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-bold text-[#007BC7] bg-blue-50 px-1.5 py-0.5 rounded font-mono">
-                          洛可可设计
-                        </span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#007BC7] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                    <div className="space-y-4 mb-6">
+                      <div>
+                        <div className="text-[12px] text-[#8C8C8C] font-medium mb-2">
+                          垂直行业：
+                        </div>
+                        <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                          {INDUSTRY_TAGS.map((tag) => {
+                            const isActive = activeIndustryTag === tag;
+                            return (
+                              <button
+                                key={tag}
+                                onClick={() => {
+                                  setActiveIndustryTag(tag);
+                                  if (tag !== '全部') setActiveCategoryTag('全部');
+                                }}
+                                className={`px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium shrink-0 transition-all cursor-pointer border-none ${
+                                  isActive
+                                    ? 'bg-[#E8F0FF] text-[#007BC7] font-semibold'
+                                    : 'bg-[#F5F5F5] text-[#8C8C8C] hover:text-neutral-700 hover:bg-neutral-200/60'
+                                }`}
+                              >
+                                {tag}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
 
-                      <h4 className="text-[15px] font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors duration-200 leading-snug line-clamp-1">
-                        {item.title}
-                      </h4>
-
-                      <p className="text-[13px] text-[#4D4D4D] mt-0.5 line-clamp-1 leading-relaxed">
-                        {item.description}
-                      </p>
+                      <div>
+                        <div className="text-[12px] text-[#8C8C8C] font-medium mb-2">
+                          产品分类：
+                        </div>
+                        <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                          {CATEGORY_TAGS.map((tag) => {
+                            const isActive = activeCategoryTag === tag;
+                            return (
+                              <button
+                                key={tag}
+                                onClick={() => {
+                                  setActiveCategoryTag(tag);
+                                  if (tag !== '全部') setActiveIndustryTag('全部');
+                                }}
+                                className={`px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium shrink-0 transition-all cursor-pointer border-none ${
+                                  isActive
+                                    ? 'bg-[#E8F0FF] text-[#007BC7] font-semibold'
+                                    : 'bg-[#F5F5F5] text-[#8C8C8C] hover:text-neutral-700 hover:bg-neutral-200/60'
+                                }`}
+                              >
+                                {tag}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="py-6 text-center text-neutral-400 text-xs">
-                    未找到匹配的相关案例
                   </div>
-                )}
-              </div>
 
-            </div>
-          </aside>
+                  <div className="divide-y divide-[#E5E5E5] border-t border-[#E5E5E5]">
+                    {filteredRelatedCases.length > 0 ? (
+                      filteredRelatedCases.map((item) => (
+                        <div 
+                          key={item.id}
+                          onClick={() => {
+                            if (onSelectRelatedCase) {
+                              onSelectRelatedCase(item.id);
+                            } else {
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }
+                          }}
+                          className="py-3.5 group cursor-pointer text-left block"
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[10px] font-bold text-[#007BC7] bg-blue-50 px-1.5 py-0.5 rounded font-mono">
+                              洛可可设计
+                            </span>
+                            <ArrowUpRight className="w-3.5 h-3.5 text-neutral-400 group-hover:text-[#007BC7] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                          </div>
+
+                          <h4 className="text-[15px] font-semibold text-[#1A1A1A] group-hover:text-[#007BC7] transition-colors duration-200 leading-snug line-clamp-1">
+                            {item.title}
+                          </h4>
+
+                          <p className="text-[13px] text-[#4D4D4D] mt-0.5 line-clamp-1 leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="py-6 text-center text-neutral-400 text-xs">
+                        未找到匹配的相关案例
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              </motion.aside>
+            )}
+          </AnimatePresence>
 
           {/* 右侧案例详情分节内容 */}
-          <main className="anli-content-right lg:col-span-9 space-y-12 md:space-y-16">
+          <main className={`anli-content-right transition-all duration-300 ${
+            isSidebarCollapsed 
+              ? 'w-full space-y-12 md:space-y-16' 
+              : 'lg:col-span-9 space-y-12 md:space-y-16'
+          }`}>
             
             {isMusinno ? (
               /* ================= 慢阶「演奏家一号」音乐设备 案例内容 ================= */

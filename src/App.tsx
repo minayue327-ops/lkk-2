@@ -2077,10 +2077,10 @@ export default function App() {
             {/* Subtle light overlay */}
             <div className="absolute right-0 top-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch relative z-10">
               
-              {/* Left Column (Brand Value, Title, Text, Logo, Hotline) - lg:col-span-5 (~40%) */}
-              <div className="lg:col-span-5 flex flex-col justify-between text-left h-full">
+              {/* Left Column (Brand Value, Title, Text, Logo, Hotline) - lg:col-span-6 (~50%) to ensure hotline and logo remain in one line without wrapping */}
+              <div className="lg:col-span-6 flex flex-col justify-between text-left h-full">
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2 px-3 py-1 rounded-full border w-fit text-xs font-semibold tracking-wider bg-white/15 text-white border-white/10">
                     洛可可官方品质保障 · 一对一专家咨询
@@ -2095,19 +2095,19 @@ export default function App() {
                   </p>
                 </div>
 
-                {/* Footer Logo and Hotline info */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-4 border-t mt-5 border-white/15">
-                  <LKKLogo isLight={true} />
-                  <div className="h-8 w-px hidden sm:block bg-white/20"></div>
-                  <div className="text-left">
+                {/* Footer Logo and Hotline info - strictly single-line horizontal alignment */}
+                <div className="flex flex-row items-center gap-4 sm:gap-6 pt-4 border-t mt-5 border-white/15">
+                  <LKKLogo isLight={true} className="shrink-0" />
+                  <div className="h-8 w-px bg-white/20 shrink-0"></div>
+                  <div className="text-left whitespace-nowrap min-w-0">
                     <p className="text-[10px] uppercase tracking-widest font-mono text-white/70">Consultation Hotline</p>
-                    <p className="text-2xl font-black tracking-tight mt-0.5 font-display text-white">400-062-3130</p>
+                    <p className="text-xl sm:text-2xl font-black tracking-tight mt-0.5 font-display text-white whitespace-nowrap">400-062-3130</p>
                   </div>
                 </div>
               </div>
 
-              {/* Right Column (Conversion Area: Form + WeChat Entry) - lg:col-span-7 (~60%) */}
-              <div className="lg:col-span-7 w-full flex flex-col justify-center">
+              {/* Right Column (Conversion Area: Form + WeChat Entry) - lg:col-span-6 (~50%) */}
+              <div className="lg:col-span-6 w-full flex flex-col justify-between">
                 {footerFormSuccess ? (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -2123,7 +2123,7 @@ export default function App() {
                     </p>
                   </motion.div>
                 ) : (
-                  <div className="flex flex-col gap-3.5">
+                  <div className="flex flex-col justify-between h-full gap-2.5">
                     
                     {/* Information Input Area + Right Side Action Button */}
                     <form onSubmit={handleFooterSubmit} className="flex flex-col sm:flex-row gap-2.5 items-stretch w-full">
@@ -2136,7 +2136,7 @@ export default function App() {
                           aria-label="您的姓名"
                           value={footerForm.name}
                           onChange={(e) => setFooterForm({ ...footerForm, name: e.target.value })}
-                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                         />
                         <input 
                           type="tel" 
@@ -2145,7 +2145,7 @@ export default function App() {
                           aria-label="您的电话"
                           value={footerForm.phone}
                           onChange={(e) => setFooterForm({ ...footerForm, phone: e.target.value })}
-                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                         />
                         <input 
                           type="text" 
@@ -2154,7 +2154,7 @@ export default function App() {
                           aria-label="企业名称"
                           value={footerForm.company}
                           onChange={(e) => setFooterForm({ ...footerForm, company: e.target.value })}
-                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                         />
                         <input 
                           type="text" 
@@ -2163,14 +2163,14 @@ export default function App() {
                           aria-label="所在城市"
                           value={footerForm.city}
                           onChange={(e) => setFooterForm({ ...footerForm, city: e.target.value })}
-                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                          className="w-full bg-white/15 border border-white/10 rounded-xl px-4 py-2 text-sm text-white placeholder-white/60 outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                         />
                       </div>
 
                       {/* Side-aligned Compact Vertical Consultation Button */}
                       <button 
                         type="submit"
-                        className="w-full sm:w-[72px] md:w-[80px] shrink-0 py-3 sm:py-0 bg-white hover:bg-neutral-100 active:scale-[0.98] text-[#007BC7] rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center justify-center cursor-pointer group"
+                        className="w-full sm:w-[68px] md:w-[74px] shrink-0 py-3 sm:py-0 bg-white hover:bg-neutral-100 active:scale-[0.98] text-[#007BC7] rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center justify-center cursor-pointer group"
                       >
                         {/* Mobile horizontal text */}
                         <div className="sm:hidden flex items-center justify-center gap-1.5 font-extrabold text-sm">
@@ -2187,10 +2187,10 @@ export default function App() {
                       </button>
                     </form>
 
-                    {/* WeChat QR Code Consultation Area (Horizontal alignment with 3-tier information hierarchy) */}
-                    <div className="bg-white/10 border border-white/15 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-left">
-                      {/* QR Code Container */}
-                      <div className="w-[110px] h-[110px] sm:w-[124px] sm:h-[124px] min-w-[110px] sm:min-w-[124px] bg-white rounded-2xl p-2 flex items-center justify-center shrink-0 shadow-md overflow-hidden self-center sm:self-auto">
+                    {/* WeChat QR Code Consultation Area (Frameless integration, bottom-aligned with left logo container, enlarged towards top-right) */}
+                    <div className="flex flex-col sm:flex-row items-center sm:items-stretch gap-4 sm:gap-5 text-left pt-0">
+                      {/* Scaled QR Code Container with 1:1 ratio, enlarged to fill height up to the top spacing */}
+                      <div className="w-[130px] h-[130px] sm:w-[145px] sm:h-[145px] md:w-[154px] md:h-[154px] min-w-[130px] sm:min-w-[145px] md:min-w-[154px] bg-white rounded-2xl p-2 sm:p-2.5 flex items-center justify-center shrink-0 shadow-md overflow-hidden self-center sm:self-auto aspect-square">
                         <img 
                           src="https://github.com/minaxyue-ops/MINA/releases/download/1/3.png" 
                           alt="洛可可官方企业微信二维码" 
@@ -2200,23 +2200,25 @@ export default function App() {
                       </div>
 
                       {/* WeChat text details with 3-tier hierarchy */}
-                      <div className="flex flex-col justify-center min-w-0 flex-1">
-                        {/* Tier 1: English Category Tag */}
-                        <span className="text-[11px] font-mono tracking-widest text-white/70 uppercase block font-semibold">
-                          WECHAT CONSULTATION
-                        </span>
+                      <div className="flex flex-col justify-between min-w-0 flex-1 py-0.5">
+                        <div>
+                          {/* Tier 1: English Category Tag */}
+                          <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-white/70 uppercase block font-semibold">
+                            WECHAT CONSULTATION
+                          </span>
+                          
+                          {/* Tier 2: Core Headline */}
+                          <h4 className="font-bold text-sm sm:text-base text-white mt-0.5 tracking-tight">
+                            添加洛可可官方企业微信
+                          </h4>
+                        </div>
                         
-                        {/* Tier 2: Core Headline */}
-                        <h4 className="font-bold text-sm sm:text-base text-white mt-0.5 tracking-tight">
-                          添加洛可可官方企业微信
-                        </h4>
-                        
-                        {/* Tier 3: Explanatory & Brand Value Text */}
-                        <div className="mt-1 flex flex-col gap-1.5 text-xs text-white/80 leading-relaxed">
+                        {/* Tier 3: Explanatory & Brand Value Text (breaks into rows nicely if needed) */}
+                        <div className="mt-1.5 flex flex-col gap-1.5 text-[11px] sm:text-xs text-white/80 leading-relaxed">
                           <p>
                             微信扫码添加，掌握行业爆品打造逻辑、最前沿设计趋势及精选案例拆解。
                           </p>
-                          <p className="text-white/70 pt-1 border-t border-white/10 text-[11px] sm:text-xs">
+                          <p className="text-white/70 pt-1.5 border-t border-white/10 text-[10px] sm:text-[11px]">
                             作为国家级工业设计示范企业，洛可可坚持探索数字化设计与品类定位的高效整合，驱动中国制造迈向中国创造。
                           </p>
                         </div>

@@ -665,10 +665,14 @@ export default function CategoryConsultingPageV2({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               
               {/* Left Column: Huge Headline & Problem Identification (58% visual weight) */}
-              <div className="lg:col-span-7 text-left space-y-7">
+              <div className="lg:col-span-7 text-left space-y-7 relative">
+                {/* Refined Number Watermark: Positioned to the right of the headline, above the "Core Problem" container */}
+                <div className="absolute right-0 sm:right-2 lg:right-4 top-0 sm:-top-2 lg:-top-4 text-[120px] sm:text-[150px] lg:text-[170px] font-black font-mono text-[#007BC7]/[0.08] select-none pointer-events-none leading-none z-0 tracking-tighter">
+                  01
+                </div>
                 
                 {/* Step Marker */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 relative z-10">
                   <span className="px-3.5 py-1 rounded-full bg-[#007BC7]/10 text-[#007BC7] font-mono font-bold text-xs tracking-widest uppercase border border-[#007BC7]/20">
                     01 / 问题类型
                   </span>
@@ -678,7 +682,7 @@ export default function CategoryConsultingPageV2({
                 </div>
 
                 {/* Main Heading */}
-                <div>
+                <div className="relative z-10">
                   <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1A1A] font-display tracking-tight leading-[1.1]">
                     品类问题
                   </h3>
@@ -689,13 +693,13 @@ export default function CategoryConsultingPageV2({
 
                 {/* Stage-based recommendation banner if applicable */}
                 {(hoveredStage === 0 || hoveredStage === 3) && (
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#007BC7]/10 text-[#007BC7] text-xs font-bold border border-[#007BC7]/20">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#007BC7]/10 text-[#007BC7] text-xs font-bold border border-[#007BC7]/20 relative z-10">
                     <span>★ 契合当前所选阶段：导入期 / 衰退期重点推荐</span>
                   </div>
                 )}
 
                 {/* Core Problem Identification Container - Refined 2x2 Problem Grid */}
-                <div className="bg-[#F8F9FA] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] relative">
+                <div className="bg-[#F8F9FA] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] relative z-10">
                   <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-4">
                     当你的核心问题是：
                   </span>
@@ -724,11 +728,6 @@ export default function CategoryConsultingPageV2({
 
               {/* Right Column: Visual Focus Solution Panel & Action Entrance (42% visual weight) */}
               <div className="lg:col-span-5 relative">
-                {/* Refined Card Backdrop Number Watermark */}
-                <div className="absolute -top-12 lg:-top-16 -right-4 sm:-right-8 lg:-right-10 text-[180px] sm:text-[240px] font-black font-mono text-[#007BC7]/[0.07] select-none pointer-events-none leading-none z-0 tracking-tighter">
-                  01
-                </div>
-
                 <motion.div 
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -817,10 +816,14 @@ export default function CategoryConsultingPageV2({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               
               {/* Left Column: Huge Headline & Problem Identification */}
-              <div className="lg:col-span-7 text-left space-y-7">
+              <div className="lg:col-span-7 text-left space-y-7 relative">
+                {/* Refined Number Watermark: Positioned to the right of the headline, above the "Core Problem" container */}
+                <div className="absolute right-0 sm:right-2 lg:right-4 top-0 sm:-top-2 lg:-top-4 text-[120px] sm:text-[150px] lg:text-[170px] font-black font-mono text-[#007BC7]/[0.08] select-none pointer-events-none leading-none z-0 tracking-tighter">
+                  02
+                </div>
                 
                 {/* Step Marker */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 relative z-10">
                   <span className="px-3.5 py-1 rounded-full bg-[#007BC7]/10 text-[#007BC7] font-mono font-bold text-xs tracking-widest uppercase border border-[#007BC7]/20">
                     02 / 问题类型
                   </span>
@@ -830,7 +833,7 @@ export default function CategoryConsultingPageV2({
                 </div>
 
                 {/* Main Heading */}
-                <div>
+                <div className="relative z-10">
                   <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1A1A] font-display tracking-tight leading-[1.1]">
                     产品问题
                   </h3>
@@ -841,13 +844,13 @@ export default function CategoryConsultingPageV2({
 
                 {/* Stage-based recommendation banner if applicable */}
                 {(hoveredStage === 1 || hoveredStage === 2) && (
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#007BC7]/10 text-[#007BC7] text-xs font-bold border border-[#007BC7]/20">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#007BC7]/10 text-[#007BC7] text-xs font-bold border border-[#007BC7]/20 relative z-10">
                     <span>★ 契合当前所选阶段：成长期 / 成熟期重点推荐</span>
                   </div>
                 )}
 
                 {/* Core Problem Identification Container */}
-                <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] shadow-xs relative">
+                <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] shadow-xs relative z-10">
                   <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-4">
                     当你的核心问题是：
                   </span>
@@ -876,11 +879,6 @@ export default function CategoryConsultingPageV2({
 
               {/* Right Column: Visual Focus Solution Panel & Action Entrance */}
               <div className="lg:col-span-5 relative">
-                {/* Refined Card Backdrop Number Watermark */}
-                <div className="absolute -top-12 lg:-top-16 -right-4 sm:-right-8 lg:-right-10 text-[180px] sm:text-[240px] font-black font-mono text-[#007BC7]/[0.07] select-none pointer-events-none leading-none z-0 tracking-tighter">
-                  02
-                </div>
-
                 <motion.div 
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -969,10 +967,14 @@ export default function CategoryConsultingPageV2({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               
               {/* Left Column: Huge Headline & Problem Identification */}
-              <div className="lg:col-span-7 text-left space-y-7">
+              <div className="lg:col-span-7 text-left space-y-7 relative">
+                {/* Refined Number Watermark: Positioned to the right of the headline, above the "Core Problem" container */}
+                <div className="absolute right-0 sm:right-2 lg:right-4 top-0 sm:-top-2 lg:-top-4 text-[120px] sm:text-[150px] lg:text-[170px] font-black font-mono text-[#007BC7]/[0.08] select-none pointer-events-none leading-none z-0 tracking-tighter">
+                  03
+                </div>
                 
                 {/* Step Marker */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 relative z-10">
                   <span className="px-3.5 py-1 rounded-full bg-[#007BC7]/10 text-[#007BC7] font-mono font-bold text-xs tracking-widest uppercase border border-[#007BC7]/20">
                     03 / 问题类型
                   </span>
@@ -982,7 +984,7 @@ export default function CategoryConsultingPageV2({
                 </div>
 
                 {/* Main Heading */}
-                <div>
+                <div className="relative z-10">
                   <h3 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1A1A] font-display tracking-tight leading-[1.1]">
                     品牌问题
                   </h3>
@@ -993,13 +995,13 @@ export default function CategoryConsultingPageV2({
 
                 {/* Stage-based recommendation banner if applicable */}
                 {(hoveredStage === 1 || hoveredStage === 2) && (
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#007BC7]/10 text-[#007BC7] text-xs font-bold border border-[#007BC7]/20">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#007BC7]/10 text-[#007BC7] text-xs font-bold border border-[#007BC7]/20 relative z-10">
                     <span>★ 契合当前所选阶段：成长期 / 成熟期重点推荐</span>
                   </div>
                 )}
 
                 {/* Core Problem Identification Container */}
-                <div className="bg-[#F8F9FA] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] relative">
+                <div className="bg-[#F8F9FA] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] relative z-10">
                   <span className="text-xs font-mono font-bold tracking-widest text-[#8C8C8C] uppercase block mb-4">
                     当你的核心问题是：
                   </span>
@@ -1028,11 +1030,6 @@ export default function CategoryConsultingPageV2({
 
               {/* Right Column: Visual Focus Solution Panel & Action Entrance */}
               <div className="lg:col-span-5 relative">
-                {/* Refined Card Backdrop Number Watermark */}
-                <div className="absolute -top-12 lg:-top-16 -right-4 sm:-right-8 lg:-right-10 text-[180px] sm:text-[240px] font-black font-mono text-[#007BC7]/[0.07] select-none pointer-events-none leading-none z-0 tracking-tighter">
-                  03
-                </div>
-
                 <motion.div 
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
