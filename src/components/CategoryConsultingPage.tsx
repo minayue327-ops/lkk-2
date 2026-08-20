@@ -325,11 +325,11 @@ export default function CategoryConsultingPage({
 
           <div className="mt-8">
             <button 
-              onClick={onOpenContactModal}
-              className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-md flex items-center gap-2 cursor-pointer"
+              onClick={() => onNavigateDetail ? onNavigateDetail('/three-in-one') : onOpenContactModal()}
+              className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-md flex items-center gap-2 cursor-pointer group"
             >
-              联系我们
-              <ArrowRight className="w-4 h-4 text-white" />
+              三品合一
+              <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
@@ -372,6 +372,20 @@ export default function CategoryConsultingPage({
               <div className="achievement-label">产品成功落地</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* THREE-IN-ONE METHODOLOGY ANIMATION SECTION (三品合一方法论动态信息图: 无侧边距、与上下板块0间距满屏 16:9比例) */}
+      <section id="category-collection-methodology-infographic" className="w-full bg-[#FFFFFF] p-0 m-0 overflow-hidden leading-none block">
+        <div className="w-full aspect-[16/9] p-0 m-0 overflow-hidden">
+          <video 
+            src="https://github.com/minaxyue-ops/MINA/releases/download/1/2026-08-20.163819.mp4" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="w-full h-full object-cover block select-none p-0 m-0 border-none outline-none"
+          />
         </div>
       </section>
 
@@ -989,36 +1003,36 @@ export default function CategoryConsultingPage({
           </div>
 
           {/* Strategic Consultation Guidance Banner (Grand Editorial Layout) */}
-          <div className="bg-white border border-[#E5E5E5] rounded-3xl p-8 sm:p-12 lg:p-14 text-center shadow-sm relative overflow-hidden">
+          <div className="bg-white border border-neutral-200/70 rounded-3xl p-8 sm:p-12 lg:p-14 text-center shadow-[0_4px_24px_rgba(0,0,0,0.03)] relative overflow-hidden">
             {/* Background ambient lighting */}
-            <div className="absolute -right-16 -bottom-16 w-80 h-80 bg-[#007BC7]/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -left-16 -top-16 w-80 h-80 bg-[#007BC7]/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -right-16 -bottom-16 w-80 h-80 bg-[#007BC7]/[0.03] rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -left-16 -top-16 w-80 h-80 bg-[#007BC7]/[0.03] rounded-full blur-3xl pointer-events-none" />
 
             <div className="relative z-10 max-w-3xl mx-auto">
-              <span className="text-[11px] font-mono font-bold tracking-widest text-[#007BC7] uppercase block mb-3">
+              <span className="text-xs font-mono font-bold tracking-widest text-[#007BC7] uppercase block mb-3">
                 STRATEGIC DIAGNOSIS & ADVISORY
               </span>
-              <h4 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1A1A1A] font-display tracking-tight mb-3.5">
+              <h4 className="text-2xl sm:text-3xl lg:text-[36px] font-extrabold text-[#1D1D1F] font-display tracking-tight mb-3">
                 不确定当前所处的品类阶段与问题？
               </h4>
-              <p className="text-sm sm:text-base text-[#4D4D4D] leading-relaxed mb-8 max-w-xl mx-auto font-normal">
+              <p className="text-sm sm:text-base text-[#424245] leading-relaxed mb-8 max-w-xl mx-auto font-normal">
                 与洛可可资深战略咨询顾问展开 1 对 1 诊断沟通，梳理企业业务现状与创新契机。
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button
                   onClick={onOpenContactModal}
-                  className="w-full sm:w-auto px-8 py-3.5 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm font-bold rounded-full transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-lg"
+                  className="w-full sm:w-auto h-12 sm:h-13 px-8 bg-[#007BC7] hover:bg-[#005F96] text-white text-sm font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-[0_2px_8px_rgba(0,123,199,0.25)] hover:shadow-[0_4px_14px_rgba(0,123,199,0.35)]"
                 >
                   <span>预约专家品类诊断</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => onNavigateDetail?.('/three-in-one-category')}
-                  className="w-full sm:w-auto px-8 py-3.5 bg-white hover:bg-neutral-50 text-[#1A1A1A] border border-[#E5E5E5] text-sm font-medium rounded-full transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:border-[#007BC7]"
+                  className="w-full sm:w-auto h-12 sm:h-13 px-6 bg-transparent hover:bg-neutral-100/70 text-[#1D1D1F] hover:text-[#007BC7] text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer group"
                 >
                   <span>查看三品合一全案方法论</span>
-                  <ArrowRight className="w-4 h-4 text-[#8C8C8C]" />
+                  <ArrowRight className="w-4 h-4 text-[#86868B] group-hover:text-[#007BC7] group-hover:translate-x-0.5 transition-all" />
                 </button>
               </div>
             </div>

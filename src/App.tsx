@@ -37,6 +37,7 @@ import { ContactUsPage } from './components/ContactUsPage';
 import { SuccessPathPage } from './components/SuccessPathPage';
 import { ScrollSectionTitle } from './components/ScrollSectionTitle';
 import CaseDetailPage from './components/CaseDetailPage';
+import SanPinHeYiPage from './components/SanPinHeYiPage';
 import { 
   SERVICE_CATEGORIES, 
   NEWS_ARTICLES, 
@@ -189,6 +190,7 @@ type PageType =
   | 'category' 
   | 'category-v2'
   | 'three-in-one-category'
+  | 'three-in-one'
   | 'product' 
   | 'brand' 
   | 'industry'
@@ -265,6 +267,8 @@ export default function App() {
       setCurrentPage('category');
     } else if (url === '/category-consulting' || url === '/category') {
       setCurrentPage('category-v2');
+    } else if (url === '/three-in-one' || url === '/sanpinheyi' || url === '#three-in-one' || url === '/three-in-one-philosophy') {
+      setCurrentPage('three-in-one');
     } else if (url === '/three-in-one-category' || url === '/three-in-one-category-consulting' || url === '/category-consulting/three-in-one') {
       setCurrentPage('three-in-one-category');
     } else if (url === '/product-innovation-consulting' || url === '/product-innovation-0-1' || url === '/category-consulting/product-innovation-0-1') {
@@ -876,16 +880,22 @@ export default function App() {
       </div>
 
       {/* 2. MAIN HEADER */}
-      <header className="border-b border-neutral-100 py-4 transition-all bg-transparent">
+      <header className="border-b border-neutral-100 py-3.5 transition-all bg-transparent">
         <div className="max-w-[95%] w-full mx-auto flex items-center justify-between">
           
-          {/* Logo */}
-          <a href="#" className="flex-shrink-0" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-            <LKKLogo />
-          </a>
+          {/* Logo (Left aligned, flex-1 to balance center nav) */}
+          <div className="flex items-center justify-start flex-1 shrink-0">
+            <a 
+              href="#" 
+              className="inline-flex items-center flex-shrink-0 group" 
+              onClick={(e) => { e.preventDefault(); setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            >
+              <LKKLogo imgClassName="h-7 md:h-7.5" />
+            </a>
+          </div>
 
-          {/* Navigation Links (Desktop) */}
-          <nav className="hidden lg:flex items-center gap-8">
+          {/* Navigation Links (Desktop - Centered) */}
+          <nav className="hidden lg:flex items-center justify-center gap-8 shrink-0">
             <div 
               className="relative group"
               onMouseEnter={() => setActiveMenu('品类创新咨询')}
@@ -1195,6 +1205,15 @@ export default function App() {
               案例
             </button>
 
+            <button 
+              onClick={() => { handleNavigateUrl('/three-in-one'); setActiveMenu(null); }} 
+              className={`text-[15px] font-medium transition-colors border-none bg-transparent cursor-pointer ${
+                currentPage === 'three-in-one' ? 'text-[#007BC7] font-bold' : 'text-neutral-700 hover:text-[#005F96]'
+              }`}
+            >
+              三品合一
+            </button>
+
             <div 
               className="relative group"
               onMouseEnter={() => setActiveMenu('我们')}
@@ -1224,9 +1243,9 @@ export default function App() {
             </div>
           </nav>
 
-          {/* Search Box & Mobile Menu Button */}
-          <div className="flex items-center gap-4">
-            {/* Search Input */}
+          {/* Search Box & Mobile Menu Button (Right aligned, flex-1 to balance center nav) */}
+          <div className="flex items-center justify-end gap-4 flex-1">
+            {/* Search Input - Right Aligned */}
             <div className={`relative hidden md:flex items-center rounded-full border px-3.5 py-1.5 transition-all duration-300 ${isSearchFocused ? 'border-[#007BC7] ring-2 ring-blue-100 w-64' : 'border-neutral-200 w-48'}`}>
               <Search className="w-4 h-4 text-neutral-400 mr-2 shrink-0" aria-hidden="true" />
               <input 
@@ -1302,6 +1321,14 @@ export default function App() {
                 }`}
               >
                 经典成功案例
+              </button>
+              <button 
+                onClick={() => { handleNavigateUrl('/three-in-one'); setMobileMenuOpen(false); }} 
+                className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors border-none bg-transparent cursor-pointer ${
+                  currentPage === 'three-in-one' ? 'bg-blue-50 text-[#007BC7] font-bold' : 'text-neutral-800 hover:bg-neutral-50'
+                }`}
+              >
+                三品合一
               </button>
               <button 
                 onClick={() => { handleNavigateUrl('/about'); setMobileMenuOpen(false); }} 
@@ -1998,6 +2025,12 @@ export default function App() {
           onNavigateDetail={handleNavigateUrl}
           CounterComponent={Counter}
         />
+      ) : currentPage === 'three-in-one' ? (
+        <SanPinHeYiPage 
+          onOpenContactModal={() => setIsContactModalOpen(true)}
+          onNavigateDetail={handleNavigateUrl}
+          CounterComponent={Counter}
+        />
       ) : currentPage === 'three-in-one-category' ? (
         <ThreeInOneCategoryConsultingPage 
           onOpenContactModal={() => setIsContactModalOpen(true)}
@@ -2097,7 +2130,7 @@ export default function App() {
 
                 {/* Footer Logo and Hotline info - strictly single-line horizontal alignment */}
                 <div className="flex flex-row items-center gap-4 sm:gap-6 pt-4 border-t mt-5 border-white/15">
-                  <LKKLogo isLight={true} className="shrink-0" />
+                  <LKKLogo isLight={true} className="shrink-0" imgClassName="h-9 sm:h-10" />
                   <div className="h-8 w-px bg-white/20 shrink-0"></div>
                   <div className="text-left whitespace-nowrap min-w-0">
                     <p className="text-[10px] uppercase tracking-widest font-mono text-white/70">Consultation Hotline</p>

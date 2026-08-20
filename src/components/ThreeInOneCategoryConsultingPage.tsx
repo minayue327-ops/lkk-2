@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ArrowRight, Compass, Layers, ShieldCheck, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import CategorySection04 from './CategorySection04';
 
 interface ThreeInOneCategoryConsultingPageProps {
   onOpenContactModal: () => void;
@@ -18,43 +19,7 @@ export default function ThreeInOneCategoryConsultingPage({
   onNavigateDetail,
   CounterComponent = DefaultCounter,
 }: ThreeInOneCategoryConsultingPageProps) {
-  // State for Service Process Interactive 4-Stage Accordion/Cards (default null = all collapsed)
-  const [activeServiceStage, setActiveServiceStage] = useState<number | null>(null);
-  const serviceLeaveTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Helper for mouse enter on card
-  const handleServiceCardMouseEnter = (idx: number) => {
-    if (serviceLeaveTimerRef.current) {
-      clearTimeout(serviceLeaveTimerRef.current);
-      serviceLeaveTimerRef.current = null;
-    }
-    setActiveServiceStage(idx);
-  };
-
-  // Helper for mouse leave on card with 250ms debounce delay to prevent flashing
-  const handleServiceCardMouseLeave = () => {
-    if (serviceLeaveTimerRef.current) {
-      clearTimeout(serviceLeaveTimerRef.current);
-    }
-    serviceLeaveTimerRef.current = setTimeout(() => {
-      setActiveServiceStage(null);
-      serviceLeaveTimerRef.current = null;
-    }, 250);
-  };
-
-  // Helper for clicking a card (mobile friendly / toggle)
-  const handleServiceCardClick = (idx: number) => {
-    if (serviceLeaveTimerRef.current) {
-      clearTimeout(serviceLeaveTimerRef.current);
-      serviceLeaveTimerRef.current = null;
-    }
-    setActiveServiceStage(prev => (prev === idx ? null : idx));
-  };
-
-  // State for Category Life Cycle Section (Stage selection & hover)
-  const [hoveredStage, setHoveredStage] = useState<number | null>(null);
-
-  // State for Section 7 (9 Cases Horizontal Drag / Touch Swipe Carousel - 3 Groups)
+  // State for Section 06 (9 Cases Horizontal Drag / Touch Swipe Carousel - 3 Groups)
   const [currentGroup, setCurrentGroup] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -185,43 +150,50 @@ export default function ThreeInOneCategoryConsultingPage({
     }
   ];
 
-  // SECTION 05: 品类战略驱动，从机会判断到市场增长 (4阶段全链路服务流程)
-  const FOUR_SERVICE_STAGES = [
+  // SECTION 04: 服务定义 (3个核心服务卡片)
+  const THREE_CORE_SERVICES = [
     {
       num: '01',
-      phase: '机会判断',
-      title: '发现值得进入的新品类机会',
-      brief: '趋势洞察与市场扫描，找准潜力赛道。',
-      services: ['趋势洞察', '用户研究', '竞争分析', '市场扫描'],
-      result: '找到市场机会，明确品类发展方向。',
-      helpEnterprise: '帮助企业找到潜在增长机会，明确未来发展方向与切入时机。'
+      title: '品类战略',
+      desc: '洞察机会，定义赛道，建立品类标准与增长策略。'
     },
     {
       num: '02',
-      phase: '品类定义',
-      title: '建立新品类竞争规则',
-      brief: '确立品类定位与价值主张，抢占用户心智。',
-      services: ['品类定位', '价值主张', '品类标准', '战略推演'],
-      result: '明确品牌未来占据的位置。',
-      helpEnterprise: '明确品牌在新品类中占据的核心位置与竞争壁垒。'
+      title: '产品创新',
+      desc: '规划产品矩阵，定义核心体验，推进设计研发与量产落地。'
     },
     {
       num: '03',
-      phase: '产品与品牌构建',
-      title: '打造具有竞争力的产品体系',
-      brief: '统筹产品矩阵与品牌视觉体验，筑牢体验底座。',
-      services: ['产品矩阵', '产品定义', '品牌定位', '视觉与体验系统'],
-      result: '形成消费者可感知、可识别的产品价值。',
-      helpEnterprise: '让品类价值可体验、可识别，形成坚实的用户购买理由。'
+      title: '品牌创新',
+      desc: '建立价值定位、品牌话语、视觉体系与市场传播表达。'
+    }
+  ];
+
+  // SECTION 05: 交付成果 (4行交付结构)
+  const FOUR_DELIVERABLES = [
+    {
+      num: '01',
+      title: '机会判断',
+      actions: '趋势洞察、用户研究、竞争地图、技术扫描',
+      result: '找到值得进入的品类机会'
+    },
+    {
+      num: '02',
+      title: '品类定义',
+      actions: '品类定位、价值主张、品类标准、战略推演',
+      result: '明确新赛道的竞争规则'
+    },
+    {
+      num: '03',
+      title: '产品与品牌构建',
+      actions: '产品矩阵、产品定义、品牌定位、话语与视觉系统',
+      result: '让品类价值可体验、可识别'
     },
     {
       num: '04',
-      phase: '上市与引爆',
-      title: '推动新品进入市场并形成增长',
-      brief: '制定全域传播与营销节奏，实现品类破圈。',
-      services: ['上市策略', '传播主题', '渠道策略', '营销节奏'],
-      result: '帮助新品快速建立市场认知。',
-      helpEnterprise: '帮助新品快速在目标圈层建立认知，形成持续复购与规模化增长。'
+      title: '上市与引爆',
+      actions: '上市策略、传播主题、渠道策略、营销节奏',
+      result: '让新品类进入市场并形成认知'
     }
   ];
 
@@ -445,11 +417,11 @@ export default function ThreeInOneCategoryConsultingPage({
 
           <div className="mt-8">
             <button 
-              onClick={onOpenContactModal}
-              className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
+              onClick={() => onNavigateDetail ? onNavigateDetail('/three-in-one') : onOpenContactModal()}
+              className="bg-[#007BC7] hover:bg-[#005F96] text-white font-bold px-8 py-3.5 rounded-full text-sm transition-all duration-300 shadow-sm hover:shadow flex items-center gap-2 cursor-pointer group"
             >
-              即刻获取创新咨询方案
-              <ArrowRight className="w-4 h-4 text-white" />
+              三品合一
+              <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
@@ -732,738 +704,72 @@ export default function ThreeInOneCategoryConsultingPage({
         </div>
       </section>
 
-      {/* ================= SECTION 04: 品类有周期，创新要找准时机 (CATEGORY LIFE CYCLE / 04) ================= */}
-      <section id="category-life-cycle" className="py-20 lg:py-24 bg-[#FAFAFA] border-b border-[#E5E5E5]">
-        <div className="max-w-[95%] w-full mx-auto relative z-10">
-          
-          {/* 一、Section Header */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: [0.65, 0, 0.35, 1] }}
-            className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 lg:mb-16 gap-6"
-          >
-            <div>
-              <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                CATEGORY LIFE CYCLE / 04
-              </span>
-              <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl font-extrabold tracking-tight text-[#1A1A1A] font-display">
-                品类有周期，创新要找准时机
-              </h2>
-            </div>
-            <div className="max-w-xl text-left">
-              <p className="text-sm md:text-base text-[#4D4D4D] leading-relaxed font-normal mb-1.5">
-                从导入、成长、成熟到衰退，市场机会、用户心智与竞争问题不断变化。
-              </p>
-              <p className="text-xs md:text-sm text-[#007BC7] font-medium leading-relaxed">
-                先找到你的品类阶段，再判断适合你的创新路径。
-              </p>
-            </div>
-          </motion.div>
+      {/* ================= SECTION 04: 品类先行，产品与品牌协同 (SERVICE DEFINITION / 04) ================= */}
+      <CategorySection04
+        sectionId="section-service-definition"
+        badge="SERVICE DEFINITION / 04"
+        title="品类先行，产品与品牌协同"
+        description="以品类战略确定新赛道，再同步完成产品 0-1 与品牌 0-1，让企业拥有可被市场识别、选择并持续增长的新品类。"
+        leftCard={{
+          badgeTag: 'ONE SYSTEM',
+          badgeText: '全案系统化突破',
+          title: '全案系统化突破',
+          description: '不再做割裂的单点设计。品类战略指引方向，产品体验筑牢底座，品牌传播塑造感知，三者协同形成高爆发增长闭环。',
+          image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=85',
+          ctaText: '预约三品合一专家咨询',
+          onCtaClick: onOpenContactModal,
+        }}
+        rightServices={THREE_CORE_SERVICES}
+      />
 
-          {/* 二、生命周期曲线 (Desktop & Tablet) */}
-          <div className="hidden md:block relative w-full mb-10 select-none">
-            <svg viewBox="0 0 1000 86" className="w-full h-20 overflow-visible">
-              {/* Base continuous sleek line: 导入 (低位) -> 成长 (快速上升) -> 成熟 (顶部平台) -> 衰退 (下降) */}
-              <path
-                d="M 20 66 C 140 66, 200 64, 250 48 C 300 32, 420 16, 500 16 C 580 16, 680 16, 750 36 C 820 56, 880 66, 980 68"
-                fill="none"
-                stroke="#E5E5E5"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              
-              {/* Active Highlight Segment based on hoveredStage */}
-              {hoveredStage === 0 && (
-                <path
-                  d="M 20 66 C 140 66, 200 64, 250 48"
-                  fill="none"
-                  stroke="#007BC7"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  className="transition-all duration-300"
-                />
-              )}
-              {hoveredStage === 1 && (
-                <path
-                  d="M 220 54 C 290 36, 420 16, 500 16"
-                  fill="none"
-                  stroke="#007BC7"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  className="transition-all duration-300"
-                />
-              )}
-              {hoveredStage === 2 && (
-                <path
-                  d="M 480 16 C 580 16, 680 16, 750 36"
-                  fill="none"
-                  stroke="#007BC7"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  className="transition-all duration-300"
-                />
-              )}
-              {hoveredStage === 3 && (
-                <path
-                  d="M 720 28 C 800 50, 880 66, 980 68"
-                  fill="none"
-                  stroke="#007BC7"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  className="transition-all duration-300"
-                />
-              )}
-
-              {/* 4 Center Stage Node Points */}
-              {[
-                { cx: 125, cy: 66, stage: 0, label: '01 导入期' },
-                { cx: 375, cy: 30, stage: 1, label: '02 成长期' },
-                { cx: 625, cy: 16, stage: 2, label: '03 成熟期' },
-                { cx: 875, cy: 56, stage: 3, label: '04 衰退期' },
-              ].map((node) => {
-                const isActive = hoveredStage === node.stage;
-                return (
-                  <g 
-                    key={node.stage} 
-                    className="cursor-pointer transition-all duration-300"
-                    onMouseEnter={() => setHoveredStage(node.stage)}
-                    onMouseLeave={() => setHoveredStage(null)}
-                    onClick={() => {
-                      setHoveredStage(hoveredStage === node.stage ? null : node.stage);
-                    }}
-                  >
-                    {/* Vertical connecting guideline down towards card */}
-                    <line
-                      x1={node.cx}
-                      y1={node.cy}
-                      x2={node.cx}
-                      y2={86}
-                      stroke={isActive ? '#007BC7' : '#E5E5E5'}
-                      strokeWidth={isActive ? '1.5' : '1'}
-                      strokeDasharray={isActive ? 'none' : '3 3'}
-                      className="transition-colors duration-300"
-                    />
-                    {/* Node circle */}
-                    <circle
-                      cx={node.cx}
-                      cy={node.cy}
-                      r={isActive ? 6.5 : 4.5}
-                      fill={isActive ? '#007BC7' : '#FFFFFF'}
-                      stroke={isActive ? '#007BC7' : '#8C8C8C'}
-                      strokeWidth={isActive ? '3' : '1.5'}
-                      className="transition-all duration-300"
-                    />
-                    {/* Stage Text Label */}
-                    <text
-                      x={node.cx}
-                      y={node.stage === 2 ? node.cy - 10 : node.cy - 12}
-                      textAnchor="middle"
-                      className={`text-[11px] font-mono font-bold tracking-wider transition-colors duration-300 select-none ${
-                        isActive ? 'fill-[#007BC7]' : 'fill-[#8C8C8C]'
-                      }`}
-                    >
-                      {node.label}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
-          </div>
-
-          {/* Mobile Vertical Timeline Overview */}
-          <div className="md:hidden flex items-center justify-between px-3.5 py-2.5 mb-6 bg-white border border-[#E5E5E5] rounded-xl text-xs font-mono text-[#4D4D4D]">
-            <button 
-              onClick={() => setHoveredStage(hoveredStage === 0 ? null : 0)}
-              className={hoveredStage === 0 ? 'text-[#007BC7] font-bold underline' : ''}
-            >
-              01 导入
-            </button>
-            <span className="text-[#8C8C8C]">→</span>
-            <button 
-              onClick={() => setHoveredStage(hoveredStage === 1 ? null : 1)}
-              className={hoveredStage === 1 ? 'text-[#007BC7] font-bold underline' : ''}
-            >
-              02 成长
-            </button>
-            <span className="text-[#8C8C8C]">→</span>
-            <button 
-              onClick={() => setHoveredStage(hoveredStage === 2 ? null : 2)}
-              className={hoveredStage === 2 ? 'text-[#007BC7] font-bold underline' : ''}
-            >
-              03 成熟
-            </button>
-            <span className="text-[#8C8C8C]">→</span>
-            <button 
-              onClick={() => setHoveredStage(hoveredStage === 3 ? null : 3)}
-              className={hoveredStage === 3 ? 'text-[#007BC7] font-bold underline' : ''}
-            >
-              04 衰退
-            </button>
-          </div>
-
-          {/* 三、四阶段核心诊断卡片 (4-Column Grid) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-            
-            {/* STAGE 01: 导入期 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.05 }}
-              onMouseEnter={() => setHoveredStage(0)}
-              onMouseLeave={() => setHoveredStage(null)}
-              onClick={() => setHoveredStage(hoveredStage === 0 ? null : 0)}
-              className={`flex flex-col justify-between p-6 sm:p-7 bg-white rounded-2xl border transition-all duration-300 text-left cursor-pointer ${
-                hoveredStage === 0 
-                  ? 'border-[#007BC7] shadow-sm -translate-y-1 ring-1 ring-[#007BC7]/30' 
-                  : hoveredStage !== null 
-                    ? 'border-[#E5E5E5] opacity-60' 
-                    : 'border-[#E5E5E5] hover:border-[#007BC7]/50'
-              }`}
-            >
-              <div className="space-y-4">
-                {/* Number & Stage Name */}
-                <div className="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3">
-                  <span className={`text-3xl font-bold font-mono tracking-tight transition-colors duration-300 ${
-                    hoveredStage === 0 ? 'text-[#007BC7]' : 'text-[#8C8C8C]'
-                  }`}>
-                    01
-                  </span>
-                  <span className="text-xl font-bold text-[#1A1A1A] font-display">
-                    导入期
-                  </span>
-                </div>
-
-                {/* 市场状态 */}
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    市场状态
-                  </span>
-                  <p className="text-xs text-[#1A1A1A] font-medium leading-relaxed">
-                    品类探索 · 需求萌芽 · 市场教育
-                  </p>
-                </div>
-
-                {/* 用户心智 */}
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    用户心智
-                  </span>
-                  <p className="text-xs text-[#4D4D4D] leading-relaxed">
-                    认知有限 · 需求未明 · 尝试意愿
-                  </p>
-                </div>
-
-                {/* 核心问题 (High Priority Highlight) */}
-                <div className={`p-3.5 rounded-xl border-l-2 transition-all duration-300 ${
-                  hoveredStage === 0 
-                    ? 'bg-[#007BC7]/[0.08] border-[#007BC7]' 
-                    : 'bg-[#007BC7]/[0.03] border-[#007BC7]/70'
-                }`}>
-                  <span className="text-[10px] font-mono tracking-widest text-[#007BC7] uppercase font-bold block mb-1.5">
-                    核心问题
-                  </span>
-                  <div className="space-y-1 text-xs text-[#1A1A1A] font-medium leading-normal">
-                    <p>· 需求从哪里来？</p>
-                    <p>· 为什么是现在？</p>
-                    <p>· 用户为什么选择？</p>
-                  </div>
-                </div>
-
-                {/* 创新方向 */}
-                <div className="pt-2">
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    创新方向
-                  </span>
-                  <p className="text-xs font-bold text-[#1A1A1A] leading-relaxed">
-                    发现机会 · 定义价值 · 建立认知
-                  </p>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="pt-5 mt-5 border-t border-[#E5E5E5]">
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOpenContactModal();
-                  }}
-                  className="w-full text-left flex items-center justify-between text-xs font-bold text-[#007BC7] hover:text-[#005F96] transition-colors group cursor-pointer"
-                >
-                  <span>匹配对应服务方案</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform duration-200" />
-                </button>
-              </div>
-            </motion.div>
-
-            {/* STAGE 02: 成长期 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              onMouseEnter={() => setHoveredStage(1)}
-              onMouseLeave={() => setHoveredStage(null)}
-              onClick={() => setHoveredStage(hoveredStage === 1 ? null : 1)}
-              className={`flex flex-col justify-between p-6 sm:p-7 bg-white rounded-2xl border transition-all duration-300 text-left cursor-pointer ${
-                hoveredStage === 1 
-                  ? 'border-[#007BC7] shadow-sm -translate-y-1 ring-1 ring-[#007BC7]/30' 
-                  : hoveredStage !== null 
-                    ? 'border-[#E5E5E5] opacity-60' 
-                    : 'border-[#E5E5E5] hover:border-[#007BC7]/50'
-              }`}
-            >
-              <div className="space-y-4">
-                {/* Number & Stage Name */}
-                <div className="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3">
-                  <span className={`text-3xl font-bold font-mono tracking-tight transition-colors duration-300 ${
-                    hoveredStage === 1 ? 'text-[#007BC7]' : 'text-[#8C8C8C]'
-                  }`}>
-                    02
-                  </span>
-                  <span className="text-xl font-bold text-[#1A1A1A] font-display">
-                    成长期
-                  </span>
-                </div>
-
-                {/* 市场状态 */}
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    市场状态
-                  </span>
-                  <p className="text-xs text-[#1A1A1A] font-medium leading-relaxed">
-                    需求增长 · 竞争进入 · 品类扩张
-                  </p>
-                </div>
-
-                {/* 用户心智 */}
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    用户心智
-                  </span>
-                  <p className="text-xs text-[#4D4D4D] leading-relaxed">
-                    认知形成 · 选择增多 · 偏好建立
-                  </p>
-                </div>
-
-                {/* 核心问题 (High Priority Highlight) */}
-                <div className={`p-3.5 rounded-xl border-l-2 transition-all duration-300 ${
-                  hoveredStage === 1 
-                    ? 'bg-[#007BC7]/[0.08] border-[#007BC7]' 
-                    : 'bg-[#007BC7]/[0.03] border-[#007BC7]/70'
-                }`}>
-                  <span className="text-[10px] font-mono tracking-widest text-[#007BC7] uppercase font-bold block mb-1.5">
-                    核心问题
-                  </span>
-                  <div className="space-y-1 text-xs text-[#1A1A1A] font-medium leading-normal">
-                    <p>· 如何建立差异？</p>
-                    <p>· 如何抢占认知？</p>
-                    <p>· 如何持续增长？</p>
-                  </div>
-                </div>
-
-                {/* 创新方向 */}
-                <div className="pt-2">
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    创新方向
-                  </span>
-                  <p className="text-xs font-bold text-[#1A1A1A] leading-relaxed">
-                    产品升级 · 差异化 · 品牌认知
-                  </p>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="pt-5 mt-5 border-t border-[#E5E5E5]">
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOpenContactModal();
-                  }}
-                  className="w-full text-left flex items-center justify-between text-xs font-bold text-[#007BC7] hover:text-[#005F96] transition-colors group cursor-pointer"
-                >
-                  <span>匹配对应服务方案</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform duration-200" />
-                </button>
-              </div>
-            </motion.div>
-
-            {/* STAGE 03: 成熟期 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.15 }}
-              onMouseEnter={() => setHoveredStage(2)}
-              onMouseLeave={() => setHoveredStage(null)}
-              onClick={() => setHoveredStage(hoveredStage === 2 ? null : 2)}
-              className={`flex flex-col justify-between p-6 sm:p-7 bg-white rounded-2xl border transition-all duration-300 text-left cursor-pointer ${
-                hoveredStage === 2 
-                  ? 'border-[#007BC7] shadow-sm -translate-y-1 ring-1 ring-[#007BC7]/30' 
-                  : hoveredStage !== null 
-                    ? 'border-[#E5E5E5] opacity-60' 
-                    : 'border-[#E5E5E5] hover:border-[#007BC7]/50'
-              }`}
-            >
-              <div className="space-y-4">
-                {/* Number & Stage Name */}
-                <div className="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3">
-                  <span className={`text-3xl font-bold font-mono tracking-tight transition-colors duration-300 ${
-                    hoveredStage === 2 ? 'text-[#007BC7]' : 'text-[#8C8C8C]'
-                  }`}>
-                    03
-                  </span>
-                  <span className="text-xl font-bold text-[#1A1A1A] font-display">
-                    成熟期
-                  </span>
-                </div>
-
-                {/* 市场状态 */}
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    市场状态
-                  </span>
-                  <p className="text-xs text-[#1A1A1A] font-medium leading-relaxed">
-                    竞争激烈 · 同质化 · 增长放缓
-                  </p>
-                </div>
-
-                {/* 用户心智 */}
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    用户心智
-                  </span>
-                  <p className="text-xs text-[#4D4D4D] leading-relaxed">
-                    认知固化 · 选择成熟 · 价格敏感
-                  </p>
-                </div>
-
-                {/* 核心问题 (High Priority Highlight) */}
-                <div className={`p-3.5 rounded-xl border-l-2 transition-all duration-300 ${
-                  hoveredStage === 2 
-                    ? 'bg-[#007BC7]/[0.08] border-[#007BC7]' 
-                    : 'bg-[#007BC7]/[0.03] border-[#007BC7]/70'
-                }`}>
-                  <span className="text-[10px] font-mono tracking-widest text-[#007BC7] uppercase font-bold block mb-1.5">
-                    核心问题
-                  </span>
-                  <div className="space-y-1 text-xs text-[#1A1A1A] font-medium leading-normal">
-                    <p>· 如何摆脱同质化？</p>
-                    <p>· 如何重建价值？</p>
-                    <p>· 新增长从哪里来？</p>
-                  </div>
-                </div>
-
-                {/* 创新方向 */}
-                <div className="pt-2">
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    创新方向
-                  </span>
-                  <p className="text-xs font-bold text-[#1A1A1A] leading-relaxed">
-                    价值重构 · 场景创新 · 品类分化
-                  </p>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="pt-5 mt-5 border-t border-[#E5E5E5]">
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOpenContactModal();
-                  }}
-                  className="w-full text-left flex items-center justify-between text-xs font-bold text-[#007BC7] hover:text-[#005F96] transition-colors group cursor-pointer"
-                >
-                  <span>匹配对应服务方案</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform duration-200" />
-                </button>
-              </div>
-            </motion.div>
-
-            {/* STAGE 04: 衰退期 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              onMouseEnter={() => setHoveredStage(3)}
-              onMouseLeave={() => setHoveredStage(null)}
-              onClick={() => setHoveredStage(hoveredStage === 3 ? null : 3)}
-              className={`flex flex-col justify-between p-6 sm:p-7 bg-white rounded-2xl border transition-all duration-300 text-left cursor-pointer ${
-                hoveredStage === 3 
-                  ? 'border-[#007BC7] shadow-sm -translate-y-1 ring-1 ring-[#007BC7]/30' 
-                  : hoveredStage !== null 
-                    ? 'border-[#E5E5E5] opacity-60' 
-                    : 'border-[#E5E5E5] hover:border-[#007BC7]/50'
-              }`}
-            >
-              <div className="space-y-4">
-                {/* Number & Stage Name */}
-                <div className="flex items-baseline justify-between border-b border-[#E5E5E5] pb-3">
-                  <span className={`text-3xl font-bold font-mono tracking-tight transition-colors duration-300 ${
-                    hoveredStage === 3 ? 'text-[#007BC7]' : 'text-[#8C8C8C]'
-                  }`}>
-                    04
-                  </span>
-                  <span className="text-xl font-bold text-[#1A1A1A] font-display">
-                    衰退期
-                  </span>
-                </div>
-
-                {/* 市场状态 */}
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    市场状态
-                  </span>
-                  <p className="text-xs text-[#1A1A1A] font-medium leading-relaxed">
-                    需求下降 · 心智迁移 · 旧增长失效
-                  </p>
-                </div>
-
-                {/* 用户心智 */}
-                <div>
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    用户心智
-                  </span>
-                  <p className="text-xs text-[#4D4D4D] leading-relaxed">
-                    需求转移 · 品类弱化 · 认知迁移
-                  </p>
-                </div>
-
-                {/* 核心问题 (High Priority Highlight) */}
-                <div className={`p-3.5 rounded-xl border-l-2 transition-all duration-300 ${
-                  hoveredStage === 3 
-                    ? 'bg-[#007BC7]/[0.08] border-[#007BC7]' 
-                    : 'bg-[#007BC7]/[0.03] border-[#007BC7]/70'
-                }`}>
-                  <span className="text-[10px] font-mono tracking-widest text-[#007BC7] uppercase font-bold block mb-1.5">
-                    核心问题
-                  </span>
-                  <div className="space-y-1 text-xs text-[#1A1A1A] font-medium leading-normal">
-                    <p>· 用户为什么离开？</p>
-                    <p>· 旧价值还能做什么？</p>
-                    <p>· 下一增长点在哪里？</p>
-                  </div>
-                </div>
-
-                {/* 创新方向 */}
-                <div className="pt-2">
-                  <span className="text-[10px] font-mono tracking-widest text-[#8C8C8C] uppercase font-bold block mb-1">
-                    创新方向
-                  </span>
-                  <p className="text-xs font-bold text-[#1A1A1A] leading-relaxed">
-                    价值再定义 · 品类拓展 · 新增长
-                  </p>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="pt-5 mt-5 border-t border-[#E5E5E5]">
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOpenContactModal();
-                  }}
-                  className="w-full text-left flex items-center justify-between text-xs font-bold text-[#007BC7] hover:text-[#005F96] transition-colors group cursor-pointer"
-                >
-                  <span>匹配对应服务方案</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1.5 transition-transform duration-200" />
-                </button>
-              </div>
-            </motion.div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SECTION 05: 品类战略驱动，从机会判断到市场增长 (CATEGORY STRATEGY & MARKET GROWTH / 05) ================= */}
-      <section id="section-category-strategy-growth" className="py-20 lg:py-28 bg-[#FFFFFF] border-b border-[#E5E5E5]">
+      {/* ================= SECTION 05: 从判断机会，到进入市场 (DELIVERABLES / 05) ================= */}
+      <section id="section-deliverables" className="py-20 lg:py-24 bg-[#FFFFFF] border-b border-[#E5E5E5]">
         <div className="max-w-[95%] w-full mx-auto">
           
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
             <div>
               <span className="text-xs font-bold text-[#007BC7] uppercase tracking-widest font-mono block mb-2">
-                CATEGORY STRATEGY & MARKET GROWTH / 05
+                DELIVERABLES / 05
               </span>
               <h2 className="section-title scroll-reveal-heading text-3xl md:text-4xl lg:text-[40px] font-extrabold tracking-tight text-[#1A1A1A] font-display">
-                品类战略驱动，从机会判断到市场增长
+                从判断机会，到进入市场
               </h2>
             </div>
             <p className="text-xs md:text-sm text-[#4D4D4D] max-w-xl leading-relaxed font-normal">
-              从品类机会洞察，到产品创新与品牌建设，构建覆盖战略、产品、品牌、市场的全链路创新体系，帮助企业打造具有持续竞争力的新增长品类。
+              每个阶段都有明确的工作动作、核心交付和预期结果，让品类创新从战略判断走向实际增长。
             </p>
           </div>
 
-          {/* Core System Grid: Left 35% Core Value & CTA, Right 65% Interactive 4-Stage Service Process */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
-            
-            {/* Left Column: 35% Core Value Card & Consultation CTA */}
-            <div className="lg:col-span-4 bg-[#F0F0F0] rounded-3xl p-6 sm:p-8 lg:p-9 border border-[#E5E5E5] flex flex-col justify-between relative overflow-hidden">
-              <div>
-                <div className="flex items-center gap-2 mb-5">
-                  <span className="inline-block bg-[#007BC7] text-white text-xs font-mono font-bold px-3.5 py-1 rounded-full shadow-xs">
-                    ONE SYSTEM
+          {/* Non-card 3-Column List with Horizontal Dividers */}
+          <div className="border-t border-[#E5E5E5]">
+            {FOUR_DELIVERABLES.map((item) => (
+              <div 
+                key={item.num}
+                className="py-6 sm:py-7 lg:py-8 border-b border-[#E5E5E5] flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-8"
+              >
+                {/* Column 1: Number & Title */}
+                <div className="flex items-center gap-4 min-w-[220px] lg:w-[240px] shrink-0">
+                  <span className="text-base sm:text-lg font-mono font-bold text-[#007BC7] shrink-0">
+                    {item.num}
                   </span>
-                  <span className="text-xs font-mono font-semibold text-[#8C8C8C] uppercase tracking-wider">
-                    全链路战略模型
-                  </span>
+                  <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] font-display">
+                    {item.title}
+                  </h3>
                 </div>
 
-                <h3 className="text-2xl lg:text-3xl font-bold text-[#1A1A1A] font-display mb-4 tracking-tight leading-tight">
-                  品类增长全案体系
-                </h3>
+                {/* Column 2: Content / Action Points */}
+                <div className="flex-1 text-left lg:text-center text-sm md:text-[15px] text-[#4D4D4D] leading-relaxed">
+                  {item.actions}
+                </div>
 
-                <p className="text-sm md:text-base text-[#4D4D4D] leading-relaxed">
-                  不做单点设计，而是围绕企业增长需求，从市场机会、产品创新到品牌表达，建立完整的品类创新路径。
-                </p>
-
-                <div className="mt-8 pt-6 border-t border-[#E5E5E5]/80 space-y-3">
-                  <div className="flex items-center gap-2.5 text-xs text-[#1A1A1A] font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]" />
-                    <span>四阶段无缝衔接，降低战略与落地偏差</span>
-                  </div>
-                  <div className="flex items-center gap-2.5 text-xs text-[#1A1A1A] font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]" />
-                    <span>策略、产品、品牌与营销四位一体</span>
-                  </div>
-                  <div className="flex items-center gap-2.5 text-xs text-[#1A1A1A] font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#007BC7]" />
-                    <span>以真实商业交付与市场破圈为最终导向</span>
-                  </div>
+                {/* Column 3: Expected Result */}
+                <div className="shrink-0 lg:w-[280px] flex items-center lg:justify-end gap-2 text-sm md:text-[15px]">
+                  <span className="text-xs font-mono font-semibold text-[#8C8C8C] shrink-0">结果：</span>
+                  <span className="font-medium text-[#1A1A1A]">{item.result}</span>
                 </div>
               </div>
-
-              {/* Bottom Consultation CTA Button */}
-              <div className="pt-8 mt-8 border-t border-[#E5E5E5]">
-                <button 
-                  onClick={onOpenContactModal}
-                  className="w-full bg-[#007BC7] hover:bg-[#005F96] text-white font-bold py-4 px-6 rounded-xl text-sm transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center gap-2 cursor-pointer group"
-                >
-                  <span>预约三品合一专家咨询</span>
-                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform duration-200" />
-                </button>
-              </div>
-            </div>
-
-            {/* Right Column: 65% Interactive 4-Stage Vertical Service Flow Cards */}
-            <div className="lg:col-span-8">
-              <div className="bg-[#F0F0F0] rounded-3xl p-5 sm:p-7 lg:p-8 border border-[#E5E5E5] h-full flex flex-col justify-between">
-                
-                <div className="space-y-4">
-                  {FOUR_SERVICE_STAGES.map((stage, idx) => {
-                    const isExpanded = activeServiceStage === idx;
-
-                    return (
-                      <div
-                        key={stage.num}
-                        onMouseEnter={() => handleServiceCardMouseEnter(idx)}
-                        onMouseLeave={handleServiceCardMouseLeave}
-                        onClick={() => handleServiceCardClick(idx)}
-                        className={`rounded-2xl transition-all duration-300 ease-out border cursor-pointer relative overflow-hidden text-left ${
-                          isExpanded 
-                            ? 'bg-white border-[#007BC7] shadow-sm p-6 sm:p-7 ring-1 ring-[#007BC7]/20' 
-                            : 'bg-white/85 hover:bg-white border-[#E5E5E5] hover:border-[#007BC7]/40 p-5 sm:p-6'
-                        }`}
-                      >
-                        {/* Header Row: Number Badge, Phase Name & Main Title */}
-                        <div className="flex items-start gap-4">
-                          {/* Number Badge */}
-                          <span className={`w-8 h-8 rounded-lg font-mono font-bold text-xs sm:text-sm flex items-center justify-center shrink-0 transition-colors duration-300 ${
-                            isExpanded 
-                              ? 'bg-[#007BC7] text-white shadow-xs' 
-                              : 'bg-[#F0F0F0] text-[#8C8C8C]'
-                          }`}>
-                            {stage.num}
-                          </span>
-
-                          <div className="flex-1 min-w-0">
-                            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 mb-1">
-                              <div className="flex items-center gap-2">
-                                <span className={`text-base sm:text-lg font-bold font-display transition-colors duration-200 ${
-                                  isExpanded ? 'text-[#007BC7]' : 'text-[#1A1A1A]'
-                                }`}>
-                                  {stage.phase}
-                                </span>
-                                <span className="text-xs text-[#8C8C8C] hidden sm:inline">·</span>
-                                <h4 className="text-sm sm:text-base font-semibold text-[#1A1A1A] truncate">
-                                  {stage.title}
-                                </h4>
-                              </div>
-
-                              <span className="text-[11px] font-mono font-semibold text-[#8C8C8C] shrink-0">
-                                PHASE 0{idx + 1}
-                              </span>
-                            </div>
-
-                            {/* Collapsed Brief Summary (Always visible or transitions smoothly) */}
-                            <p className={`text-xs sm:text-sm text-[#4D4D4D] transition-opacity duration-200 ${
-                              isExpanded ? 'hidden' : 'mt-1 line-clamp-1 opacity-90'
-                            }`}>
-                              {stage.brief}
-                            </p>
-
-                            {/* Expanded Rich Service Detail & Value Delivery (CSS Height & Opacity Transition) */}
-                            <div 
-                              className={`overflow-hidden transition-all duration-350 ease-in-out ${
-                                isExpanded 
-                                  ? 'max-h-[300px] opacity-100 mt-4 pt-3.5 border-t border-[#E5E5E5]/90' 
-                                  : 'max-h-0 opacity-0'
-                              }`}
-                            >
-                              <div className="space-y-4">
-                                {/* Service Scope Tags */}
-                                <div>
-                                  <span className="text-[11px] font-mono uppercase tracking-wider text-[#8C8C8C] font-semibold block mb-2">
-                                    服务内容：
-                                  </span>
-                                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                                    {stage.services.map((item, sIdx) => (
-                                      <span 
-                                        key={sIdx}
-                                        className="text-xs bg-[#F0F0F0] text-[#1A1A1A] hover:bg-[#E8F0FF] hover:text-[#007BC7] px-3 py-1 rounded-full font-medium transition-colors"
-                                      >
-                                        {item}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-
-                                {/* Solved Problem & Deliverable Value */}
-                                <div className="p-3.5 bg-[#007BC7]/[0.05] border-l-2 border-[#007BC7] rounded-r-xl">
-                                  <div className="flex items-center justify-between mb-1">
-                                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#007BC7] font-bold">
-                                      帮助企业 / 最终价值：
-                                    </span>
-                                    <span className="text-[11px] text-[#8C8C8C] font-medium">
-                                      {stage.result}
-                                    </span>
-                                  </div>
-                                  <p className="text-xs sm:text-sm text-[#1A1A1A] font-medium leading-relaxed">
-                                    {stage.helpEnterprise}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Bottom Status Tip */}
-                <div className="mt-5 pt-4 border-t border-[#E5E5E5]/80 flex flex-col sm:flex-row items-center justify-between text-xs text-[#8C8C8C] gap-2">
-                  <span>鼠标悬停或点击卡片可查看阶段完整服务内容与交付价值</span>
-                  <span className="font-mono text-[#007BC7] font-semibold">4 STAGES COMPLETE LIFECYCLE</span>
-                </div>
-
-              </div>
-            </div>
-
+            ))}
           </div>
 
         </div>

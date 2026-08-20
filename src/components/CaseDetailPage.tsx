@@ -164,7 +164,9 @@ export default function CaseDetailPage({
       </div>
 
       {/* 主内容区域 */}
-      <div className="max-w-[95%] w-full mx-auto pt-6 md:pt-8 pb-12 md:pb-16 transition-all duration-300">
+      <div className={`w-full mx-auto pt-6 md:pt-8 pb-12 md:pb-16 transition-all duration-300 ${
+        isSidebarCollapsed ? 'max-w-[85%]' : 'max-w-[95%]'
+      }`}>
         
         {/* 折叠后的悬浮展开入口 (ChatGPT 风格浮动入口) */}
         <AnimatePresence>
@@ -482,7 +484,7 @@ export default function CaseDetailPage({
 
                     <div className="pt-4 border-t border-[#D6E2ED]">
                       <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
-                        <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                        <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                           <img 
                             src="/src/assets/images/musinno_product_detail_1785826692407.jpg" 
                             alt="用户咨询深度调研"
@@ -491,7 +493,7 @@ export default function CaseDetailPage({
                           />
                         </div>
 
-                        <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
+                        <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
                           <div>
                             <div className="inline-flex items-center gap-2 mb-2">
                               <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -538,7 +540,7 @@ export default function CaseDetailPage({
                   />
 
                   <div className="content-block-split reverse grid grid-cols-1 md:grid-cols-12 items-stretch pt-2 gap-y-4 md:gap-y-0">
-                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
+                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
                       <div>
                         <div className="inline-flex items-center gap-2 mb-2">
                           <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -573,7 +575,7 @@ export default function CaseDetailPage({
                       </div>
                     </div>
 
-                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                       <img 
                         src="/src/assets/images/musinno_hero_banner_1785826677156.jpg" 
                         alt="品类创新策略路径"
@@ -592,7 +594,7 @@ export default function CaseDetailPage({
                   />
 
                   <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch pt-2 gap-y-4 md:gap-y-0">
-                    <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                    <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                       <img 
                         src="/src/assets/images/musinno_product_detail_1785826692407.jpg" 
                         alt="产品创新全维度解决方案"
@@ -601,7 +603,7 @@ export default function CaseDetailPage({
                       />
                     </div>
 
-                    <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
+                    <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
                       <div>
                         <div className="inline-flex items-center gap-2 mb-2">
                           <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -646,7 +648,7 @@ export default function CaseDetailPage({
                   />
 
                   <div className="content-block-split reverse grid grid-cols-1 md:grid-cols-12 items-stretch pt-2 gap-y-4 md:gap-y-0">
-                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
+                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
                       <div>
                         <div className="inline-flex items-center gap-2 mb-2">
                           <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -681,7 +683,7 @@ export default function CaseDetailPage({
                       </div>
                     </div>
 
-                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                       <img 
                         src="/src/assets/images/musinno_hero_banner_1785826677156.jpg" 
                         alt="品牌升级与视觉锤"
@@ -898,7 +900,7 @@ export default function CaseDetailPage({
 
                     <div className="pt-4 border-t border-[#D6E2ED]">
                       <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
-                        <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
+                        <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
                           <img 
                             src="/src/assets/images/case_yuexianhuo.jpg" 
                             alt="悦鲜活用户人群洞察"
@@ -907,7 +909,7 @@ export default function CaseDetailPage({
                           />
                         </div>
 
-                        <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
+                        <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
                           <div>
                             <div className="inline-flex items-center gap-2 mb-2">
                               <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -947,7 +949,7 @@ export default function CaseDetailPage({
                   />
 
                   <div className="content-block-split reverse grid grid-cols-1 md:grid-cols-12 items-stretch pt-2 gap-y-4 md:gap-y-0">
-                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
+                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
                       <div>
                         <div className="inline-flex items-center gap-2 mb-2">
                           <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -975,7 +977,7 @@ export default function CaseDetailPage({
                       </div>
                     </div>
 
-                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
+                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
                       <img 
                         src="/src/assets/images/case_yuexianhuo.jpg" 
                         alt="悦鲜出品类创新"
@@ -995,7 +997,7 @@ export default function CaseDetailPage({
 
                   <div className="pt-2">
                     <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
-                      <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
+                      <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
                         <img 
                           src="https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif" 
                           alt="悦鲜活产品创新"
@@ -1004,7 +1006,7 @@ export default function CaseDetailPage({
                         />
                       </div>
 
-                      <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
+                      <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
                         <div>
                           <div className="inline-flex items-center gap-2 mb-2">
                             <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1050,7 +1052,7 @@ export default function CaseDetailPage({
                   />
 
                   <div className="content-block-split reverse grid grid-cols-1 md:grid-cols-12 items-stretch pt-2 gap-y-4 md:gap-y-0">
-                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
+                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
                       <div>
                         <div className="inline-flex items-center gap-2 mb-2">
                           <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1078,7 +1080,7 @@ export default function CaseDetailPage({
                       </div>
                     </div>
 
-                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
+                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md">
                       <img 
                         src="https://github.com/minaxyue-ops/MINA/releases/download/1/7.15.1.3.gif" 
                         alt="悦鲜活品牌升级"
@@ -1276,7 +1278,7 @@ export default function CaseDetailPage({
                     <div className="pt-4 border-t border-[#D6E2ED]">
                       <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                         {/* 左侧：图片卡片 */}
-                        <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                        <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                           <img 
                             src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/23.webp" 
                             alt="用户咨询与需求洞察"
@@ -1286,7 +1288,7 @@ export default function CaseDetailPage({
                         </div>
 
                         {/* 右侧：文字卡片 */}
-                        <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
+                        <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
                           <div>
                             <div className="inline-flex items-center gap-2 mb-2">
                               <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1335,7 +1337,7 @@ export default function CaseDetailPage({
                   <div className="pt-2">
                     <div className="content-block-split reverse grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                       {/* 左侧：文字卡片 */}
-                      <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
+                      <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
                         <div>
                           <div className="inline-flex items-center gap-2 mb-2">
                             <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1371,7 +1373,7 @@ export default function CaseDetailPage({
                       </div>
 
                       {/* 右侧：图片卡片 */}
-                      <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                      <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                         <img 
                           src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/22.webp" 
                           alt="品类创新与定位"
@@ -1393,7 +1395,7 @@ export default function CaseDetailPage({
                   <div className="pt-2">
                     <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                       {/* 左侧：图片卡片 */}
-                      <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                      <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                         <img 
                           src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/25.webp" 
                           alt="产品创新与视觉识别"
@@ -1403,7 +1405,7 @@ export default function CaseDetailPage({
                       </div>
 
                       {/* 右侧：文字卡片 */}
-                      <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
+                      <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
                         <div>
                           <div className="inline-flex items-center gap-2 mb-2">
                             <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1451,7 +1453,7 @@ export default function CaseDetailPage({
                   <div className="pt-2">
                     <div className="content-block-split reverse grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                       {/* 左侧：文字卡片 */}
-                      <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
+                      <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
                         <div>
                           <div className="inline-flex items-center gap-2 mb-2">
                             <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1487,7 +1489,7 @@ export default function CaseDetailPage({
                       </div>
 
                       {/* 右侧：图片卡片 */}
-                      <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                      <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                         <img 
                           src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/20.webp" 
                           alt="品牌升级与定位"
@@ -1741,7 +1743,7 @@ export default function CaseDetailPage({
                     <div className="pt-4 border-t border-[#D6E2ED]">
                       <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
                         {/* 左侧：图片卡片 */}
-                        <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                        <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                           <img 
                             src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/5.png" 
                             alt="用户咨询深度调研"
@@ -1751,7 +1753,7 @@ export default function CaseDetailPage({
                         </div>
 
                         {/* 右侧：文字卡片 */}
-                        <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
+                        <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
                           <div>
                             <div className="inline-flex items-center gap-2 mb-2">
                               <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1799,7 +1801,7 @@ export default function CaseDetailPage({
 
                   <div className="content-block-split reverse grid grid-cols-1 md:grid-cols-12 items-stretch pt-2 gap-y-4 md:gap-y-0">
                     {/* 左侧：文字卡片 */}
-                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
+                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
                       <div>
                         <div className="inline-flex items-center gap-2 mb-2">
                           <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1835,7 +1837,7 @@ export default function CaseDetailPage({
                     </div>
 
                     {/* 右侧：图片卡片 */}
-                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                       <img 
                         src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/6.png" 
                         alt="品类创新策略路径"
@@ -1855,7 +1857,7 @@ export default function CaseDetailPage({
 
                   <div className="pt-2">
                     <div className="content-block-split grid grid-cols-1 md:grid-cols-12 items-stretch gap-y-4 md:gap-y-0">
-                      <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                      <div className="md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                         <img 
                           src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/7.png" 
                           alt="产品创新与工艺突破"
@@ -1864,7 +1866,7 @@ export default function CaseDetailPage({
                         />
                       </div>
 
-                      <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
+                      <div className="md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] md:-ml-8 lg:-ml-10 bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pl-12 lg:p-10 lg:pl-14 shadow-xs flex flex-col justify-between md:h-full">
                         <div>
                           <div className="inline-flex items-center gap-2 mb-2">
                             <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1911,7 +1913,7 @@ export default function CaseDetailPage({
 
                   <div className="content-block-split reverse grid grid-cols-1 md:grid-cols-12 items-stretch pt-2 gap-y-4 md:gap-y-0">
                     {/* 左侧：文字卡片 */}
-                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-[28px] p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
+                    <div className="order-2 md:order-1 md:col-span-6 relative z-0 w-full md:w-[calc(100%+2rem)] lg:w-[calc(100%+2.5rem)] bg-[#F8FAFC] border border-[#D6E2ED] rounded-3xl p-6 sm:p-8 md:p-8 md:pr-12 lg:p-10 lg:pr-14 shadow-xs flex flex-col justify-between md:h-full">
                       <div>
                         <div className="inline-flex items-center gap-2 mb-2">
                           <span className="w-2 h-2 rounded-full bg-[#0284C7]"></span>
@@ -1947,7 +1949,7 @@ export default function CaseDetailPage({
                     </div>
 
                     {/* 右侧：图片卡片 */}
-                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-[28px] overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
+                    <div className="order-1 md:order-2 md:col-span-6 relative z-10 w-full aspect-[8/9] rounded-3xl overflow-hidden bg-neutral-100 border border-neutral-200/80 shadow-md transition-shadow duration-300 hover:shadow-lg">
                       <img 
                         src="https://github.com/minaxyue-ops/MINA/releases/download/2%E6%A1%88%E4%BE%8B%E8%AF%A6%E6%83%85%E9%A1%B5%E9%85%8D%E5%9B%BE/9.png" 
                         alt="品牌升级与视觉锤"

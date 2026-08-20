@@ -1,22 +1,146 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* ==========================================================================
+   Unified Typography System Normalization (全站统一字体规范系统)
+   ========================================================================== */
+:root {
+  /* Unified Font Family Stacks (Latin & Numbers First -> High-grade Chinese Sans-Serif -> System Fallback) */
+  --font-primary: "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", "HarmonyOS Sans SC", "HarmonyOS Sans", "Microsoft YaHei", Arial, sans-serif;
+  --font-display: "SF Pro Display", "Helvetica Neue", "PingFang SC", "HarmonyOS Sans SC", "HarmonyOS Sans", "Microsoft YaHei", Arial, sans-serif;
+  --font-sans: "SF Pro Text", "SF Pro Display", "Helvetica Neue", "PingFang SC", "HarmonyOS Sans SC", "HarmonyOS Sans", "Microsoft YaHei", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "PingFang SC", "HarmonyOS Sans SC", "HarmonyOS Sans", Menlo, Monaco, Consolas, monospace;
+
+  /* Content Bounds & Fluid Gutters */
+  --content-max-width: 1680px;
+  --page-gutter: clamp(16px, 3.5vw, 64px);
+  --section-padding-y: clamp(48px, 5.5vw, 96px);
+  
+  /* System Spacing Scale */
+  --space-xs: clamp(6px, 0.5vw, 10px);
+  --space-sm: clamp(10px, 0.8vw, 16px);
+  --space-md: clamp(16px, 1.5vw, 28px);
+  --space-lg: clamp(28px, 2.5vw, 48px);
+  --space-xl: clamp(48px, 4.5vw, 84px);
+  
+  /* Fluid Hero Minimum Constraint */
+  --hero-fluid-height: clamp(580px, 75vh, 880px);
+}
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+/* 统一流式页面容器 */
+.page-container,
+.fluid-container {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+  box-sizing: border-box;
+}
+
+/* 弹性网格与 Flex 约束保护（避免子元素撑破父容器） */
+.fluid-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(16px, 2vw, 32px);
+}
+
+.fluid-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+/* 导航栏与下拉菜单安全尺寸控制（防止在 1024px~1366px 极端比例下溢出视口） */
+.site-header nav [class*="bg-white"][class*="shadow-2xl"] {
+  max-width: calc(100vw - 32px);
 }
 
 /* Custom styles for a polished website */
 html {
   font-size: 120% !important;
+  font-family: var(--font-primary);
+}
+
+body, button, input, textarea, select, optgroup, [role="button"] {
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
 }
 
 body {
-  font-family: var(--font-sans);
   background-color: #ffffff;
-  color: #171717;
-  -webkit-font-smoothing: antialiased;
+  color: #1d1d1f;
+  letter-spacing: -0.011em;
+}
+
+/* Typography Precision Hierarchy & Tight Tracking */
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.024em;
+  text-rendering: optimizeLegibility;
+}
+
+h1, .hero-title, [class*="text-4xl"], [class*="text-5xl"], [class*="text-68px"], [class*="text-76px"], [class*="text-62px"] {
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+h2, [class*="text-3xl"] {
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+h3, [class*="text-2xl"] {
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+h4, [class*="text-xl"] {
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+/* Numbers & Tabular Alignment */
+.stat-number,
+.achievement-number,
+.font-mono {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Subtle Hairline Borders for Machined Precision */
+.border-neutral-100 {
+  border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.border-neutral-200 {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.border-\[\#E5E5E5\] {
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* Precision Ambient Shadows */
+.shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+}
+
+.shadow, .shadow-md {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 6px 16px -2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.shadow-lg, .shadow-xl {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 12px 28px -4px rgba(0, 0, 0, 0.06) !important;
 }
 
 /* Ensure all Tailwind arbitrary pixel text sizes scale up by exactly 20% */
@@ -209,16 +333,16 @@ body {
   transform: none;
 }
 
-/* Floating Frosted Glass Info Panel (Opacity reduced by 30%) */
+/* Floating Frosted Glass Info Panel */
 .office-info-panel {
   width: 100%;
-  background: rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
   z-index: 30;
   position: relative;
 }
@@ -298,15 +422,18 @@ body {
   }
 }
 
-/* Fixed Header scroll effects and glassmorphism */
+/* Fixed Header scroll effects and glassmorphism (Apple Mac Desktop Precision) */
 .site-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: #FFFFFF;
-  transition: transform 0.35s ease, background-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
 .site-header.is-hidden {
@@ -314,19 +441,30 @@ body {
 }
 
 .site-header.is-glass {
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+  background-color: rgba(255, 255, 255, 0.90) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 8px 24px -6px rgba(0, 0, 0, 0.04) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Ensure child elements don't block glass transparent effects when glass is active */
-.site-header.is-glass .bg-neutral-50\/50,
-.site-header.is-glass .bg-white\/95,
-.site-header.is-glass header {
+.site-header .bg-neutral-50\/50,
+.site-header .bg-white\/95,
+.site-header header {
   background-color: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+}
+
+/* Submenu dropdown precision frosted glass */
+.site-header nav [class*="bg-white"][class*="shadow-2xl"] {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.07) !important;
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03) !important;
+  border-radius: 14px !important;
 }
 
 body {
@@ -349,17 +487,19 @@ body {
 .case-card-v2 {
   aspect-ratio: 4 / 3;
   width: 100%;
-  border-radius: 24px;
+  border-radius: 16px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
 }
 
 .case-card-v2:hover,
 .case-card-v2.is-active {
-  box-shadow: 0 18px 40px 6px rgba(0, 0, 0, 0.18), 0 8px 18px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 14px 32px -4px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 123, 199, 0.25);
   transform: translateY(-4px);
 }
 .case-card-v2 img {
@@ -1005,7 +1145,7 @@ body {
   background-color: rgba(0, 95, 150, 0.08) !important;
   border: 1px solid rgba(0, 95, 150, 0.15) !important;
   border-radius: 9999px !important;
-  font-family: monospace !important;
+  font-family: var(--font-mono) !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
 }
@@ -1014,7 +1154,7 @@ body {
   background-color: rgba(0, 0, 0, 0.05) !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
   border-radius: 9999px !important;
-  font-family: monospace !important;
+  font-family: var(--font-mono) !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
 }
@@ -1023,7 +1163,7 @@ body {
   background-color: rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   border-radius: 9999px !important;
-  font-family: monospace !important;
+  font-family: var(--font-mono) !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
 }
@@ -1032,23 +1172,24 @@ body {
   background-color: rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   border-radius: 9999px !important;
-  font-family: monospace !important;
+  font-family: var(--font-mono) !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
 }
 
-/* Achievements Glassmorphism Cards Section */
+/* Achievements Glassmorphism Cards Section (Apple Precision Style) */
 .achievement-section {
-  background: linear-gradient(135deg, #E8F0FF 0%, #F5F5F5 100%);
-  padding: 48px 0;
+  background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+  padding: 44px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .achievement-grid {
   display: flex;
   justify-content: center;
   align-items: center;
-  column-gap: 64px;
-  row-gap: 32px;
+  column-gap: 56px;
+  row-gap: 28px;
   flex-wrap: wrap;
   width: 100%;
   margin: 0 auto;
@@ -1060,39 +1201,43 @@ body {
   align-items: center;
   justify-content: center;
   width: fit-content;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 14px;
-  padding: 40px 40px;
-  gap: 8px;
+  padding: 32px 36px;
+  gap: 6px;
   box-shadow:
-    0 6px 18px rgba(0, 123, 199, 0.05),
-    0 2px 6px rgba(0, 0, 0, 0.03);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    0 2px 6px rgba(0, 123, 199, 0.03),
+    0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .achievement-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
+  border-color: rgba(0, 123, 199, 0.25);
   box-shadow:
-    0 10px 24px rgba(0, 123, 199, 0.08),
-    0 3px 8px rgba(0, 0, 0, 0.05);
+    0 8px 20px -4px rgba(0, 123, 199, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .achievement-number {
-  font-size: clamp(40px, 3.4vw, 52px);
-  font-weight: 700;
+  font-size: clamp(38px, 3.2vw, 48px);
+  font-weight: 800;
   color: #007BC7;
-  line-height: 1.2;
+  line-height: 1.15;
   white-space: nowrap;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
 }
 
 .achievement-label {
-  font-size: 17px;
-  color: #4D4D4D;
-  font-weight: 400;
+  font-size: 15px;
+  color: #4b5563;
+  font-weight: 500;
   white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
 @media (max-width: 640px) {
@@ -1110,10 +1255,19 @@ body {
 
 /* Experience Cards Elevation */
 .experience-card {
-  border-radius: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.025),
-    0 6px 16px rgba(0, 0, 0, 0.038);
+    0 1px 3px rgba(0, 0, 0, 0.02),
+    0 4px 12px rgba(0, 0, 0, 0.035);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.03),
+    0 12px 24px -4px rgba(0, 0, 0, 0.06);
 }
 
 /* Achievement Gallery Grid */
@@ -1129,7 +1283,7 @@ body {
 }
 .achievement-gallery-item {
   aspect-ratio: 4 / 3;
-  border-radius: 24px;
+  border-radius: 16px;
   overflow: hidden;
   background-color: #F5F5F5;
 }
@@ -1139,7 +1293,7 @@ body {
   object-fit: cover;
 }
 
-/* 洛可可官网设计规范（所有页面通用）：全站所有"案例"相关卡片圆角统一为 24px (rounded-3xl) */
+/* 洛可可官网设计规范（全站通用）：精密收敛圆角体系 (16px) 增加工业设计与科技产品属性 */
 .case-card-v2,
 .case-hover-card,
 .case-card,
@@ -1147,6 +1301,29 @@ body {
 .achievement-gallery-item,
 .case-card-bg,
 [class*="case-card"] {
-  border-radius: 24px !important;
+  border-radius: 16px !important;
+}
+
+/* Harmonized container border radii */
+.rounded-3xl {
+  border-radius: 16px !important;
+}
+
+.rounded-2xl {
+  border-radius: 14px !important;
+}
+
+.rounded-xl {
+  border-radius: 10px !important;
+}
+
+/* Retain full pill curve for buttons, pills, chips */
+.rounded-full,
+.marquee-chip,
+.hero-badge,
+.slide-arrow,
+button.rounded-full,
+a.rounded-full {
+  border-radius: 9999px !important;
 }
 
