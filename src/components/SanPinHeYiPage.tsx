@@ -86,14 +86,14 @@ export default function SanPinHeYiPage({
               <div className="achievement-number">
                 <CounterComponent target={1000} />+
               </div>
-              <div className="achievement-label">知名合作品牌</div>
+              <div className="achievement-label">行业头部客户认可</div>
             </div>
 
             <div className="achievement-card">
               <div className="achievement-number">
-                <CounterComponent target={300} />+
+                <CounterComponent target={10000} />+
               </div>
-              <div className="achievement-label">服务世界500强</div>
+              <div className="achievement-label">产品成功落地</div>
             </div>
           </div>
         </div>
